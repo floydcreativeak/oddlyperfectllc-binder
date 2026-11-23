@@ -1,0 +1,39 @@
+---
+/** Shared layout for Privacy, Terms and Accessibility: a tidy binder page of prose. */
+import { render } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from './PageHeader.astro';
+import Icon from './Icon.astro';
+import { getPage, getSite, telHref, mailHref } from '~/lib/content';
+interface Props { name: 'privacy' | 'terms' | 'accessibility' }
+const entry = await getPage(Astro.props.name);
+const site = await getSite();
+const p = entry.data;
+const { Content } = await render(entry);
+const updated = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(p.updated);
+---
+<BaseLayout title={p.seo.title} description={p.seo.description}>
+  <PageHeader kicker={p.kicker} heading={p.heading} intro={p.intro}>
+    <p class="updated hand"><time datetime={p.updated.toISOString().slice(0, 10)}>{updated}</time></p>
+  </PageHeader>
+  <article class="container legal">
+    <div class="legal__page prose"><Content /></div>
+    <aside class="legal__contact note note--butter" aria-label={site.microcopy.callLong}>
+      <p><a href={telHref(site)} data-placeholder={site.phone.placeholder ? 'phone' : undefined}><Icon name="phone" />{site.phone.display}</a></p>
+      <p><a href={mailHref(site)} data-placeholder={site.email.placeholder ? 'email' : undefined}><Icon name="mail" />{site.email.address}</a></p>
+    </aside>
+  </article>
+</BaseLayout>
+
+<style>
+  .updated { margin-top: var(--space-s); color: var(--ink-soft); font-size: 1.15rem; }
+  .legal { display: grid; gap: var(--space-xl); align-items: start; }
+  .legal__page { max-width: none; padding: clamp(1.5rem, 1rem + 3vw, 3.5rem); border-radius: var(--radius-m); background: var(--surface); box-shadow: var(--shadow-2); }
+  .legal__page :global(h2) { font-size: var(--step-2); }
+  .legal__page :global(h2:first-child) { margin-top: 0; }
+  .legal__page :global(code) { font-size: 0.9em; padding: 0.1em 0.35em; border-radius: 4px; background: var(--surface-2); }
+  .legal__contact { padding: 1.5rem 1.2rem 1.2rem; transform: rotate(2deg); }
+  .legal__contact p + p { margin-top: 0.5rem; }
+  .legal__contact a { display: inline-flex; align-items: center; gap: 0.5rem; min-height: var(--tap); color: var(--note-ink); font-weight: 700; overflow-wrap: anywhere; }
+  @media (min-width: 60em) { .legal { grid-template-columns: 1fr 16rem; } .legal__contact { position: sticky; top: calc(var(--nav-h) + 2rem); } }
+</style>

@@ -1,0 +1,18 @@
+---
+/** Hand-drawn SVG star rating (never emoji). Screen readers get the text. */
+interface Props { rating: number; label: string }
+const { rating, label } = Astro.props;
+const star = 'M12 2.8c.9 2.1 1.8 4.3 2.8 6.4 2.3.2 4.6.5 6.9.8-1.7 1.6-3.4 3.2-5.2 4.7.5 2.3 1 4.5 1.4 6.8-2-1.2-4-2.4-6-3.5-2 1.2-4 2.3-6 3.5.5-2.3 1-4.5 1.4-6.8L2.2 10c2.3-.3 4.6-.6 6.9-.8 1-2.1 1.9-4.3 2.9-6.4z';
+---
+<span class="stars" role="img" aria-label={label.replace('{n}', String(rating))}>
+  {[1, 2, 3, 4, 5].map((i) => (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" style={`--r:${(i * 37) % 11 - 5}deg`}>
+      <path d={star} fill={i <= rating ? 'var(--star-fill)' : 'none'} stroke="var(--star)" stroke-width="1.8" stroke-linejoin="round" />
+    </svg>
+  ))}
+</span>
+
+<style>
+  .stars { display: inline-flex; gap: 0.1rem; }
+  .stars svg { transform: rotate(var(--r)); }
+</style>

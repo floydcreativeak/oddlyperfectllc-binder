@@ -1,0 +1,44 @@
+---
+/** The Post-it station: Call, Email, Hours as three pinned notes. */
+import Icon from './Icon.astro';
+import { telHref, mailHref, type Site } from '~/lib/content';
+interface Props { site: Site; c: { callTitle: string; callNote: string; emailTitle: string; emailNote: string; hoursTitle: string } }
+const { site, c } = Astro.props;
+---
+<ul class="station" role="list">
+  <li class="note note--butter station__note">
+    <h3 class="station__title"><Icon name="phone" />{c.callTitle}</h3>
+    <a class="station__big" href={telHref(site)} data-placeholder={site.phone.placeholder ? 'phone' : undefined}>{site.phone.display}</a>
+    <p class="hand">{c.callNote}</p>
+  </li>
+  <li class="note note--sky station__note">
+    <h3 class="station__title"><Icon name="mail" />{c.emailTitle}</h3>
+    <a class="station__mail" href={mailHref(site)} data-placeholder={site.email.placeholder ? 'email' : undefined}>{site.email.address}</a>
+    <p class="hand">{c.emailNote}</p>
+  </li>
+  <li class="note note--sage station__note" data-placeholder={site.hours.placeholder ? 'hours' : undefined}>
+    <h3 class="station__title"><Icon name="clock" />{c.hoursTitle}</h3>
+    <dl class="station__hours">
+      {site.hours.rows.map((r) => <div><dt>{r.days}</dt><dd>{r.time}</dd></div>)}
+    </dl>
+    {site.hours.note && <p class="station__small">{site.hours.note}</p>}
+  </li>
+</ul>
+
+<style>
+  .station { display: grid; gap: var(--space-xl) var(--space-l); padding: 0; margin: 0; list-style: none; }
+  .station__note { padding: 1.8rem 1.4rem 1.4rem; transition: transform var(--dur-spring) var(--ease-spring); }
+  .station__note:nth-child(1) { transform: rotate(-2deg); }
+  .station__note:nth-child(2) { transform: rotate(1.5deg); }
+  .station__note:nth-child(3) { transform: rotate(-1deg); }
+  .station__note:hover { transform: rotate(0) translateY(var(--lift)); }
+  .station__title { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step-2); margin-bottom: 0.6rem; }
+  .station__big { display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: var(--step-3); color: var(--note-ink); text-decoration-thickness: 2px; text-underline-offset: 0.15em; font-variant-numeric: tabular-nums; }
+  .station__mail { font-weight: 700; color: var(--note-ink); overflow-wrap: anywhere; text-decoration-thickness: 2px; }
+  .station__note .hand { margin-top: 0.6rem; font-size: 1.15rem; }
+  .station__hours div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.15rem 0; }
+  .station__hours dt { font-weight: 700; flex: 1; }
+  .station__hours dd { text-align: right; }
+  .station__small { margin-top: 0.6rem; font-size: var(--step--1); }
+  @media (min-width: 52em) { .station { grid-template-columns: repeat(3, 1fr); } }
+</style>

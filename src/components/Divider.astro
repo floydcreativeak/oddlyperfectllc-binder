@@ -1,0 +1,52 @@
+---
+/**
+ * A home-page section as a colored binder divider sheet. The sheet's tab
+ * (label) shows at its edge on mobile; on desktop the DividerTabs nav on the
+ * right edge links to every divider.
+ */
+interface Props { id: string; tab: string; sheet: 'paper' | 'sage' | 'sky' | 'rose' | 'butter' | 'cork'; labelledby: string; class?: string }
+const { id, tab, sheet, labelledby, class: cls } = Astro.props;
+---
+<section id={id} class:list={['divider', `divider--${sheet}`, cls]} aria-labelledby={labelledby} data-divider={id}>
+  <span class="divider__tab" aria-hidden="true">{tab}</span>
+  <div class="divider__inner">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .divider {
+    position: relative;
+    margin-top: calc(var(--radius-xl) * -1);
+    padding: calc(var(--section-pad) + var(--radius-xl) * 0.5) 0 calc(var(--section-pad) + var(--radius-xl));
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    background: var(--sheet);
+    scroll-margin-top: calc(var(--nav-h) - var(--radius-xl) * 0.5);
+  }
+  .divider:first-child { margin-top: var(--space-2xl); }
+  .divider--paper { --sheet: var(--sheet-paper); --tab: var(--surface-2); }
+  .divider--sage { --sheet: var(--sheet-sage); --tab: var(--note-sage); }
+  .divider--sky { --sheet: var(--sheet-sky); --tab: var(--note-sky); }
+  .divider--rose { --sheet: var(--sheet-rose); --tab: var(--note-rose); }
+  .divider--butter { --sheet: var(--sheet-butter); --tab: var(--note-butter); }
+  .divider--cork { --sheet: var(--sheet-cork); --tab: var(--note-butter); }
+  .divider--cork { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cg fill='%23000' fill-opacity='.09'%3E%3Ccircle cx='7' cy='9' r='1.4'/%3E%3Ccircle cx='31' cy='4' r='1'/%3E%3Ccircle cx='52' cy='15' r='1.6'/%3E%3Ccircle cx='18' cy='29' r='1.1'/%3E%3Ccircle cx='44' cy='36' r='1.3'/%3E%3Ccircle cx='6' cy='49' r='1'/%3E%3Ccircle cx='28' cy='55' r='1.5'/%3E%3Ccircle cx='57' cy='52' r='1.1'/%3E%3C/g%3E%3C/svg%3E"); }
+  .divider__inner { width: min(100% - 2 * var(--gutter), var(--content-max)); margin-inline: auto; }
+  .divider__tab {
+    position: absolute;
+    top: calc(var(--radius-xl) * -0.15);
+    right: calc(var(--gutter) + 0.5rem);
+    padding: 0.35rem 1rem 0.5rem;
+    border-radius: var(--radius-s) var(--radius-s) 0 0;
+    background: var(--tab);
+    color: var(--note-ink);
+    font-family: var(--font-hand);
+    font-size: 1.05rem;
+    line-height: 1;
+    transform: translateY(-100%);
+    box-shadow: 0 -2px 6px rgb(var(--shadow-color) / 0.08);
+  }
+  @media (min-width: 72em) {
+    .divider__tab { display: none; }
+  }
+</style>

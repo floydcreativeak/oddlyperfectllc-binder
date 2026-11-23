@@ -31,6 +31,12 @@ for (const theme of ['light', 'dark']) {
     for (const p of pages) {
       await page.goto(BASE + p, { waitUntil: 'networkidle' });
       await page.evaluate(() => document.fonts.ready);
+      // Scroll through so lazy images load, then return to the top.
+      await page.evaluate(async () => {
+        for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); }
+        window.scrollTo(0, 0);
+      });
+      await page.waitForLoadState('networkidle');
       const slug = p === '/' ? 'home' : p.replace(/\//g, '');
       await page.screenshot({ path: `${outDir}/${slug}-${s.name}-${theme}-fold.png` });
       await page.screenshot({ path: `${outDir}/${slug}-${s.name}-${theme}-full.png`, fullPage: true });

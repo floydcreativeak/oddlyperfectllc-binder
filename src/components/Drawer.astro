@@ -1,0 +1,137 @@
+---
+/**
+ * A file drawer: pick a folder tab and its spec sheet slides out with the
+ * price, the "when someone needs it" line and what's included.
+ * ARIA tabs with arrow/Home/End keys. Without JS, every sheet is shown.
+ */
+import Icon from './Icon.astro';
+
+export type DrawerItem = { id: string; name: string; price: string; line: string; pitch?: string; scope?: string; includes: string[] };
+interface Props { id: string; items: DrawerItem[]; label: string; lineLabel: string; includesLabel: string; color?: 'butter' | 'sky' | 'rose' | 'sage' }
+const { id, items, label, lineLabel, includesLabel, color = 'sky' } = Astro.props;
+---
+<div class:list={['drawer', `drawer--${color}`]} data-drawer>
+  <div class="drawer__tabs" role="tablist" aria-label={label} hidden data-drawer-tabs>
+    {items.map((it, i) => (
+      <button
+        type="button"
+        role="tab"
+        id={`${id}-tab-${it.id}`}
+        aria-controls={`${id}-panel-${it.id}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        tabindex={i === 0 ? 0 : -1}
+        class="drawer__tab"
+      >
+        <span class="drawer__tab-name">{it.name}</span>
+        <span class="drawer__tab-price">{it.price}</span>
+      </button>
+    ))}
+  </div>
+  <div class="drawer__sheets">
+    {items.map((it) => (
+      <article class="sheet" id={`${id}-panel-${it.id}`} role="tabpanel" aria-labelledby={`${id}-tab-${it.id}`} tabindex="0" data-sheet>
+        <span class="sheet__anchor" id={it.id}></span>
+        <header class="sheet__head">
+          <h3 class="sheet__title">{it.name}</h3>
+          <p class="sheet__price">{it.price}</p>
+        </header>
+        <p class="sheet__line">{lineLabel && <span class="hand">{lineLabel}</span>} {it.line}</p>
+        {it.pitch && <p class="sheet__pitch">{it.pitch}</p>}
+        {it.scope && <p class="sheet__scope">{it.scope}</p>}
+        <h4 class="sheet__h hand">{includesLabel}</h4>
+        <ul class="sheet__list" role="list">
+          {it.includes.map((x) => <li><Icon name="check" />{x}</li>)}
+        </ul>
+      </article>
+    ))}
+  </div>
+</div>
+
+<script>
+  function initDrawers() {
+    document.querySelectorAll<HTMLElement>('[data-drawer]').forEach((drawer) => {
+      if (drawer.dataset.ready) return;
+      drawer.dataset.ready = '1';
+      const list = drawer.querySelector<HTMLElement>('[data-drawer-tabs]')!;
+      const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      const panels = [...drawer.querySelectorAll<HTMLElement>('[data-sheet]')];
+      list.hidden = false;
+      drawer.classList.add('drawer--js');
+      const select = (i: number, focus = false) => {
+        tabs.forEach((t, j) => {
+          t.setAttribute('aria-selected', String(i === j));
+          t.tabIndex = i === j ? 0 : -1;
+          panels[j].hidden = i !== j;
+        });
+        if (focus) tabs[i].focus();
+      };
+      // Open the folder named in the URL (#campaign-sprint), else the first.
+      const hash = location.hash.slice(1);
+      const found = hash ? panels.findIndex((p) => p.querySelector(`[id="${CSS.escape(hash)}"]`)) : -1;
+      select(Math.max(0, found));
+      if (found >= 0) requestAnimationFrame(() => drawer.scrollIntoView({ block: 'start' }));
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => select(i));
+        t.addEventListener('keydown', (e) => {
+          const last = tabs.length - 1;
+          const next = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: last }[e.key];
+          if (next === undefined) return;
+          e.preventDefault();
+          select((next + tabs.length) % tabs.length, true);
+        });
+      });
+    });
+  }
+  document.addEventListener('astro:page-load', initDrawers);
+</script>
+
+<style>
+  .drawer { --sheet-bg: var(--surface); scroll-margin-top: calc(var(--nav-h) + 1rem); }
+  .drawer__tabs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); gap: 0.5rem; margin-bottom: -0.4rem; position: relative; z-index: 1; }
+  .drawer__tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    min-height: 4rem;
+    padding: 0.7rem 0.9rem 1rem;
+    border-radius: var(--radius-s) var(--radius-s) 0 0;
+    background: var(--folder-tab);
+    color: var(--note-ink);
+    text-align: left;
+    line-height: 1.2;
+    box-shadow: 0 -1px 3px rgb(var(--shadow-color) / 0.1);
+    transition: transform var(--dur-spring) var(--ease-spring), background-color var(--dur-fast);
+  }
+  .drawer--sky .drawer__tab[aria-selected='true'] { background: var(--note-sky); }
+  .drawer--rose .drawer__tab[aria-selected='true'] { background: var(--note-rose); }
+  .drawer--butter .drawer__tab[aria-selected='true'] { background: var(--note-butter); }
+  .drawer__tab:hover { transform: translateY(-3px); }
+  .drawer__tab[aria-selected='true'] { transform: translateY(-6px); box-shadow: var(--shadow-2); }
+  .drawer__tab-name { font-weight: 700; }
+  .drawer__tab-price { font-family: var(--font-hand); font-size: 1.1rem; }
+  .drawer__sheets { display: grid; gap: var(--space-l); }
+  .sheet {
+    position: relative;
+    padding: var(--space-l) var(--space-m);
+    border-radius: var(--radius-xs) var(--radius-m) var(--radius-m) var(--radius-m);
+    background: var(--sheet-bg);
+    box-shadow: var(--shadow-3);
+  }
+  .drawer--js .sheet:not([hidden]) { animation: sheet-out var(--dur-spring) var(--ease-settle) both; }
+  @media (prefers-reduced-motion: reduce) { .drawer--js .sheet:not([hidden]) { animation: none; } }
+  @keyframes sheet-out { from { transform: translateY(-1.5rem) rotate(-0.6deg); opacity: 0; } }
+  .sheet__anchor { position: absolute; top: calc(-1 * var(--nav-h) - 6rem); }
+  .sheet__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.5rem 1rem; }
+  .sheet__title { font-size: var(--step-3); }
+  .sheet__price { font-family: var(--font-display); font-weight: 700; font-size: var(--step-3); color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+  .sheet__line { margin-top: var(--space-s); font-size: var(--step-1); line-height: 1.4; }
+  .sheet__line .hand { color: var(--accent-ink); display: block; font-size: 1.1rem; }
+  .sheet__pitch { margin-top: var(--space-s); color: var(--ink-soft); }
+  .sheet__scope { margin-top: var(--space-s); font-weight: 700; }
+  .sheet__h { margin-top: var(--space-m); font-size: var(--step-1); color: var(--accent-ink); }
+  .sheet__list { display: grid; gap: 0.35rem 1.5rem; margin-top: 0.4rem; padding: 0; list-style: none; }
+  .sheet__list li { display: grid; grid-template-columns: 1.2rem 1fr; gap: 0.5rem; line-height: 1.4; }
+  .sheet__list :global(.icon) { width: 1.2rem; height: 1.2rem; margin-top: 0.12rem; color: var(--accent-ink); }
+  @media (min-width: 48em) { .sheet { padding: var(--space-xl); } .sheet__list { grid-template-columns: 1fr 1fr; } }
+</style>

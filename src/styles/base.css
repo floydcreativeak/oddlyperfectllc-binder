@@ -7,6 +7,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
 html {
+  overflow-x: clip; /* tilted notes and stickers never cause sideways scrolling */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--nav-h) + var(--space-s));

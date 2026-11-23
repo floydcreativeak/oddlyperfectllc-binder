@@ -1,0 +1,107 @@
+---
+/** Prepares the router notes (resolving each target to its service + price) for the island. */
+import Router, { type RouterNote } from '~/islands/Router';
+import SectionHead from './SectionHead.astro';
+import { getRouter, getPage, telHref, formatPrice } from '~/lib/content';
+import { getServices } from '~/lib/services';
+import { link } from '~/lib/nav';
+
+interface Props { headingId: string; level?: 'h2' | 'h3' }
+const { headingId, level = 'h2' } = Astro.props;
+const [router, { services, pricing, site }, servicesPage] = await Promise.all([getRouter(), getServices(), getPage('services')]);
+const sp = servicesPage.data;
+const blindFee = pricing.fees.find((f) => f.id === 'blind-date');
+
+const notes: RouterNote[] = router.notes.map((n) => {
+  if (n.target === 'blind-date') {
+    return {
+      says: n.says,
+      color: n.color,
+      target: {
+        title: n.targetLabel ?? site.blindDate.title,
+        line: `${site.blindDate.blurb} ${site.blindDate.isNot}`,
+        price: blindFee ? `${formatPrice(blindFee.price)}, ${site.blindDate.duration}` : site.blindDate.duration,
+        href: telHref(site),
+        cta: `${site.blindDate.cta}: ${site.phone.display}`,
+        isCall: true,
+      },
+    };
+  }
+  if (n.target === 'events') {
+    return {
+      says: n.says,
+      color: n.color,
+      target: { title: n.targetLabel ?? pricing.eventsIntro.heading, line: pricing.eventsIntro.positioning, href: link('/services#events'), cta: router.resultCta },
+    };
+  }
+  const s = services.find((x) => x.id === n.target)!;
+  const price = s.kind === 'partnership' ? `${sp.priceLabel} ${s.price}, ${sp.flexPriceNote}` : `${sp.priceLabel} ${s.price}`;
+  return {
+    says: n.says,
+    color: n.color,
+    target: { title: n.targetLabel ?? s.name, line: s.pitch, price, href: link(`/services#${s.id}`), cta: router.resultCta },
+  };
+});
+---
+<div class="router-wrap">
+  <SectionHead kicker={router.kicker} heading={router.heading} id={headingId} level={level} />
+  <Router client:visible notes={notes} instructions={router.instructions} resultPrefix={router.resultPrefix} />
+  <noscript>
+    <ul class="router-fallback">
+      {notes.map((n) => <li><a href={n.target.href}>&ldquo;{n.says}&rdquo; → {n.target.title}</a></li>)}
+    </ul>
+  </noscript>
+</div>
+
+<style>
+  .router-wrap :global(.section-head__title) { font-size: var(--step-4); }
+  .router-wrap :global(.router__how) { font-size: var(--step-1); color: var(--accent-ink); margin-bottom: var(--space-m); }
+  .router-wrap :global(.router__notes) { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: var(--space-l) var(--space-m); padding: 0; margin: 0; list-style: none; }
+  .router-wrap :global(.router__note) {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 8.5rem;
+    padding: 1.4rem 1.2rem 1.2rem;
+    text-align: left;
+    font-size: 1.28rem;
+    line-height: 1.22;
+    transform: rotate(calc((var(--i) * 7 % 5 - 2) * 1deg));
+    transition: transform var(--dur-spring) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out);
+  }
+  .router-wrap :global(.router__note:hover) { transform: rotate(0deg) translateY(var(--lift)); box-shadow: var(--shadow-lift); }
+  .router-wrap :global(.router__note[aria-pressed='true']) { transform: rotate(0deg) scale(1.03); box-shadow: 0 0 0 3px var(--note-ink), var(--shadow-lift); }
+  .router-wrap :global(.router__result) { margin-top: var(--space-l); }
+  .router-wrap :global(.router__card) {
+    position: relative;
+    max-width: 40rem;
+    margin-left: auto;
+    padding: var(--space-l);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    box-shadow: var(--shadow-3);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .router-wrap :global(.router__card) { animation: router-slap var(--dur-spring) var(--ease-settle) both; }
+    .router-wrap :global(.router__arrow path) { stroke-dasharray: 1; animation: router-draw var(--dur-slow) var(--ease-out) 0.1s both; }
+  }
+  @keyframes router-slap { from { opacity: 0; transform: translateY(1.5rem) rotate(-2deg) scale(0.96); } }
+  @keyframes router-draw { from { stroke-dashoffset: 1; } }
+  .router-wrap :global(.router__arrow) {
+    position: absolute;
+    top: -3.6rem;
+    left: 1rem;
+    width: 6rem;
+    height: 3.5rem;
+    fill: none;
+    stroke: var(--accent-ink);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .router-wrap :global(.router__title) { font-size: var(--step-3); }
+  .router-wrap :global(.router__line) { margin-top: var(--space-xs); }
+  .router-wrap :global(.router__price) { margin-top: var(--space-xs); font-weight: 700; }
+  .router-wrap :global(.router__card .btn) { margin-top: var(--space-m); }
+  .router-fallback { display: grid; gap: 0.5rem; margin-top: var(--space-m); }
+</style>

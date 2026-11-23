@@ -23,8 +23,12 @@ rushMinimumLabel: Minimum rush fee
 surchargeLabel: Added to the fee
 houseRulesKicker: The fine print, but make it readable
 downloadHeading: Want It On Paper?
-downloadBody: The Quick Pricing Sheet has the monthly tiers, projects, events, fees and key policies on one page. Generated straight from this price list, so it's never out of date.
-downloadLabel: Download the Quick Pricing Sheet (PDF)
+downloadBody: The Quick Pricing Sheet puts the monthly tiers, projects, events, fees and key policies on one page. It's built straight from this price list, so it's never out of date. Print it or save it as a PDF.
+downloadLabel: Open the Quick Pricing Sheet
+sheetTitle: Quick Pricing Sheet
+sheetPrintLabel: Print or save as PDF
+sheetBackLabel: Back to full pricing
+sheetKeyPolicies: Key Policies
 policiesNote: Payment schedules, invoicing and cancellation terms are spelled out in your written agreement.
 
 ctaHeading: Prices Make Sense? Let's Talk.

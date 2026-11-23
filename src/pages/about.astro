@@ -1,0 +1,71 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import SectionHead from '~/components/SectionHead.astro';
+import HowItWorks from '~/components/HowItWorks.astro';
+import TeamCard from '~/components/TeamCard.astro';
+import Gallery from '~/components/Gallery.astro';
+import BlindDate from '~/components/BlindDate.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Sticker from '~/components/Sticker.astro';
+import { getPage, getSite, getHome, getGallery, published } from '~/lib/content';
+
+const [entry, site, home, gallery, team] = await Promise.all([getPage('about'), getSite(), getHome(), getGallery(), published('team')]);
+const p = entry.data;
+const { Content } = await render(entry);
+---
+<BaseLayout title={p.seo.title} description={p.seo.description}>
+  <PageHeader kicker={p.kicker} heading={p.heading} intro={p.intro}>
+    <Sticker id="coffee" tilt={-10} class="head-sticker" />
+  </PageHeader>
+
+  <section class="container block story" aria-labelledby="story-title">
+    <h2 id="story-title" class="h3">{p.storyHeading}</h2>
+    <div class="prose story__body"><Content /></div>
+  </section>
+
+  <div class="container block"><HowItWorks kicker={p.howKicker} heading={p.howHeading} steps={p.steps} headingId="how-title" /></div>
+
+  {team.length > 0 && (
+    <section class="container block" aria-labelledby="team-title">
+      <SectionHead heading={p.teamHeading} blurb={p.teamIntro} id="team-title" />
+      <div class="team">{team.map((m, i) => <TeamCard member={m} tilt={i % 2 ? 2 : -2} />)}</div>
+    </section>
+  )}
+
+  {gallery.items.length > 0 && (
+    <section class="container block" aria-labelledby="gallery-title">
+      <SectionHead heading={p.galleryHeading} blurb={p.galleryIntro} id="gallery-title" />
+      <Gallery items={gallery.items} closeLabel={site.microcopy.lightboxClose} prevLabel={site.microcopy.lightboxPrev} nextLabel={site.microcopy.lightboxNext} />
+    </section>
+  )}
+
+  <section class="container block area" aria-labelledby="area-title">
+    <div>
+      <h2 id="area-title" class="h3">{p.areaHeading}</h2>
+      <p class="lede">{p.areaBody}</p>
+    </div>
+    <ul class="area__pins" role="list">
+      {site.serviceArea.map((town, i) => <li class={`note note--${['butter', 'sky', 'sage', 'rose'][i % 4]}`} style={`--t:${(i * 3) % 5 - 2}deg`}>{town}</li>)}
+    </ul>
+  </section>
+
+  <div class="container"><BlindDate site={site} kicker={home.blindDate.kicker} heading={home.blindDate.heading} note={home.blindDate.note} /></div>
+  <CtaBand site={site} heading={p.ctaHeading} body={p.ctaBody} />
+</BaseLayout>
+
+<style>
+  .block { margin-top: var(--space-3xl); }
+  :global(.head-sticker) { position: absolute; right: var(--gutter); top: var(--space-2xl); }
+  @media (max-width: 47.9em) { :global(.head-sticker) { display: none !important; } }
+  .story { display: grid; gap: var(--space-m); }
+  .story__body { font-size: var(--step-1); line-height: 1.55; }
+  @media (min-width: 60em) { .story { grid-template-columns: 1fr 2fr; } }
+  .team { display: flex; flex-wrap: wrap; gap: var(--space-xl); }
+  .area { display: grid; gap: var(--space-xl); align-items: center; }
+  .area .lede { margin-top: var(--space-s); }
+  .area__pins { display: flex; flex-wrap: wrap; gap: var(--space-l) var(--space-m); padding: var(--space-s) 0 0; list-style: none; }
+  .area__pins li { padding: 1rem 1.2rem 0.8rem; font-family: var(--font-hand); font-size: var(--step-1); transform: rotate(var(--t)); }
+  @media (min-width: 60em) { .area { grid-template-columns: 1fr 1fr; } }
+</style>

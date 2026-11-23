@@ -1,0 +1,270 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import SectionHead from '~/components/SectionHead.astro';
+import TierCards from '~/components/TierCards.astro';
+import HouseRules from '~/components/HouseRules.astro';
+import BlindDate from '~/components/BlindDate.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Icon from '~/components/Icon.astro';
+import Sticker from '~/components/Sticker.astro';
+import { getPage, getHome, getPricing, getSite, formatPrice, speakPrice, fill } from '~/lib/content';
+import { link } from '~/lib/nav';
+
+const [{ data: p }, home, pricing, site] = await Promise.all([getPage('pricing'), getHome(), getPricing(), getSite()]);
+const f = (t: string) => fill(t, pricing, site);
+const rushTables = [
+  { id: 'rush', t: pricing.rush, min: pricing.rush.minimum },
+  { id: 'event-rush', t: pricing.eventRush, min: null },
+];
+---
+<BaseLayout title={p.seo.title} description={p.seo.description}>
+  <PageHeader kicker={p.kicker} heading={p.heading} intro={p.intro}>
+    <Sticker id="no-kickbacks" tilt={10} class="head-sticker" />
+  </PageHeader>
+
+  <!-- Monthly partnerships -->
+  <section class="container block" id="partnerships" aria-labelledby="tiers-title">
+    <SectionHead kicker={pricing.partnershipsIntro.kicker} heading={pricing.partnershipsIntro.heading} blurb={pricing.partnershipsIntro.blurb} id="tiers-title" />
+    <TierCards pricing={pricing} site={site} variant="full" id="pricing" toggleLabel={p.flexToggleLabel} labels={{ includes: p.includesLabel, example: p.exampleLabel, boundary: p.boundaryLabel }} />
+  </section>
+
+  <!-- Flex -->
+  <section class="container block" id="flex" aria-labelledby="flex-title">
+    <div class="flex-card">
+      <div>
+        <p class="kicker">{pricing.flex.tagline}</p>
+        <h2 id="flex-title" class="h2">{pricing.flex.name}</h2>
+        {pricing.flex.blurb && <p class="lede">{pricing.flex.blurb}</p>}
+        <ol class="flex-rules">{pricing.flex.rules.map((r) => <li>{f(r)}</li>)}</ol>
+      </div>
+      <div class="note note--sage flex-perks">
+        <h3>{pricing.flex.benefitsHeading}</h3>
+        <ul role="list">{pricing.flex.benefits.map((b) => <li><Icon name="check" />{f(b)}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="container block" id="projects" aria-labelledby="projects-title">
+    <SectionHead kicker={pricing.projectsIntro.kicker} heading={pricing.projectsIntro.heading} blurb={pricing.projectsIntro.blurb} id="projects-title" />
+    <ul class="specs" role="list">
+      {pricing.projects.map((x) => (
+        <li class="spec">
+          <div class="spec__head"><h3>{x.name}</h3><p class="spec__price">{formatPrice(x.price)}</p></div>
+          <p class="spec__line"><span class="hand">{pricing.projectsIntro.needLabel}</span>{x.need}</p>
+          <p class="spec__inc"><span class="hand">{pricing.projectsIntro.includesLabel}</span>{x.includes.join('; ')}.</p>
+        </li>
+      ))}
+    </ul>
+    <div class="note note--butter note--unpinned revision">
+      <h3>{pricing.revisionRule.heading}</h3>
+      <ul role="list">{pricing.revisionRule.points.map((r) => <li><Icon name="check" />{f(r)}</li>)}</ul>
+    </div>
+  </section>
+
+  <!-- Events -->
+  <section class="container block" id="events" aria-labelledby="events-title">
+    <SectionHead kicker={pricing.eventsIntro.kicker} heading={pricing.eventsIntro.heading} blurb={pricing.eventsIntro.positioning} id="events-title" />
+    <ul class="specs" role="list">
+      {pricing.events.map((x) => (
+        <li class="spec spec--event">
+          <div class="spec__head"><h3>{x.name}</h3><p class="spec__price">{formatPrice(x.price)}</p></div>
+          <p class="spec__line">{x.tagline}</p>
+          {x.scope && <p class="spec__scope">{x.scope}</p>}
+          <p class="spec__inc"><span class="hand">{pricing.projectsIntro.includesLabel}</span>{x.includes.join('; ')}.</p>
+        </li>
+      ))}
+    </ul>
+    <div class="bounds">
+      <h3>{pricing.eventBoundaries.heading}</h3>
+      <ul role="list">{pricing.eventBoundaries.items.map((x) => <li>{x}</li>)}</ul>
+      <p>{pricing.eventBoundaries.responsibility}</p>
+      <p>{pricing.eventBoundaries.sponsorship}</p>
+    </div>
+  </section>
+
+  <!-- Fees -->
+  <section class="container block" id="fees" aria-labelledby="fees-title">
+    <SectionHead kicker={p.feesKicker} heading={p.feesHeading} id="fees-title" />
+    <div class="table-wrap">
+      <table class="fees">
+        <tbody>
+          {pricing.fees.map((fee) => (
+            <tr>
+              <th scope="row">{fee.name}</th>
+              <td class="fees__price"><span aria-hidden="true">{formatPrice(fee.price)}</span><span class="visually-hidden">{speakPrice(fee.price)}</span></td>
+              <td class="fees__note">{fee.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="hand footnote">{pricing.feesFootnote}</p>
+  </section>
+
+  <!-- Rush: "The Hurry-Up Fees" -->
+  <section class="container block" id="rush" aria-labelledby="rush-title">
+    <SectionHead kicker={p.rushKicker} heading={p.rushHeading} id="rush-title" />
+    <div class="rush">
+      {rushTables.map(({ id, t, min }, i) => (
+        <details class="rush__item" open={i === 0}>
+          <summary><span>{t.heading}</span><Icon name="arrow" /></summary>
+          <div class="rush__body">
+            <table class="rush__table">
+              <thead><tr><th scope="col"><span class="visually-hidden">{t.heading}</span></th><th scope="col">{p.surchargeLabel}</th></tr></thead>
+              <tbody>
+                {t.rows.map((r) => <tr><th scope="row">{r.when}</th><td>+{r.surcharge}%{r.note && <span class="rush__note"> {r.note}</span>}</td></tr>)}
+              </tbody>
+            </table>
+            {min && <p><strong>{p.rushMinimumLabel}:</strong> {formatPrice(min)}</p>}
+            {'notes' in t && (t.notes as string[]).map((n) => <p>{f(n)}</p>)}
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- Community Rate + Not included -->
+  <section class="container block duo" aria-label={`${pricing.communityRate.heading}, ${pricing.notIncluded.heading}`}>
+    <div class="note note--rose community" id="community-rate">
+      <p class="hand">{pricing.communityRate.heading}</p>
+      <h2 class="h3">{f(pricing.communityRate.headline)}</h2>
+      <p>{f(pricing.communityRate.body)}</p>
+      <ul role="list">{pricing.communityRate.rules.map((r) => <li><Icon name="check" />{r}</li>)}</ul>
+    </div>
+    <div class="excluded" id="not-included">
+      <h2 class="h3">{pricing.notIncluded.heading}</h2>
+      <p>{pricing.notIncluded.intro}</p>
+      <ul role="list" class="excluded__list">{pricing.notIncluded.items.map((x) => <li>{x}</li>)}</ul>
+      <p class="excluded__rule hand">{f(pricing.notIncluded.rule)}</p>
+    </div>
+  </section>
+
+  <!-- Travel and service area: a pinned map-style sticky -->
+  <section class="container block" id="travel" aria-labelledby="travel-title">
+    <div class="travel">
+      <div>
+        <h2 id="travel-title" class="h3">{pricing.travel.heading}</h2>
+        <ul class="travel__terms" role="list">{pricing.travel.terms.map((t) => <li>{f(t)}</li>)}</ul>
+      </div>
+      <div class="note note--sky map">
+        <p class="hand map__line">{pricing.travel.localLine}</p>
+        <svg class="map__doodle" viewBox="0 0 300 200" aria-hidden="true" focusable="false">
+          <path d="M20 150c30-20 40-60 80-70s70 20 100-10 50-50 80-40" />
+          <path d="M40 180c40-10 90 5 120-20s60-30 110-25" />
+        </svg>
+        <ul class="map__pins" role="list">
+          {site.serviceArea.map((town, i) => <li style={`--x:${[12, 46, 70, 30, 62][i % 5]}%;--y:${[58, 34, 18, 80, 66][i % 5]}%`}><span class="map__pin" aria-hidden="true"></span>{town}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="container block"><HouseRules headingId="rules-title" kicker={p.houseRulesKicker} /></div>
+
+  <!-- Quick Pricing Sheet -->
+  <section class="container block" aria-labelledby="sheet-title">
+    <div class="download">
+      <h2 id="sheet-title" class="h3">{p.downloadHeading}</h2>
+      <p>{p.downloadBody}</p>
+      <a class="btn" href={link('/pricing-sheet')}><Icon name="clip" />{p.downloadLabel}</a>
+      <p class="download__note">{p.policiesNote}</p>
+    </div>
+  </section>
+
+  <div class="container"><BlindDate site={site} kicker={home.blindDate.kicker} heading={home.blindDate.heading} note={home.blindDate.note} /></div>
+  <CtaBand site={site} heading={p.ctaHeading} body={p.ctaBody} />
+</BaseLayout>
+
+<style>
+  .block { margin-top: var(--space-3xl); scroll-margin-top: calc(var(--nav-h) + 1rem); }
+  :global(.head-sticker) { position: absolute; right: var(--gutter); top: var(--space-2xl); }
+  @media (max-width: 47.9em) { :global(.head-sticker) { display: none !important; } }
+
+  .flex-card { display: grid; gap: var(--space-xl); padding: clamp(1.5rem, 1rem + 3vw, 3rem); border-radius: var(--radius-l); background: var(--surface); box-shadow: var(--shadow-2); }
+  .flex-card .lede { margin-top: var(--space-s); }
+  .flex-rules { margin-top: var(--space-m); padding-left: 1.3rem; display: grid; gap: 0.5rem; }
+  .flex-rules li::marker { font-family: var(--font-hand); color: var(--accent-ink); font-size: 1.2em; }
+  .flex-perks { padding: var(--space-l); align-self: start; transform: rotate(1.5deg); }
+  .flex-perks h3 { font-size: var(--step-2); margin-bottom: 0.6rem; }
+  .flex-perks ul, .revision ul, .community ul { display: grid; gap: 0.45rem; padding: 0; list-style: none; }
+  .flex-perks li, .revision li, .community li { display: grid; grid-template-columns: 1.3rem 1fr; gap: 0.5rem; }
+  @media (min-width: 56em) { .flex-card { grid-template-columns: 1.5fr 1fr; } }
+
+  .specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: var(--space-m); padding: 0; list-style: none; }
+  .spec { padding: var(--space-l) var(--space-m); border-radius: var(--radius-m); background: var(--surface); box-shadow: var(--shadow-1); border-top: 6px solid var(--note-sky); transition: transform var(--dur-spring) var(--ease-spring), box-shadow var(--dur-base); }
+  .spec--event { border-top-color: var(--note-rose); }
+  .spec:hover { transform: translateY(var(--lift)) rotate(calc(-0.5deg * var(--motion-distance))); box-shadow: var(--shadow-lift); }
+  .spec__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .spec__head h3 { font-size: var(--step-1); }
+  .spec__price { font-family: var(--font-display); font-weight: 700; font-size: var(--step-2); color: var(--accent-ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .spec__line, .spec__inc, .spec__scope { margin-top: var(--space-xs); line-height: 1.45; }
+  .spec__inc { font-size: var(--step--1); color: var(--ink-soft); }
+  .spec__scope { font-weight: 700; font-size: var(--step--1); }
+  .spec .hand { display: block; color: var(--accent-ink); font-size: 1.05rem; }
+  .revision { margin-top: var(--space-xl); padding: var(--space-l); max-width: 40rem; transform: rotate(-1deg); }
+  .revision h3 { font-size: var(--step-2); margin-bottom: 0.6rem; }
+  .bounds { margin-top: var(--space-xl); max-width: 46rem; }
+  .bounds > * + * { margin-top: var(--space-xs); }
+  .bounds h3 { font-size: var(--step-2); }
+  .bounds ul { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; list-style: none; }
+  .bounds li { padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); background: var(--surface-2); font-size: var(--step--1); font-weight: 600; }
+
+  .table-wrap { border-radius: var(--radius-m); background: var(--surface); box-shadow: var(--shadow-1); overflow: hidden; }
+  .fees { width: 100%; border-collapse: collapse; }
+  .fees tr + tr { border-top: 1px dashed var(--line); }
+  .fees th, .fees td { padding: 1rem 1.25rem; text-align: left; vertical-align: top; }
+  .fees th { font-weight: 700; }
+  .fees__price { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); color: var(--accent-ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .fees__note { color: var(--ink-soft); font-size: var(--step--1); }
+  @media (max-width: 40em) {
+    .fees, .fees tbody, .fees tr, .fees th, .fees td { display: block; }
+    .fees th { padding-bottom: 0; }
+    .fees td { padding-top: 0.25rem; padding-bottom: 0; }
+    .fees td:last-child { padding-bottom: 1rem; }
+  }
+  .footnote { margin-top: var(--space-m); font-size: var(--step-1); color: var(--accent-ink); max-width: 50ch; }
+
+  .rush { display: grid; gap: var(--space-s); }
+  .rush__item { border-radius: var(--radius-m); background: var(--surface); box-shadow: var(--shadow-1); }
+  .rush__item summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 3.5rem; padding: 1rem 1.25rem; font-weight: 700; font-size: var(--step-1); cursor: pointer; list-style: none; border-radius: var(--radius-m); }
+  .rush__item summary::-webkit-details-marker { display: none; }
+  .rush__item summary :global(.icon) { color: var(--accent-ink); transition: transform var(--dur-spring) var(--ease-spring); flex: none; }
+  .rush__item[open] summary :global(.icon) { transform: rotate(90deg); }
+  .rush__body { padding: 0 1.25rem 1.25rem; }
+  .rush__body > * + * { margin-top: var(--space-xs); }
+  .rush__table { width: 100%; border-collapse: collapse; margin-bottom: var(--space-s); }
+  .rush__table th, .rush__table td { padding: 0.6rem 0; text-align: left; border-bottom: 1px dashed var(--line); }
+  .rush__table thead th { font-family: var(--font-hand); font-weight: 400; color: var(--accent-ink); font-size: 1.05rem; }
+  .rush__table td { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); text-align: right; white-space: nowrap; }
+  .rush__table th[scope='row'] { font-weight: 600; padding-right: 1rem; }
+  .rush__note { font-family: var(--font-body); font-weight: 400; font-size: var(--step--1); color: var(--ink-soft); }
+
+  .duo { display: grid; gap: var(--space-xl); align-items: start; }
+  @media (min-width: 56em) { .duo { grid-template-columns: 1fr 1.4fr; } }
+  .community { padding: var(--space-l); transform: rotate(-1.5deg); }
+  .community > * + * { margin-top: var(--space-xs); }
+  .excluded { padding: var(--space-xl) var(--space-l); border-radius: var(--radius-l); background: var(--surface); box-shadow: var(--shadow-2); }
+  .excluded > * + * { margin-top: var(--space-s); }
+  .excluded__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); gap: 0.4rem 1.5rem; padding: 0; list-style: none; }
+  .excluded__list li { padding-left: 1.1rem; position: relative; }
+  .excluded__list li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent); }
+  .excluded__rule { font-size: var(--step-1); color: var(--accent-ink); }
+
+  .travel { display: grid; gap: var(--space-xl); align-items: center; }
+  .travel__terms { display: grid; gap: 0.6rem; margin-top: var(--space-m); padding-left: 1.2rem; }
+  @media (min-width: 56em) { .travel { grid-template-columns: 1fr 1fr; } }
+  .map { position: relative; padding: var(--space-l); min-height: 19rem; transform: rotate(1.5deg); overflow: hidden; }
+  .map__line { font-size: var(--step-1); position: relative; z-index: 1; }
+  .map__doodle { position: absolute; inset: 3rem 0 0; width: 100%; height: calc(100% - 3rem); fill: none; stroke: var(--note-ink); stroke-opacity: 0.25; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 10; }
+  .map__pins { position: absolute; inset: 3.5rem 1rem 1rem; margin: 0; padding: 0; list-style: none; }
+  .map__pins li { position: absolute; left: var(--x); top: var(--y); display: flex; align-items: center; gap: 0.35rem; font-weight: 700; white-space: nowrap; transform: translateY(-50%); }
+  .map__pin { width: 0.95rem; height: 0.95rem; border-radius: 50% 50% 50% 0; background: var(--accent-ink); transform: rotate(-45deg); box-shadow: 1px 2px 2px rgb(0 0 0 / 0.25); flex: none; }
+
+  .download { padding: var(--space-xl) var(--space-l); border-radius: var(--radius-l); border: 3px dashed var(--line); text-align: center; }
+  .download > * + * { margin-top: var(--space-s); }
+  .download p { margin-inline: auto; }
+  .download .btn { margin-top: var(--space-m); }
+  .download__note { font-size: var(--step--1); color: var(--ink-soft); }
+</style>

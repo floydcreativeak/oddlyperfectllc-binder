@@ -1,0 +1,56 @@
+---
+/** The friendliest call button on the site: a Post-it with a heart doodle. */
+import Icon from './Icon.astro';
+import Sticker from './Sticker.astro';
+import { telHref, getPricing, formatPrice, type Site } from '~/lib/content';
+interface Props { site: Site; kicker?: string; heading: string; note: string }
+const { site, kicker, heading, note } = Astro.props;
+const pricing = await getPricing();
+const fee = pricing.fees.find((f) => f.id === 'blind-date');
+const bd = site.blindDate;
+---
+<aside class="blind" aria-labelledby="blind-title">
+  <div class="blind__note note note--rose">
+    <Sticker id="heart" tilt={12} size="s" class="blind__sticker" />
+    <svg class="blind__doodle" viewBox="0 0 80 70" aria-hidden="true" focusable="false"><path d="M40 62C22 50 6 37 7 22 8 11 17 5 26 6c7 1 11 6 14 12 3-7 8-12 16-12 10 1 17 9 16 19-2 14-17 26-32 37z" /></svg>
+    {kicker && <p class="hand blind__kicker">{kicker}</p>}
+    <h2 id="blind-title" class="blind__title">{heading}</h2>
+    <p class="blind__name"><strong>{bd.title}</strong>{fee && <span class="blind__fee"> · {formatPrice(fee.price)} · {bd.duration}</span>}</p>
+    <p>{bd.blurb}</p>
+    <p class="blind__not">{bd.isNot}</p>
+    <a class="btn blind__btn" href={telHref(site)} data-placeholder={site.phone.placeholder ? 'phone' : undefined}>
+      <Icon name="phone" />{bd.cta}: {site.phone.display}
+    </a>
+    <p class="hand blind__small">{note}</p>
+  </div>
+</aside>
+
+<style>
+  .blind { padding-block: var(--space-xl) 0; }
+  .blind__note {
+    max-width: 44rem;
+    margin-inline: auto;
+    padding: clamp(1.75rem, 1rem + 3vw, 3rem);
+    transform: rotate(-1deg);
+  }
+  .blind__note > * + * { margin-top: var(--space-s); }
+  .blind__kicker { font-size: var(--step-1); }
+  .blind__title { font-size: var(--step-4); max-width: 16ch; }
+  .blind__not { font-size: var(--step--1); font-style: italic; }
+  .blind__btn { margin-top: var(--space-m); }
+  .blind__small { font-size: 1.1rem; }
+  .blind :global(.blind__sticker) { position: absolute; top: -1.6rem; right: -0.6rem; }
+  .blind__doodle {
+    position: absolute;
+    right: 1.4rem;
+    bottom: 1.2rem;
+    width: 4.5rem;
+    fill: none;
+    stroke: var(--accent-ink);
+    stroke-width: 3;
+    stroke-linecap: round;
+    opacity: 0.75;
+    transform: rotate(-8deg);
+  }
+  @media (max-width: 40em) { .blind__doodle { display: none; } }
+</style>

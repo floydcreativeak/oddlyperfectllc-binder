@@ -282,6 +282,15 @@ content:
           - name: previewNote
             label: Preview sticker small print
             type: string
+          - name: lightboxClose
+            label: "Photo viewer: close"
+            type: string
+          - name: lightboxPrev
+            label: "Photo viewer: previous"
+            type: string
+          - name: lightboxNext
+            label: "Photo viewer: next"
+            type: string
       - name: footer
         label: Footer
         type: object
@@ -927,6 +936,22 @@ content:
         required: true
       - name: downloadLabel
         label: Download button
+        type: string
+        required: true
+      - name: sheetTitle
+        label: Pricing sheet title
+        type: string
+        required: true
+      - name: sheetPrintLabel
+        label: Pricing sheet print button
+        type: string
+        required: true
+      - name: sheetBackLabel
+        label: Pricing sheet back link
+        type: string
+        required: true
+      - name: sheetKeyPolicies
+        label: Pricing sheet policies heading
         type: string
         required: true
       - name: policiesNote

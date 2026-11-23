@@ -29,8 +29,10 @@
   --surface-2: #e8dcc0;      /* recessed: inputs, folder tabs at rest       */
   --cork: #c9a27a;           /* the cork board                              */
   --cork-dot: #b48b61;       /* cork speckle (decorative only)              */
+  --cork-rim: #8a6a4a;       /* wooden frame around the cork board          */
   --whiteboard: #f7efdd;     /* the hero whiteboard (warm, not white)       */
   --whiteboard-rim: #d8ccb0; /* whiteboard frame                            */
+  --folder-tab: #e4cf9e;     /* manila folder tab (text: --note-ink)        */
 
   /* ── Color: text ──────────────────────────────────────────────────────── */
   --ink: #2b2a33;            /* body + headings (never #000)                */
@@ -167,8 +169,10 @@
   --surface-2: #3a3649;
   --cork: #5a4a3e;           /* cork under a desk lamp                      */
   --cork-dot: #4b3d33;
+  --cork-rim: #3d3029;
   --whiteboard: #2e2b3b;
   --whiteboard-rim: #45405a;
+  --folder-tab: #c9b27e;
   --ink: #f0e8d8;
   --ink-soft: #c9bfd0;       /* 7.8:1 on surface                            */
   --note-ink: #2b2a33;       /* notes stay pastel with dark ink: they glow  */
@@ -200,8 +204,10 @@
     --surface-2: #3a3649;
     --cork: #5a4a3e;
     --cork-dot: #4b3d33;
+  --cork-rim: #3d3029;
     --whiteboard: #2e2b3b;
     --whiteboard-rim: #45405a;
+  --folder-tab: #c9b27e;
     --ink: #f0e8d8;
     --ink-soft: #c9bfd0;
     --note-ink: #2b2a33;

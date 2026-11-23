@@ -1,0 +1,18 @@
+---
+/** Top of an inner page: kicker, big Title Case heading, intro, optional sticker. */
+import Marked from './Marked.astro';
+interface Props { kicker?: string; heading: string; intro: string }
+const { kicker, heading, intro } = Astro.props;
+---
+<header class="page-head container">
+  {kicker && <p class="kicker">{kicker}</p>}
+  <h1 class="page-head__title"><Marked text={heading} /></h1>
+  <p class="lede page-head__intro">{intro}</p>
+  <slot />
+</header>
+
+<style>
+  .page-head { position: relative; padding-block: var(--space-2xl) var(--space-xl); }
+  .page-head__title { font-size: var(--step-5); max-width: 15ch; margin-top: var(--space-2xs); }
+  .page-head__intro { margin-top: var(--space-m); max-width: 46ch; }
+</style>

@@ -1,0 +1,75 @@
+---
+/**
+ * The cork board. Real reviews as tilted pastel notes with hand-drawn stars,
+ * marked up as a plain list. With no reviews yet: the designed empty state.
+ * (Drag-to-rearrange with a keyboard alternative arrives with the motion pass.)
+ */
+import Stars from './Stars.astro';
+import Icon from './Icon.astro';
+import { published, getPage, telHref, type Site } from '~/lib/content';
+interface Props { site: Site; limit?: number; compact?: boolean }
+const { site, limit, compact = false } = Astro.props;
+const page = (await getPage('reviews')).data;
+const all = (await published('reviews')).filter((r) => !(import.meta.env.PROD && r.data.placeholder));
+const reviews = limit ? all.slice(0, limit) : all;
+const colors = ['butter', 'rose', 'sage', 'sky'] as const;
+---
+<div class:list={['cork', { 'cork--compact': compact }]}>
+  {reviews.length ? (
+    <ul class="cork__notes" role="list">
+      {reviews.map((r, i) => (
+        <li class={`note note--${r.data.color ?? colors[i % 4]} review`} style={`--t:${(i * 5) % 7 - 3}deg`} data-placeholder={r.data.placeholder ? 'review' : undefined}>
+          <figure>
+            <Stars rating={r.data.rating} label={page.starsLabel} />
+            <blockquote class="hand review__text"><p>{r.data.text}</p></blockquote>
+            <figcaption>
+              <strong>{r.data.author}</strong>{r.data.context && <span>, {r.data.context}</span>}
+              <span class="review__source">{page.sourceLabels[r.data.source]}</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <div class="cork__empty">
+      <div class="note note--butter cork__lonely">
+        <p class="cork__empty-title hand">{page.emptyTitle}</p>
+        <p>{page.emptyBody}</p>
+        {!compact && (
+          <>
+            <p class="cork__empty-note">{page.emptyNote}</p>
+            <a class="btn" href={telHref(site)} data-placeholder={site.phone.placeholder ? 'phone' : undefined}><Icon name="phone" />{page.emptyCta}</a>
+          </>
+        )}
+      </div>
+      <span class="cork__pin cork__pin--a" aria-hidden="true"></span>
+      <span class="cork__pin cork__pin--b" aria-hidden="true"></span>
+    </div>
+  )}
+</div>
+
+<style>
+  .cork {
+    padding: clamp(1.5rem, 1rem + 3vw, 3.5rem);
+    border-radius: var(--radius-l);
+    background-color: var(--cork);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cg fill='%23000' fill-opacity='.1'%3E%3Ccircle cx='7' cy='9' r='1.4'/%3E%3Ccircle cx='31' cy='4' r='1'/%3E%3Ccircle cx='52' cy='15' r='1.6'/%3E%3Ccircle cx='18' cy='29' r='1.1'/%3E%3Ccircle cx='44' cy='36' r='1.3'/%3E%3Ccircle cx='6' cy='49' r='1'/%3E%3Ccircle cx='28' cy='55' r='1.5'/%3E%3Ccircle cx='57' cy='52' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+    box-shadow: inset 0 0 0 10px var(--cork-rim), var(--shadow-2);
+  }
+  .cork__notes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: var(--space-xl) var(--space-l); padding: var(--space-s) 0 0; margin: 0; list-style: none; }
+  .review { padding: 1.6rem 1.3rem 1.2rem; transform: rotate(var(--t)); transition: transform var(--dur-spring) var(--ease-spring); }
+  .review:hover { transform: rotate(0) translateY(var(--lift)); }
+  .review__text { margin: 0.7rem 0; font-size: 1.25rem; line-height: 1.3; }
+  .review figcaption { font-size: var(--step--1); }
+  .review__source { display: block; opacity: 0.85; }
+  .cork__empty { position: relative; display: grid; place-items: center; min-height: 20rem; padding: var(--space-xl) 0; }
+  .cork--compact .cork__empty { min-height: 14rem; padding: var(--space-m) 0; }
+  .cork__lonely { max-width: 26rem; padding: 2rem 1.6rem 1.6rem; transform: rotate(-3deg); text-align: center; }
+  .cork__lonely > * + * { margin-top: 0.8rem; }
+  .cork__empty-title { font-size: var(--step-3); line-height: 1.1; }
+  .cork__empty-note { font-weight: 700; }
+  .cork__lonely .btn { margin-top: var(--space-m); }
+  .cork__pin { position: absolute; width: 0.9rem; height: 0.9rem; border-radius: 50%; background: var(--accent); box-shadow: inset -2px -2px 0 rgb(0 0 0 / 0.18), 0 3px 4px rgb(0 0 0 / 0.35); }
+  .cork__pin--a { top: 14%; right: 12%; }
+  .cork__pin--b { bottom: 16%; left: 9%; background: var(--note-sky); }
+</style>

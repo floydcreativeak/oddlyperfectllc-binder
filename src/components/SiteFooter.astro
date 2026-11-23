@@ -129,8 +129,10 @@ const factColors = ['rose', 'sky', 'sage', 'butter'];
     gap: var(--space-xl);
   }
   .site-footer__kicker { color: var(--ink); }
+  .site-footer__board > * { min-width: 0; }
   .site-footer__signoff {
-    font-size: var(--step-6);
+    font-size: clamp(2.6rem, 1.4rem + 6vw, 7.75rem);
+    overflow-wrap: break-word;
     line-height: 0.92;
     max-width: 11ch;
     margin-top: var(--space-2xs);

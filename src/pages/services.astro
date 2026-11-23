@@ -1,0 +1,84 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import SectionHead from '~/components/SectionHead.astro';
+import RouterSection from '~/components/RouterSection.astro';
+import TierCards from '~/components/TierCards.astro';
+import Drawer, { type DrawerItem } from '~/components/Drawer.astro';
+import BlindDate from '~/components/BlindDate.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Icon from '~/components/Icon.astro';
+import Sticker from '~/components/Sticker.astro';
+import { getPage, getHome, formatPrice, fill } from '~/lib/content';
+import { getServices } from '~/lib/services';
+import { link } from '~/lib/nav';
+
+const [{ data: p }, pricingPage, home, { services, pricing, site }] = await Promise.all([getPage('services'), getPage('pricing'), getHome(), getServices()]);
+const pitch = (id: string) => services.find((s) => s.id === id)?.pitch;
+const projects: DrawerItem[] = pricing.projects.map((x) => ({ id: x.id, name: x.name, price: formatPrice(x.price), line: x.need, pitch: pitch(x.id), includes: x.includes }));
+const events: DrawerItem[] = pricing.events.map((x) => ({ id: x.id, name: x.name, price: formatPrice(x.price), line: x.tagline, pitch: pitch(x.id), scope: x.scope, includes: x.includes }));
+const pl = pricingPage.data;
+---
+<BaseLayout title={p.seo.title} description={p.seo.description}>
+  <PageHeader kicker={p.kicker} heading={p.heading} intro={p.intro}>
+    <Sticker id="fully-booked" tilt={9} class="head-sticker" />
+  </PageHeader>
+
+  <section class="container block" aria-labelledby="router-title">
+    <RouterSection headingId="router-title" />
+  </section>
+
+  <section class="container block" id="partnerships" aria-labelledby="partnerships-title">
+    <SectionHead kicker={p.partnershipsKicker} heading={p.partnershipsHeading} blurb={p.partnershipsBlurb} id="partnerships-title" />
+    <TierCards pricing={pricing} site={site} variant="full" id="services" toggleLabel={pl.flexToggleLabel} labels={{ includes: pl.includesLabel, example: pl.exampleLabel, boundary: pl.boundaryLabel }} />
+  </section>
+
+  <section class="container block" id="projects" aria-labelledby="projects-title">
+    <SectionHead kicker={p.projectsKicker} heading={p.projectsHeading} blurb={p.projectsBlurb} id="projects-title" />
+    <Drawer id="proj" items={projects} label={p.projectsHeading} lineLabel={pricing.projectsIntro.needLabel} includesLabel={pricing.projectsIntro.includesLabel} color="sky" />
+    <p class="fine"><Icon name="check" />{pricing.revisionRule.points.map((x) => fill(x, pricing, site)).join(' ')}</p>
+  </section>
+
+  <section class="container block" id="events" aria-labelledby="events-title">
+    <SectionHead kicker={p.eventsKicker} heading={p.eventsHeading} blurb={pricing.eventsIntro.positioning} id="events-title" />
+    <Drawer id="evt" items={events} label={p.eventsHeading} lineLabel="" includesLabel={pricing.projectsIntro.includesLabel} color="rose" />
+    <div class="honesty note note--butter note--unpinned">
+      <h3>{pricing.eventBoundaries.heading}</h3>
+      <ul role="list">{pricing.eventBoundaries.items.map((x) => <li>{x}</li>)}</ul>
+      <p>{pricing.eventBoundaries.responsibility}</p>
+      <p>{pricing.eventBoundaries.sponsorship}</p>
+    </div>
+  </section>
+
+  <section class="container block" aria-labelledby="not-included-title">
+    <div class="excluded">
+      <h2 id="not-included-title" class="h3">{pricing.notIncluded.heading}</h2>
+      <p>{pricing.notIncluded.intro}</p>
+      <ul role="list" class="excluded__list">{pricing.notIncluded.items.map((x) => <li>{x}</li>)}</ul>
+      <p class="excluded__rule hand">{fill(pricing.notIncluded.rule, pricing, site)}</p>
+      <p><a class="btn btn--ghost" href={link('/pricing')}>{p.seePricingLabel}<Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <div class="container"><BlindDate site={site} kicker={home.blindDate.kicker} heading={home.blindDate.heading} note={home.blindDate.note} /></div>
+  <CtaBand site={site} heading={p.ctaHeading} body={p.ctaBody} />
+</BaseLayout>
+
+<style>
+  .block { margin-top: var(--space-3xl); scroll-margin-top: calc(var(--nav-h) + 1rem); }
+  :global(.head-sticker) { position: absolute; right: var(--gutter); top: var(--space-2xl); }
+  @media (max-width: 47.9em) { :global(.head-sticker) { display: none !important; } }
+  .fine { display: flex; gap: 0.6rem; align-items: flex-start; margin-top: var(--space-l); color: var(--ink-soft); font-size: var(--step--1); max-width: 60ch; }
+  .fine :global(.icon) { flex: none; color: var(--accent-ink); }
+  .honesty { margin-top: var(--space-2xl); padding: var(--space-l); max-width: 44rem; transform: rotate(-0.6deg); }
+  .honesty > * + * { margin-top: var(--space-xs); }
+  .honesty h3 { font-size: var(--step-2); }
+  .honesty ul { display: grid; gap: 0.25rem; padding-left: 0; list-style: none; }
+  .honesty li::before { content: '\2715'; margin-right: 0.55rem; font-weight: 700; }
+  .excluded { padding: var(--space-xl) var(--space-l); border-radius: var(--radius-l); background: var(--surface); box-shadow: var(--shadow-2); }
+  .excluded > * + * { margin-top: var(--space-s); }
+  .excluded__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: 0.4rem 1.5rem; padding: 0; list-style: none; }
+  .excluded__list li { padding-left: 1.1rem; position: relative; }
+  .excluded__list li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent); }
+  .excluded__rule { font-size: var(--step-1); color: var(--accent-ink); }
+</style>

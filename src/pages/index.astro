@@ -1,10 +1,135 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Hero from '~/components/home/Hero.astro';
-import { getSite, getHome } from '~/lib/content';
+import Divider from '~/components/Divider.astro';
+import DividerTabs from '~/components/DividerTabs.astro';
+import SectionHead from '~/components/SectionHead.astro';
+import RouterSection from '~/components/RouterSection.astro';
+import TierCards from '~/components/TierCards.astro';
+import BlindDate from '~/components/BlindDate.astro';
+import ContactStation from '~/components/ContactStation.astro';
+import ReviewsBoard from '~/components/ReviewsBoard.astro';
+import Faq from '~/components/Faq.astro';
+import Photo from '~/components/Photo.astro';
+import Sticker from '~/components/Sticker.astro';
+import Icon from '~/components/Icon.astro';
+import { getSite, getHome, getGallery, getPage } from '~/lib/content';
+import { getServices } from '~/lib/services';
+import { link } from '~/lib/nav';
 
-const [site, home] = await Promise.all([getSite(), getHome()]);
+const [site, home, gallery, servicesPage, pricingPage, { services, pricing }] = await Promise.all([
+  getSite(), getHome(), getGallery(), getPage('services'), getPage('pricing'), getServices(),
+]);
+const sp = servicesPage.data;
+const drawers = [
+  { kind: 'partnership', kicker: sp.partnershipsKicker, heading: sp.partnershipsHeading, anchor: 'partnerships', color: 'butter' },
+  { kind: 'project', kicker: sp.projectsKicker, heading: sp.projectsHeading, anchor: 'projects', color: 'sky' },
+  { kind: 'event', kicker: sp.eventsKicker, heading: sp.eventsHeading, anchor: 'events', color: 'rose' },
+] as const;
+const tabs = [
+  { id: 'hello', label: home.heroTab, color: 'surface-2' },
+  { id: 'services', label: home.services.tab, color: 'note-sage' },
+  { id: 'pricing', label: home.pricing.tab, color: 'note-butter' },
+  { id: 'contact', label: home.contact.tab, color: 'note-sky' },
+  { id: 'about', label: home.about.tab, color: 'note-rose' },
+  { id: 'reviews', label: home.reviews.tab, color: 'note-butter' },
+  { id: 'faq', label: home.faq.tab, color: 'note-sage' },
+];
+const aboutPhoto = gallery.items[0];
 ---
 <BaseLayout title={home.seo.title} description={home.seo.description} bareTitle>
-  <Hero site={site} hero={home.hero} />
+  <div id="hello"><Hero site={site} hero={home.hero} /></div>
+  <DividerTabs tabs={tabs} label={site.microcopy.menuLabel} />
+
+  <div class="dividers">
+    <!-- 2 · Services -->
+    <Divider id="services" tab={home.services.tab} sheet="sage" labelledby="services-title">
+      <SectionHead kicker={home.services.kicker} heading={home.services.heading} blurb={home.services.blurb} id="services-title" />
+      <ul class="drawers" role="list">
+        {drawers.map((d, i) => (
+          <li class="drawer-card" style={`--t:${i % 2 ? 1 : -1}deg`}>
+            <p class="hand drawer-card__kicker">{d.kicker}</p>
+            <h3 class="drawer-card__title">{d.heading}</h3>
+            <ul class="drawer-card__list" role="list">
+              {services.filter((s) => s.kind === d.kind).map((s) => <li><a href={link(`/services#${s.id}`)}>{s.name}</a><span>{s.price}</span></li>)}
+            </ul>
+          </li>
+        ))}
+      </ul>
+      <div class="router-slot"><RouterSection headingId="router-title" level="h3" /></div>
+      <p class="section-cta"><a class="btn btn--ghost" href={link(home.services.ctaHref)}>{home.services.cta}<Icon name="arrow" /></a></p>
+    </Divider>
+
+    <!-- 3 · Pricing -->
+    <Divider id="pricing" tab={home.pricing.tab} sheet="butter" labelledby="pricing-title">
+      <SectionHead kicker={home.pricing.kicker} heading={home.pricing.heading} blurb={home.pricing.blurb} id="pricing-title" />
+      <TierCards pricing={pricing} site={site} id="home" toggleLabel={pricingPage.data.flexToggleLabel} moreHref={home.pricing.ctaHref} moreLabel={home.pricing.cta} />
+      <BlindDate site={site} kicker={home.blindDate.kicker} heading={home.blindDate.heading} note={home.blindDate.note} />
+    </Divider>
+
+    <!-- 4 · Contact -->
+    <Divider id="contact" tab={home.contact.tab} sheet="sky" labelledby="contact-title">
+      <SectionHead kicker={home.contact.kicker} heading={home.contact.heading} blurb={home.contact.blurb} id="contact-title" />
+      <ContactStation site={site} c={home.contact} />
+    </Divider>
+
+    <!-- 5 · About -->
+    <Divider id="about" tab={home.about.tab} sheet="rose" labelledby="about-title">
+      <div class="about-home">
+        <div>
+          <SectionHead kicker={home.about.kicker} heading={home.about.heading} id="about-title" />
+          <p class="about-home__body">{home.about.body}</p>
+          <ul class="about-home__points" role="list">
+            {home.about.points.map((p) => <li><Icon name="check" />{p}</li>)}
+          </ul>
+          <p class="section-cta"><a class="btn" href={link(home.about.ctaHref)}>{home.about.cta}<Icon name="arrow" /></a></p>
+        </div>
+        {aboutPhoto && (
+          <div class="about-home__photo">
+            <Photo photo={aboutPhoto} frame="clipped" ratio="4 / 3" sizes="(min-width: 60em) 40vw, 90vw" tilt={2} />
+            <Sticker id="tailored" tilt={-12} class="about-home__sticker" />
+          </div>
+        )}
+      </div>
+    </Divider>
+
+    <!-- 6 · Reviews -->
+    <Divider id="reviews" tab={home.reviews.tab} sheet="paper" labelledby="reviews-title">
+      <SectionHead kicker={home.reviews.kicker} heading={home.reviews.heading} blurb={home.reviews.blurb} id="reviews-title" />
+      <ReviewsBoard site={site} limit={6} compact />
+      <p class="section-cta"><a class="btn btn--ghost" href={link(home.reviews.ctaHref)}>{home.reviews.cta}<Icon name="arrow" /></a></p>
+    </Divider>
+
+    <!-- 7 · FAQ -->
+    <Divider id="faq" tab={home.faq.tab} sheet="sage" labelledby="faq-title">
+      <Faq headingId="faq-title" />
+    </Divider>
+  </div>
 </BaseLayout>
+
+<style>
+  .dividers { margin-top: var(--space-3xl); }
+  .dividers :global(.divider:first-child) { margin-top: 0; }
+  .section-cta { margin-top: var(--space-xl); }
+
+  .drawers { display: grid; gap: var(--space-m); padding: 0; margin: 0 0 var(--space-3xl); list-style: none; }
+  .drawer-card { padding: var(--space-l) var(--space-m); border-radius: var(--radius-m); background: var(--surface); box-shadow: var(--shadow-2); transform: rotate(var(--t)); transition: transform var(--dur-spring) var(--ease-spring); }
+  .drawer-card:hover { transform: rotate(0) translateY(var(--lift)); box-shadow: var(--shadow-lift); }
+  .drawer-card__kicker { color: var(--accent-ink); font-size: 1.15rem; }
+  .drawer-card__title { font-size: var(--step-2); margin: 0.2rem 0 0.8rem; }
+  .drawer-card__list { display: grid; gap: 0.15rem; padding: 0; list-style: none; }
+  .drawer-card__list li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; border-bottom: 1px dashed var(--line); }
+  .drawer-card__list a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; color: var(--ink); text-decoration: none; }
+  .drawer-card__list a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+  .drawer-card__list span { font-variant-numeric: tabular-nums; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
+  @media (min-width: 60em) { .drawers { grid-template-columns: repeat(3, 1fr); } }
+
+  .about-home { display: grid; gap: var(--space-xl); align-items: center; }
+  .about-home__body { font-size: var(--step-1); line-height: 1.5; }
+  .about-home__points { display: grid; gap: 0.5rem; margin-top: var(--space-m); padding: 0; list-style: none; font-weight: 700; }
+  .about-home__points li { display: flex; gap: 0.5rem; align-items: center; }
+  .about-home__points :global(.icon) { color: var(--accent-ink); }
+  .about-home__photo { position: relative; }
+  .about-home__photo :global(.about-home__sticker) { position: absolute; right: 0.5rem; bottom: -1.5rem; }
+  @media (min-width: 60em) { .about-home { grid-template-columns: 1.1fr 1fr; gap: var(--space-2xl); } }
+</style>

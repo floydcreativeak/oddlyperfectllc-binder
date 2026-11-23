@@ -1,0 +1,70 @@
+---
+/** Desktop: index-divider tabs sticking out of the right edge, as in-page nav. */
+interface Props { tabs: { id: string; label: string; color: string }[]; label: string }
+const { tabs, label } = Astro.props;
+---
+<nav class="dtabs" aria-label={label} data-dtabs>
+  <ul role="list">
+    {tabs.map((t) => (
+      <li><a href={`#${t.id}`} style={`--tab:var(--${t.color})`} data-dtab={t.id}><span>{t.label}</span></a></li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  function initTabs() {
+    const nav = document.querySelector('[data-dtabs]');
+    if (!nav) return;
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('[data-dtab]')];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          links.forEach((a) => (a.dataset.dtab === e.target.id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    links.forEach((a) => {
+      const el = document.getElementById(a.dataset.dtab!);
+      if (el) io.observe(el);
+    });
+    document.addEventListener('astro:before-swap', () => io.disconnect(), { once: true });
+  }
+  document.addEventListener('astro:page-load', initTabs);
+</script>
+
+<style>
+  .dtabs { display: none; }
+  @media (min-width: 72em) {
+    .dtabs {
+      display: block;
+      position: fixed;
+      right: 0;
+      top: 50%;
+      z-index: var(--z-sticky);
+      transform: translateY(-50%);
+    }
+    .dtabs ul { display: flex; flex-direction: column; gap: 0.3rem; }
+    .dtabs a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 4.6rem;
+      width: var(--divider-tab-w);
+      padding: 0.6rem 0;
+      border-radius: var(--radius-s) 0 0 var(--radius-s);
+      background: var(--tab);
+      color: var(--note-ink);
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      text-decoration: none;
+      box-shadow: var(--shadow-1);
+      transform: translateX(0.6rem);
+      transition: transform var(--dur-spring) var(--ease-spring);
+    }
+    .dtabs a span { writing-mode: vertical-rl; transform: rotate(180deg); }
+    .dtabs a:hover, .dtabs a:focus-visible { transform: translateX(0); }
+    .dtabs a[aria-current] { transform: translateX(-0.5rem); box-shadow: var(--shadow-2); }
+  }
+</style>

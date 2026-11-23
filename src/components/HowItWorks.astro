@@ -1,0 +1,93 @@
+---
+/**
+ * Sticky storytelling: a whiteboard stays pinned while the steps scroll past,
+ * and each step is "written" onto the board as it arrives. Without JS (or with
+ * reduced motion) every step is simply shown.
+ */
+interface Props { kicker?: string; heading: string; steps: { title: string; text: string }[]; headingId: string }
+const { kicker, heading, steps, headingId } = Astro.props;
+---
+<section class="how" aria-labelledby={headingId} data-how>
+  <div class="how__board" aria-hidden="true">
+    <p class="how__board-title">{heading}</p>
+    <ol class="how__board-list">
+      {steps.map((s, i) => <li data-board-step={i}><span class="how__num">{i + 1}</span><span class="how__written">{s.title}</span></li>)}
+    </ol>
+    <span class="how__marker"></span>
+  </div>
+  <div class="how__steps">
+    {kicker && <p class="kicker">{kicker}</p>}
+    <h2 id={headingId}>{heading}</h2>
+    <ol class="how__list">
+      {steps.map((s, i) => (
+        <li class="how__step" data-step={i}>
+          <span class="how__step-num hand" aria-hidden="true">{i + 1}</span>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<script>
+  function initHow() {
+    const root = document.querySelector<HTMLElement>('[data-how]');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = '1';
+    root.classList.add('how--js');
+    const board = [...root.querySelectorAll<HTMLElement>('[data-board-step]')];
+    const steps = [...root.querySelectorAll<HTMLElement>('[data-step]')];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const n = Number((e.target as HTMLElement).dataset.step);
+          board.forEach((b, i) => {
+            b.classList.toggle('is-written', i <= n);
+            b.classList.toggle('is-current', i === n);
+          });
+          steps.forEach((s, i) => s.classList.toggle('is-current', i === n));
+        }
+      },
+      { rootMargin: '-40% 0px -45% 0px' },
+    );
+    steps.forEach((s) => io.observe(s));
+    document.addEventListener('astro:before-swap', () => io.disconnect(), { once: true });
+  }
+  document.addEventListener('astro:page-load', initHow);
+</script>
+
+<style>
+  .how { display: grid; gap: var(--space-xl); }
+  .how__board {
+    position: relative;
+    padding: var(--space-l);
+    border: 10px solid var(--whiteboard-rim);
+    border-radius: var(--radius-m);
+    background: var(--whiteboard);
+    box-shadow: var(--shadow-2);
+  }
+  .how__board-title { font-family: var(--font-hand); font-size: var(--step-2); color: var(--accent-ink); line-height: 1.1; }
+  .how__board-list { display: grid; gap: 0.6rem; margin-top: var(--space-m); padding: 0; list-style: none; }
+  .how__board-list li { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-hand); font-size: var(--step-1); }
+  .how__num { display: grid; place-items: center; width: 2rem; height: 2rem; flex: none; border: 2.5px solid currentColor; border-radius: 50%; font-size: 1.05rem; }
+  .how__written { clip-path: inset(0 0 0 0); transition: clip-path var(--dur-slow) var(--ease-out); }
+  .how--js .how__board-list li:not(.is-written) .how__written { clip-path: inset(0 100% 0 0); }
+  .how--js .how__board-list li:not(.is-written) .how__num { opacity: 0.35; }
+  .how__board-list li.is-current { color: var(--accent-ink); }
+  .how__marker { position: absolute; right: 1.2rem; bottom: -0.9rem; width: 4rem; height: 0.7rem; border-radius: 4px 10px 10px 4px; background: var(--accent); transform: rotate(-8deg); }
+  .how__steps h2 { font-size: var(--step-4); }
+  .how__list { display: grid; gap: var(--space-xl); margin-top: var(--space-xl); padding: 0; list-style: none; }
+  .how__step { position: relative; padding: var(--space-l) var(--space-m) var(--space-l) 4.2rem; border-radius: var(--radius-m); background: var(--surface); box-shadow: var(--shadow-1); transition: box-shadow var(--dur-base), transform var(--dur-spring) var(--ease-spring); }
+  .how__step.is-current { box-shadow: 0 0 0 3px var(--accent), var(--shadow-2); transform: translateX(calc(-0.4rem * var(--motion-distance))); }
+  .how__step-num { position: absolute; left: 1.1rem; top: 1.1rem; font-size: var(--step-4); line-height: 1; color: var(--accent-ink); }
+  .how__step h3 { font-size: var(--step-2); }
+  .how__step p { margin-top: 0.4rem; color: var(--ink-soft); }
+  @media (min-width: 60em) {
+    .how { grid-template-columns: 1fr 1.1fr; gap: var(--space-2xl); align-items: start; }
+    .how__board { position: sticky; top: calc(var(--nav-h) + 2rem); }
+    .how__list { gap: 26vh; padding-bottom: 14vh; }
+  }
+  @media (max-width: 59.9em) { .how__board { display: none; } }
+</style>

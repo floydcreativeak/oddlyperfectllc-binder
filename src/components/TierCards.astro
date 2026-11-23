@@ -1,0 +1,227 @@
+---
+/**
+ * The three Monthly Marketing Partnerships as manila folders with index tabs.
+ * Flex / Month-to-Month is a sticky note that flips (Flex big on the front,
+ * month-to-month on the back). Pure CSS via radio inputs + :has(), so it works
+ * without JavaScript. Screen readers always hear both prices.
+ */
+import Icon from './Icon.astro';
+import { formatPrice, speakPrice, fill, type Pricing, type Site } from '~/lib/content';
+import { link } from '~/lib/nav';
+
+interface Props {
+  pricing: Pricing;
+  site: Site;
+  variant?: 'compact' | 'full';
+  id: string;
+  toggleLabel: string;
+  labels?: { includes: string; example: string; boundary: string };
+  moreHref?: string;
+  moreLabel?: string;
+}
+const { pricing, site, variant = 'compact', id, toggleLabel, labels, moreHref, moreLabel } = Astro.props;
+const intro = pricing.partnershipsIntro;
+const name = `term-${id}`;
+---
+<div class:list={['tiers', `tiers--${variant}`]}>
+  <fieldset class="term">
+    <legend class="visually-hidden">{toggleLabel}</legend>
+    <label class="term__opt">
+      <input type="radio" name={name} value="flex" checked />
+      <span>{intro.flexLabel}</span>
+    </label>
+    <label class="term__opt">
+      <input type="radio" name={name} value="monthly" />
+      <span>{intro.monthlyLabel}</span>
+    </label>
+  </fieldset>
+
+  <ol class="tiers__list" role="list">
+    {pricing.partnerships.map((p, i) => (
+      <li class:list={['folder', { 'folder--hot': p.highlight }]} style={`--i:${i}`} id={variant === 'full' ? p.id : undefined}>
+        <h3 class="folder__tab">{p.name}</h3>
+        {p.highlight && <span class="sticker folder__sticker" aria-hidden="true">{intro.highlightSticker}</span>}
+        <div class="folder__body">
+          <p class="folder__fit">{p.fitLine}</p>
+
+          <div class="price-note" aria-hidden="true">
+            <div class="price-note__face price-note__face--front">
+              <span class="price-note__label hand">{intro.flexLabel}</span>
+              <span class="price-note__amount">{formatPrice(p.flexPrice)}<small>{intro.perMonth}</small></span>
+            </div>
+            <div class="price-note__face price-note__face--back">
+              <span class="price-note__label hand">{intro.monthlyLabel}</span>
+              <span class="price-note__amount">{formatPrice(p.monthlyPrice)}<small>{intro.perMonth}</small></span>
+            </div>
+          </div>
+          <p class="visually-hidden">
+            {intro.flexLabel}: {speakPrice(p.flexPrice, 'month')}. {intro.monthlyLabel}: {speakPrice(p.monthlyPrice, 'month')}.
+          </p>
+          <p class="folder__alt" aria-hidden="true">
+            <span class="folder__alt-flex">{intro.monthlyLabel}: {formatPrice(p.monthlyPrice)}{intro.perMonth}</span>
+            <span class="folder__alt-monthly">{intro.flexLabel}: {formatPrice(p.flexPrice)}{intro.perMonth}</span>
+          </p>
+
+          {variant === 'full' && labels && (
+            <>
+              <p class="folder__best">{p.bestFor}</p>
+              <h4 class="folder__h hand">{labels.includes}</h4>
+              <ul class="checklist" role="list">
+                {p.includes.map((x) => <li><Icon name="check" />{fill(x, pricing, site)}</li>)}
+              </ul>
+              {p.notes.map((n) => <p class="folder__note"><strong>{n.label}:</strong> {fill(n.text, pricing, site)}</p>)}
+              {p.example && <p class="folder__note folder__example"><strong>{labels.example}:</strong> {p.example}</p>}
+              {p.boundary && <p class="folder__note"><strong>{labels.boundary}:</strong> {p.boundary}</p>}
+            </>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  {moreHref && moreLabel && (
+    <p class="tiers__more">
+      <a class="btn" href={link(moreHref)}>{moreLabel}<Icon name="arrow" /></a>
+    </p>
+  )}
+</div>
+
+<style>
+  /* ── The flip switch ── */
+  .term {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.3rem;
+    margin: 0 0 var(--space-xl);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    box-shadow: var(--shadow-1);
+  }
+  .term__opt { position: relative; display: inline-flex; cursor: pointer; }
+  .term__opt input { position: absolute; inset: 0; opacity: 0; cursor: pointer; margin: 0; }
+  .term__opt span {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 1.1rem;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    color: var(--ink-soft);
+    transition: background-color var(--dur-base) var(--ease-out), color var(--dur-fast), transform var(--dur-spring) var(--ease-spring);
+  }
+  .term__opt input:checked + span { background: var(--accent-ink); color: var(--on-accent); transform: rotate(-1.5deg); }
+  .term__opt input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  /* ── Folders ── */
+  .tiers__list { display: grid; gap: var(--space-xl) var(--space-m); padding: 0; margin: 0; list-style: none; }
+  .folder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 2.4rem;
+    transition: transform var(--dur-spring) var(--ease-spring);
+  }
+  .folder:hover { transform: translateY(var(--lift)) rotate(calc(-0.6deg * var(--motion-distance))); }
+  .folder__tab {
+    position: absolute;
+    top: 0;
+    left: 1.2rem;
+    max-width: calc(100% - 2.4rem);
+    padding: 0.55rem 1.1rem 0.9rem;
+    border-radius: var(--radius-s) var(--radius-s) 0 0;
+    background: var(--folder-tab);
+    color: var(--note-ink);
+    font-size: var(--step-1);
+    line-height: 1.1;
+  }
+  .folder--hot .folder__tab { background: var(--note-butter); }
+  .folder__body {
+    position: relative;
+    flex: 1;
+    padding: var(--space-l) var(--space-m) var(--space-l) calc(var(--space-m) + 1.1rem);
+    border-radius: 0 var(--radius-m) var(--radius-m) var(--radius-m);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
+  }
+  /* binder-ring holes down the left edge */
+  .folder__body::before {
+    content: '';
+    position: absolute;
+    left: 0.65rem;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 0.7rem;
+    background: var(--paper);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='52'%3E%3Ccircle cx='6' cy='6' r='5.5'/%3E%3C/svg%3E") 0 0 / 0.7rem 3.2rem repeat-y;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='52'%3E%3Ccircle cx='6' cy='6' r='5.5'/%3E%3C/svg%3E") 0 0 / 0.7rem 3.2rem repeat-y;
+    box-shadow: none;
+  }
+  .folder--hot .folder__body { box-shadow: 0 0 0 3px var(--accent), var(--shadow-3); }
+  .folder__sticker {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.6rem;
+    z-index: 2;
+    width: 5.2rem;
+    height: 5.2rem;
+    padding: 0.4rem;
+    font-size: 1.05rem;
+    transform: rotate(10deg);
+  }
+  .folder__fit { font-weight: 600; font-size: var(--step-1); line-height: 1.35; padding-right: 2rem; }
+
+  /* ── Price sticky note that flips ── */
+  .price-note {
+    position: relative;
+    display: grid;
+    width: max-content;
+    min-width: 12rem;
+    margin: var(--space-m) 0 0.6rem;
+    perspective: 700px;
+    transform: rotate(-2deg);
+  }
+  .price-note__face {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.7rem 1.1rem 0.8rem;
+    border-radius: var(--radius-note);
+    background: var(--note-butter);
+    color: var(--note-ink);
+    box-shadow: var(--shadow-note);
+    backface-visibility: hidden;
+    transition: transform var(--dur-spring) var(--ease-spring);
+  }
+  .price-note__face--back { background: var(--note-sky); transform: rotateY(180deg); }
+  .tiers:has(input[value='monthly']:checked) .price-note__face--front { transform: rotateY(-180deg); }
+  .tiers:has(input[value='monthly']:checked) .price-note__face--back { transform: rotateY(0deg); }
+  .price-note__label { font-size: 1.05rem; }
+  .price-note__amount {
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .price-note__amount small { font-size: 0.4em; margin-left: 0.15em; }
+  .folder__alt { font-size: var(--step--1); color: var(--ink-soft); }
+  .folder__alt-monthly { display: none; }
+  .tiers:has(input[value='monthly']:checked) .folder__alt-flex { display: none; }
+  .tiers:has(input[value='monthly']:checked) .folder__alt-monthly { display: inline; }
+
+  .folder__best { margin-top: var(--space-m); color: var(--ink-soft); }
+  .folder__h { margin-top: var(--space-m); font-size: var(--step-1); color: var(--accent-ink); }
+  .checklist { margin-top: 0.4rem; padding: 0; list-style: none; display: grid; gap: 0.35rem; }
+  .checklist li { display: grid; grid-template-columns: 1.25rem 1fr; gap: 0.5rem; align-items: start; line-height: 1.4; }
+  .checklist :global(.icon) { width: 1.25rem; height: 1.25rem; margin-top: 0.1rem; color: var(--accent-ink); }
+  .folder__note { margin-top: var(--space-s); font-size: var(--step--1); line-height: 1.5; }
+  .folder__example { padding: 0.8rem 1rem; border-radius: var(--radius-s); background: var(--surface-2); }
+  .tiers__more { margin-top: var(--space-xl); }
+
+  @media (min-width: 56em) {
+    .tiers__list { grid-template-columns: repeat(3, 1fr); }
+    .tiers--compact .folder:nth-child(2) { transform: translateY(-0.75rem); }
+    .tiers--compact .folder:nth-child(2):hover { transform: translateY(calc(-0.75rem + var(--lift))); }
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+/** A round die-cut sticker from content/stickers.yml, slightly rotated. */
+import { getStickers } from '~/lib/content';
+import { emojiSvg } from '~/lib/emoji';
+
+interface Props { id: string; tilt?: number; size?: 's' | 'm' | 'l'; class?: string }
+const { id, tilt = -8, size = 'm', class: cls } = Astro.props;
+const { items } = await getStickers();
+const s = items.find((x) => x.id === id);
+if (!s) throw new Error(`No sticker with id "${id}" in content/stickers.yml.`);
+const art = s.emoji ? emojiSvg(s.emoji) : null;
+---
+<span
+  class:list={['sticker', `sticker--${s.color}`, `sticker--${size}`, { 'sticker--emoji': art }, cls]}
+  style={`--tilt:${tilt}deg`}
+  aria-hidden={s.decorative ? 'true' : undefined}
+  role={s.decorative ? undefined : 'img'}
+  aria-label={s.decorative ? undefined : s.label}
+>
+  {art && <span class="sticker__art" set:html={art} />}
+  <span class="sticker__text">{s.text}</span>
+</span>
+
+<style>
+  .sticker {
+    --size: 6.5rem;
+    width: var(--size);
+    height: var(--size);
+    padding: 0.6rem;
+    gap: 0.1rem;
+    font-size: calc(var(--size) * 0.19);
+    transform: rotate(var(--tilt));
+    transition: transform var(--dur-spring) var(--ease-spring);
+    flex: none;
+  }
+  .sticker:hover { transform: rotate(calc(var(--tilt) * -0.6)) scale(1.05); }
+  .sticker--s { --size: 5rem; }
+  .sticker--l { --size: 8rem; }
+  .sticker--coral { background: var(--accent-ink); color: var(--on-accent); }
+  .sticker--butter { background: var(--note-butter); color: var(--note-ink); }
+  .sticker--rose { background: var(--note-rose); color: var(--note-ink); }
+  .sticker--sage { background: var(--note-sage); color: var(--note-ink); }
+  .sticker--sky { background: var(--note-sky); color: var(--note-ink); }
+  .sticker--emoji .sticker__text { font-size: 0.78em; }
+  .sticker__art { display: block; width: 42%; }
+  .sticker__art :global(svg) { width: 100%; height: auto; }
+</style>

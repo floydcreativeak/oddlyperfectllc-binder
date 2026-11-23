@@ -1,0 +1,17 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import ReviewsBoard from '~/components/ReviewsBoard.astro';
+import BlindDate from '~/components/BlindDate.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import { getPage, getSite, getHome } from '~/lib/content';
+const [{ data: p }, site, home] = await Promise.all([getPage('reviews'), getSite(), getHome()]);
+---
+<BaseLayout title={p.seo.title} description={p.seo.description}>
+  <PageHeader kicker={p.kicker} heading={p.heading} intro={p.intro} />
+  <section class="container" aria-label={p.title}>
+    <ReviewsBoard site={site} />
+  </section>
+  <div class="container"><BlindDate site={site} kicker={home.blindDate.kicker} heading={home.blindDate.heading} note={home.blindDate.note} /></div>
+  <CtaBand site={site} heading={p.ctaHeading} body={p.ctaBody} />
+</BaseLayout>

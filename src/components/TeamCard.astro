@@ -1,0 +1,25 @@
+---
+/** Polaroid team card: photo, name, title, fun fact. Lifts and tilts on hover. */
+import Photo from './Photo.astro';
+import type { CollectionEntry } from 'astro:content';
+interface Props { member: CollectionEntry<'team'>; tilt?: number }
+const { member, tilt = -2 } = Astro.props;
+const m = member.data;
+---
+<article class="team-card" style={`--tilt:${tilt}deg`} data-placeholder={m.placeholder ? 'team' : undefined}>
+  <Photo photo={m.photo} frame="polaroid" ratio="4 / 5" sizes="(min-width: 48em) 20rem, 80vw" widths={[320, 480, 640]} />
+  <div class="team-card__text">
+    <h3 class="team-card__name">{m.name}</h3>
+    <p class="team-card__title">{m.title}</p>
+    {m.funFact && <p class="team-card__fact hand">{m.funFact}</p>}
+  </div>
+</article>
+
+<style>
+  .team-card { width: min(100%, 20rem); transform: rotate(var(--tilt)); transition: transform var(--dur-spring) var(--ease-spring); }
+  .team-card:hover { transform: rotate(0) translateY(var(--lift)) scale(1.02); }
+  .team-card__text { margin-top: var(--space-s); padding-inline: 0.4rem; }
+  .team-card__name { font-size: var(--step-2); }
+  .team-card__title { color: var(--ink-soft); font-weight: 600; }
+  .team-card__fact { margin-top: 0.4rem; color: var(--accent-ink); font-size: 1.15rem; }
+</style>

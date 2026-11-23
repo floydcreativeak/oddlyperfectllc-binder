@@ -1,0 +1,20 @@
+---
+import Marked from './Marked.astro';
+interface Props { kicker?: string; heading: string; blurb?: string; id?: string; level?: 'h1' | 'h2' | 'h3'; align?: 'start' | 'center' }
+const { kicker, heading, blurb, id, level = 'h2', align = 'start' } = Astro.props;
+const H = level;
+---
+<header class:list={['section-head', `section-head--${align}`]}>
+  {kicker && <p class="kicker">{kicker}</p>}
+  <H id={id} class="section-head__title"><Marked text={heading} /></H>
+  {blurb && <p class="lede section-head__blurb">{blurb}</p>}
+  <slot />
+</header>
+
+<style>
+  .section-head { max-width: 46rem; margin-bottom: var(--space-xl); }
+  .section-head--center { margin-inline: auto; text-align: center; }
+  .section-head--center .section-head__blurb { margin-inline: auto; }
+  .kicker { margin-bottom: var(--space-2xs); }
+  .section-head__blurb { margin-top: var(--space-s); }
+</style>
