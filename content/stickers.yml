@@ -5,32 +5,32 @@ items:
     decorative: true
     color: coral
   - id: fully-booked
-    text: Fully Booked? Never. 📆
+    text: Fully Booked? Never.
     label: Fully booked? Never.
     decorative: true
     color: butter
   - id: tailored
-    text: Tailored 🪡
+    text: Tailored
     label: Tailored
     decorative: true
     color: sage
   - id: no-kickbacks
-    text: No Kickbacks 💸
+    text: No Kickbacks
     label: No kickbacks
     decorative: false
     color: coral
   - id: coffee
-    text: Fueled By Coffee ☕
+    text: Fueled By Coffee
     label: Fueled by coffee
     decorative: true
     color: butter
   - id: megaphone
-    text: Loud And Proud 📣
+    text: Loud And Proud
     label: Loud and proud
     decorative: true
     color: sky
   - id: heart
-    text: Blind Date 👀
+    text: Blind Date
     label: Heart doodle
     decorative: true
     color: rose
