@@ -64,7 +64,7 @@
   --glass-border: rgb(43 42 51 / 0.08);
   --line: rgb(43 42 51 / 0.12);     /* the rare hairline                    */
   --shadow-color: 32 24 12;          /* r g b used by the shadows below      */
-  --star: #c98a12;           /* hand-drawn star stroke, 3:1+ on notes       */
+  --star: #8a5a08;           /* hand-drawn star stroke, 4.4:1 on butter note */
   --star-fill: #e2a72e;
   --selection: #f6de8d;
 

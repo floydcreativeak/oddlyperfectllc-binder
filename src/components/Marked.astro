@@ -1,0 +1,49 @@
+---
+/**
+ * Renders a line of content text where *starred words* get a hand-drawn
+ * marker underline. Editors type: Your Marketing, Oddly Perfectly *Organized.*
+ */
+interface Props { text: string; class?: string }
+const { text, class: cls } = Astro.props;
+const parts = text.split(/(\*[^*]+\*)/g).filter(Boolean);
+---
+{parts.map((p) =>
+  p.startsWith('*') && p.endsWith('*') ? (
+    <span class:list={['marked', cls]}>
+      {p.slice(1, -1)}
+      <svg class="marked__swoosh" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M3 13.5C40 6.8 92 4.2 140 6.1c19 .8 38 2.6 56 5.4M18 17.2c34-3.6 79-5.1 121-3.4" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" pathLength="1" />
+      </svg>
+    </span>
+  ) : (
+    p
+  ),
+)}
+
+<style>
+  .marked {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    z-index: 0;
+  }
+  .marked__swoosh {
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    bottom: -0.12em;
+    width: 104%;
+    height: 0.32em;
+    color: var(--accent);
+    z-index: -1;
+    overflow: visible;
+  }
+  .marked__swoosh path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .marked__swoosh path { animation: swoosh var(--dur-spring) var(--ease-out) 0.5s backwards; }
+    @keyframes swoosh { from { stroke-dashoffset: 1; } }
+  }
+</style>

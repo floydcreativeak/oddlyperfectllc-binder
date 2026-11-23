@@ -93,6 +93,43 @@ const site = defineCollection({
     nav: z.array(z.object({ label: text('Menu label'), href: z.string().startsWith('/'), icon: z.enum(['home', 'services', 'pricing', 'reviews', 'about']) })).min(1).max(5),
     legalNav: z.array(z.object({ label: text('Link label'), href: z.string().startsWith('/') })),
     microcopy: z.record(z.string(), z.string()),
+    footer: z.object({
+      kicker: z.string().optional(),
+      signoff: text('Footer sign-off'),
+      blurb: text('Footer blurb'),
+      hoursHeading: text('Hours heading'),
+      areaHeading: text('Service area heading'),
+      areaNote: z.string().optional(),
+      funFacts: z.array(text('Fun fact')).max(4),
+      easterEgg: z.object({ label: text('Easter egg label'), text: text('Easter egg text') }),
+      copyright: text('Copyright line'),
+      topLabel: text('Back to top label'),
+    }),
+    notFound: z.object({
+      title: text('404 title'),
+      kicker: z.string().optional(),
+      body: text('404 body'),
+      homeLabel: text('404 home link'),
+      callPrompt: text('404 call prompt'),
+    }),
+  }),
+});
+
+/* ── home.yml ───────────────────────────────────────────────────────────── */
+const home = defineCollection({
+  loader: singleton('content/home.yml'),
+  schema: z.object({
+    seo: z.object({ title: text('Page title'), description: text('Page description').max(170) }),
+    hero: z.object({
+      kicker: z.string().optional(),
+      headline: text('Hero headline'),
+      subhead: text('Hero subhead'),
+      callNote: text('Call sticky note'),
+      callScribble: z.string().optional(),
+      secondaryLabel: text('Secondary button'),
+      secondaryHref: z.string().startsWith('/'),
+      photos: z.array(photo).max(3),
+    }),
   }),
 });
 
@@ -315,4 +352,4 @@ const policies = defineCollection({
   }),
 });
 
-export const collections = { site, pricing, services, router, values, faq, reviews, team, policies };
+export const collections = { site, home, pricing, services, router, values, faq, reviews, team, policies };

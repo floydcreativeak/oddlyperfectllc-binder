@@ -1,0 +1,21 @@
+# HOME PAGE — the headings and words for each home page section.
+# Prices, services, reviews and FAQ come from their own files.
+seo:
+  title: Marketing, PR and Social Media Management on the Kenai Peninsula
+  description: Witty, organized marketing management for Soldotna, Kenai and beyond. Three monthly partnerships, published prices, and a free 30-minute Blind Date to start.
+
+hero:
+  kicker: Marketing manager, PR person, professional list-maker
+  headline: Your Marketing, Oddly Perfectly *Organized.*
+  subhead: PR, social media and marketing management for the Kenai Peninsula and beyond. We bring the plan, the calendar and an alarming number of sticky notes.
+  callNote: Call us. We pick up.
+  callScribble: (we already made a list)
+  secondaryLabel: See the prices
+  secondaryHref: /pricing
+  photos:
+    - src: /content/media/placeholders/founder-portrait.jpg
+      alt: Placeholder photo standing in for a studio portrait of the founder.
+      placeholder: true
+    - src: /content/media/placeholders/desk-flatlay.jpg
+      alt: Placeholder photo standing in for a desk flat-lay with a binder, sticky notes and coffee.
+      placeholder: true

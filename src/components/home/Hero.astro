@@ -1,0 +1,205 @@
+---
+/**
+ * Hero: a whiteboard panel with the huge headline, a one-line subhead and the
+ * phone number as an oversized sticky note (the main call button). Studio
+ * photo frames are taped to the board.
+ * Phase 5 adds the interactive sticky-note pile; this markup is its fallback.
+ */
+import Icon from '../Icon.astro';
+import Marked from '../Marked.astro';
+import Photo from '../Photo.astro';
+import { telHref, type Site } from '~/lib/content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { site: Site; hero: CollectionEntry<'home'>['data']['hero'] }
+const { site, hero } = Astro.props;
+const tilts = [3.5, -4];
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="whiteboard">
+    <div class="hero__copy">
+      {hero.kicker && <p class="kicker hero__kicker">{hero.kicker}</p>}
+      <h1 id="hero-title" class="hero__title"><Marked text={hero.headline} /></h1>
+      <p class="hero__sub">{hero.subhead}</p>
+
+      <div class="hero__ctas">
+        <a
+          class="call-note note note--butter note--unpinned"
+          href={telHref(site)}
+          aria-label={`${site.microcopy.phoneAria} ${site.phone.display}`}
+          data-placeholder={site.phone.placeholder ? 'phone' : undefined}
+        >
+          <span class="call-note__line hand" aria-hidden="true">{hero.callNote}</span>
+          <span class="call-note__number" aria-hidden="true">
+            <Icon name="phone" />
+            {site.phone.display}
+          </span>
+        </a>
+        <div class="hero__aside">
+          {hero.callScribble && (
+            <p class="hero__scribble hand" aria-hidden="true">
+              <svg viewBox="0 0 60 40" width="46" height="32" focusable="false"><path d="M56 6C40 4 20 10 10 30M4 22l6 9 9-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              {hero.callScribble}
+            </p>
+          )}
+          <a class="btn btn--ghost" href={hero.secondaryHref}>
+            {hero.secondaryLabel}
+            <Icon name="arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {hero.photos.length > 0 && (
+      <div class="hero__photos">
+        {hero.photos.map((photo, i) => (
+          <Photo
+            photo={photo}
+            frame="taped"
+            ratio={i === 0 ? '4 / 5' : '1 / 1'}
+            sizes="(min-width: 60em) 26vw, 44vw"
+            widths={[240, 360, 480, 640]}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            tilt={tilts[i % tilts.length]}
+            class={`hero__photo hero__photo--${i + 1}`}
+          />
+        ))}
+      </div>
+    )}
+
+    <div class="whiteboard__tray" aria-hidden="true">
+      <span class="marker marker--coral"></span>
+      <span class="marker marker--ink"></span>
+      <span class="eraser"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    width: min(100% - 2 * var(--gutter) + 1rem, calc(var(--content-max) + 4rem));
+    margin: var(--space-xs) auto 0;
+  }
+  .whiteboard {
+    position: relative;
+    display: grid;
+    gap: var(--space-l);
+    padding: clamp(1.25rem, 0.8rem + 3vw, 3.75rem);
+    padding-bottom: clamp(2.25rem, 1.5rem + 3vw, 4.5rem);
+    background: var(--whiteboard);
+    border: clamp(7px, 0.4rem + 0.4vw, 14px) solid var(--whiteboard-rim);
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-3), inset 0 2px 0 rgb(255 255 255 / 0.25);
+  }
+
+  .hero__kicker { margin-bottom: var(--space-2xs); }
+  .hero__title {
+    font-size: clamp(2.6rem, 1.6rem + 3.4vw, 4.9rem);
+    line-height: 0.95;
+    max-width: 14ch;
+  }
+  .hero__sub {
+    margin-top: var(--space-s);
+    font-size: clamp(1.02rem, 0.9rem + 0.6vw, 1.375rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 40ch;
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-m) var(--space-l);
+    margin-top: var(--space-m);
+  }
+  .call-note {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.85rem 1.3rem 1rem 1.15rem;
+    text-decoration: none;
+    transform: rotate(-2deg);
+    transition: transform var(--dur-spring) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out);
+  }
+  .call-note::after {
+    /* curled corner shadow */
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: rgb(var(--shadow-color) / 0.1);
+    border-radius: 0 0 14px 0;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+  .call-note:hover { transform: rotate(1deg) translateY(var(--lift)) scale(1.02); box-shadow: var(--shadow-lift); }
+  .call-note:active { transform: rotate(1deg) scale(var(--squish)); transition-duration: var(--dur-instant); }
+  .call-note__line { font-size: var(--step-1); }
+  .call-note__number {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .call-note__number :global(.icon) { width: 0.8em; height: 0.8em; stroke-width: 2.4; }
+
+  .hero__aside { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
+  .hero__scribble {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.25rem;
+    color: var(--accent-ink);
+    font-size: 1.2rem;
+    transform: rotate(-3deg);
+  }
+  .hero__scribble svg { transform: scaleX(-1) rotate(10deg); flex: none; }
+
+  .hero__photos {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: start;
+    gap: var(--space-m);
+    padding-top: var(--space-s);
+  }
+  .hero__photos :global(.hero__photo--2) { margin-top: var(--space-xl); }
+  .hero__photos :global(.hero__photo:hover) { transform: rotate(0deg) translateY(var(--lift)); }
+
+  .whiteboard__tray {
+    position: absolute;
+    left: 50%;
+    bottom: -0.35rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.6rem;
+    width: min(16rem, 60%);
+    height: 0.9rem;
+    padding: 0 1rem;
+    transform: translate(-50%, 50%);
+    background: var(--whiteboard-rim);
+    border-radius: 0 0 var(--radius-s) var(--radius-s);
+    box-shadow: var(--shadow-1);
+  }
+  .marker { width: 3.2rem; height: 0.55rem; border-radius: 4px 9px 9px 4px; transform: translateY(-0.35rem); }
+  .marker--coral { background: var(--accent); }
+  .marker--ink { background: var(--ink); width: 2.8rem; }
+  .eraser { width: 2.2rem; height: 0.75rem; margin-left: auto; border-radius: 3px; background: var(--ink-soft); transform: translateY(-0.35rem); }
+
+  @media (min-width: 60em) {
+    .hero { margin-top: var(--space-m); }
+    .whiteboard {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: center;
+      gap: var(--space-xl);
+      min-height: min(40rem, calc(100svh - var(--nav-h) - 3rem));
+    }
+    .hero__photos { padding-top: 0; grid-template-columns: 1fr 0.78fr; gap: 0; }
+    .hero__photos :global(.hero__photo--2) { margin-top: 9rem; margin-left: -2.5rem; z-index: 1; }
+  }
+</style>

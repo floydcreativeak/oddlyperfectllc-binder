@@ -276,6 +276,150 @@ content:
           - name: backToTop
             label: Back to top
             type: string
+      - name: footer
+        label: Footer
+        type: object
+        fields:
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: signoff
+            label: Giant sign-off
+            type: string
+            required: true
+          - name: blurb
+            label: Blurb
+            type: text
+            required: true
+          - name: hoursHeading
+            label: Hours heading
+            type: string
+            required: true
+          - name: areaHeading
+            label: Service area heading
+            type: string
+            required: true
+          - name: areaNote
+            label: Service area note
+            type: string
+          - name: funFacts
+            label: Tiny fun-fact notes (max 4)
+            type: string
+            list:
+              max: 4
+          - name: easterEgg
+            label: Easter egg (paperclip drawer)
+            type: object
+            fields:
+              - name: label
+                label: Button label (screen readers)
+                type: string
+                required: true
+              - name: text
+                label: Hidden note
+                type: text
+                required: true
+          - name: copyright
+            label: Copyright line (year is added automatically)
+            type: string
+            required: true
+          - name: topLabel
+            label: Back to top label
+            type: string
+            required: true
+      - name: notFound
+        label: Page not found (404)
+        type: object
+        fields:
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: body
+            label: Body
+            type: text
+            required: true
+          - name: homeLabel
+            label: Home button
+            type: string
+            required: true
+          - name: callPrompt
+            label: Call prompt
+            type: string
+            required: true
+  - name: home
+    label: Home page
+    type: file
+    path: content/home.yml
+    fields:
+      - name: seo
+        label: Google title and description
+        type: object
+        fields:
+          - name: title
+            label: Page title
+            type: string
+            required: true
+          - name: description
+            label: Description (under 170 characters)
+            type: text
+            required: true
+      - name: hero
+        label: Hero (the whiteboard)
+        type: object
+        fields:
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: headline
+            label: Headline
+            type: string
+            required: true
+            description: Wrap a word in *stars* to underline it with marker.
+          - name: subhead
+            label: Subhead
+            type: text
+            required: true
+          - name: callNote
+            label: Words on the phone sticky note
+            type: string
+            required: true
+          - name: callScribble
+            label: Margin scribble
+            type: string
+          - name: secondaryLabel
+            label: Second button label
+            type: string
+            required: true
+          - name: secondaryHref
+            label: Second button page
+            type: string
+            required: true
+          - name: photos
+            label: Photos taped to the whiteboard (max 3)
+            type: object
+            list:
+              max: 3
+            fields:
+              - name: src
+                label: Photo
+                type: image
+                required: true
+              - name: alt
+                label: Alt text
+                type: string
+                required: true
+                description: Describe the photo for people who can't see it.
+              - name: caption
+                label: Caption (optional)
+                type: string
+              - name: placeholder
+                label: This is a placeholder photo
+                type: boolean
+                description: Untick once the real photo is in.
   - name: pricing
     label: Pricing
     type: file

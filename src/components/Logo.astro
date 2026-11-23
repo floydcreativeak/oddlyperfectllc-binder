@@ -1,0 +1,65 @@
+---
+/**
+ * Stand-in wordmark until the client's logo SVG arrives (see NEEDS_FROM_CLIENT.md).
+ * Swap the inner markup for the real inline SVG and set logo.placeholder: false.
+ */
+import type { Site } from '~/lib/content';
+interface Props { site: Site; compact?: boolean }
+const { site, compact = false } = Astro.props;
+---
+<a
+  href="/"
+  class:list={['logo', { 'logo--compact': compact }]}
+  aria-label={site.logo.alt}
+  data-placeholder={site.logo.placeholder ? 'logo' : undefined}
+>
+  <span class="logo__mark" aria-hidden="true">
+    <svg viewBox="0 0 40 40" width="40" height="40">
+      <rect x="4" y="5" width="32" height="31" rx="3" fill="var(--note-butter)" transform="rotate(-6 20 20)" />
+      <path d="M28.5 32.6c2.2-.6 4.3-1.8 5.6-3.6" stroke="var(--note-ink)" stroke-opacity=".25" stroke-width="2" fill="none" stroke-linecap="round" />
+      <ellipse cx="19.4" cy="20.5" rx="8.2" ry="8.6" fill="none" stroke="var(--note-ink)" stroke-width="3.4" transform="rotate(-6 20 20)" />
+      <circle cx="31.5" cy="9.5" r="3.4" fill="var(--accent)" />
+    </svg>
+  </span>
+  <span class="logo__word" aria-hidden="true">
+    <span class="logo__name">Oddly Perfect</span>
+    <span class="logo__llc">LLC</span>
+  </span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: var(--tap);
+    text-decoration: none;
+    color: var(--ink);
+    border-radius: var(--radius-s);
+  }
+  .logo__mark { display: grid; flex: none; transition: transform var(--dur-spring) var(--ease-spring); }
+  .logo:hover .logo__mark { transform: rotate(calc(-10deg * var(--motion-distance))) scale(1.06); }
+  .logo__mark svg { width: 2.3rem; height: 2.3rem; }
+  .logo__word { display: flex; align-items: baseline; gap: 0.35rem; line-height: 1; }
+  .logo__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .logo__llc {
+    font-family: var(--font-hand);
+    font-size: 0.95rem;
+    color: var(--accent-ink);
+    transform: rotate(-4deg) translateY(-0.1em);
+  }
+  .logo--compact .logo__name { font-size: 1.12rem; }
+  .logo--compact .logo__mark svg { width: 2rem; height: 2rem; }
+  @media (max-width: 30em) {
+    .logo { gap: 0.4rem; }
+    .logo--compact .logo__llc { display: none; }
+    .logo--compact .logo__name { font-size: 1.02rem; }
+    .logo--compact .logo__mark svg { width: 1.85rem; height: 1.85rem; }
+  }
+</style>

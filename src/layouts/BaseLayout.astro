@@ -1,0 +1,82 @@
+---
+/**
+ * Every page sits in this layout: head/SEO, theme (no flash), skip link,
+ * announcement bar, glass header, mobile tab bar + floating Call button,
+ * footer and view transitions.
+ */
+import '~/styles/fonts.css';
+import '~/styles/tokens.css';
+import '~/styles/base.css';
+import '~/styles/objects.css';
+import '~/styles/transitions.css';
+import { ClientRouter } from 'astro:transitions';
+import zillaUrl from '~/fonts/zilla-slab-700.woff2?url';
+import figtreeUrl from '~/fonts/figtree-var.woff2?url';
+import ThemeScript from '~/components/ThemeScript.astro';
+import AnnouncementBar from '~/components/AnnouncementBar.astro';
+import SiteHeader from '~/components/SiteHeader.astro';
+import TabBar from '~/components/TabBar.astro';
+import SiteFooter from '~/components/SiteFooter.astro';
+import { getSite } from '~/lib/content';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Use the title as-is (home page) instead of "Title | Oddly Perfect LLC". */
+  bareTitle?: boolean;
+  noindex?: boolean;
+}
+
+const site = await getSite();
+const { title, description = site.description, bareTitle = false, noindex = false } = Astro.props;
+const fullTitle = bareTitle ? `${site.name} | ${title}` : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname.replace(/\/?$/, '/').replace(/^\/\/$/, '/'), Astro.site);
+---
+<!doctype html>
+<html lang="en" dir="ltr" data-dev={import.meta.env.DEV ? "" : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <ThemeScript />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#f3e9d2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#23212e" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={zillaUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={figtreeUrl} as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <slot name="head" />
+    <ClientRouter />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{site.microcopy.skipLink}</a>
+    <AnnouncementBar site={site} />
+    <SiteHeader site={site} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter site={site} />
+    <TabBar site={site} />
+    <script>
+      import '~/scripts/shell';
+    </script>
+  </body>
+</html>
+
+<style>
+  main { display: block; outline: none; }
+  /* Room for the mobile tab bar + floating Call button. */
+  body { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); }
+  @media (min-width: 60em) {
+    body { padding-bottom: 0; }
+  }
+</style>

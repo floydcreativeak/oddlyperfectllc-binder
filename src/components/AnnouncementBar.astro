@@ -1,0 +1,34 @@
+---
+import type { Site } from '~/lib/content';
+interface Props { site: Site }
+const { site } = Astro.props;
+const a = site.announcement;
+---
+{a.enabled && a.text && (
+  <aside class="announce" aria-label="Announcement">
+    <p>
+      <span>{a.text}</span>
+      {a.link && a.linkLabel && <a href={a.link}>{a.linkLabel}</a>}
+    </p>
+  </aside>
+)}
+
+<style>
+  .announce {
+    background: var(--accent-ink);
+    color: var(--on-accent);
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-align: center;
+    padding: 0.55rem var(--gutter);
+  }
+  .announce p { max-width: none; margin-inline: auto; }
+  .announce a {
+    margin-left: 0.6rem;
+    color: inherit;
+    font-family: var(--font-hand);
+    font-size: 1.15rem;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+  }
+</style>

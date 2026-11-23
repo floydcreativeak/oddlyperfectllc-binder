@@ -1,0 +1,101 @@
+---
+/**
+ * A photo in a physical frame (taped, clipped or polaroid). Optimised at build
+ * time into AVIF/WebP at several widths with explicit dimensions.
+ * Frames crop to a fixed ratio with object-fit, so imperfect phone photos
+ * still sit tidily. Placeholder photos carry data-placeholder.
+ */
+import { Picture } from 'astro:assets';
+import { resolveMedia } from '~/lib/content';
+
+interface Props {
+  photo: { src: string; alt: string; caption?: string; placeholder?: boolean };
+  frame?: 'taped' | 'clipped' | 'polaroid' | 'plain';
+  /** Force a crop ratio, e.g. "4 / 5". Defaults to the photo's own ratio. */
+  ratio?: string;
+  sizes: string;
+  widths?: number[];
+  loading?: 'lazy' | 'eager';
+  tilt?: number;
+  class?: string;
+}
+const { photo, frame = 'polaroid', ratio, sizes, widths = [320, 480, 720, 960, 1280], loading = 'lazy', tilt = 0, class: cls } = Astro.props;
+const img = resolveMedia(photo.src);
+const usable = widths.filter((w) => w <= img.width);
+---
+<figure
+  class:list={['photo', `photo--${frame}`, { taped: frame === 'taped' }, cls]}
+  style={`--tilt:${tilt}deg;${ratio ? `--ratio:${ratio};` : `--ratio:${img.width} / ${img.height};`}`}
+  data-placeholder={photo.placeholder ? 'photo' : undefined}
+>
+  <div class="photo__frame">
+    <Picture
+      src={img}
+      alt={photo.alt}
+      formats={['avif', 'webp']}
+      widths={usable.length ? usable : [img.width]}
+      sizes={sizes}
+      loading={loading}
+      decoding="async"
+      fetchpriority={loading === 'eager' ? 'high' : undefined}
+    />
+  </div>
+  {photo.caption && <figcaption class="hand">{photo.caption}</figcaption>}
+</figure>
+
+<style>
+  .photo {
+    position: relative;
+    margin: 0;
+    transform: rotate(var(--tilt));
+    transition: transform var(--dur-spring) var(--ease-spring);
+  }
+  .photo__frame {
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+  .photo__frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .photo--polaroid,
+  .photo--taped,
+  .photo--clipped {
+    padding: 0.6rem 0.6rem 0.6rem;
+    background: var(--surface);
+    border-radius: var(--radius-xs);
+    box-shadow: var(--shadow-2);
+  }
+  .photo--polaroid { padding-bottom: 2.4rem; }
+  .photo--polaroid .photo__frame,
+  .photo--taped .photo__frame,
+  .photo--clipped .photo__frame { border-radius: 2px; }
+  .photo--plain .photo__frame { border-radius: var(--radius-m); }
+  .photo--clipped::before {
+    /* binder clip */
+    content: '';
+    position: absolute;
+    top: -0.9rem;
+    left: 1.4rem;
+    width: 2.6rem;
+    height: 1.5rem;
+    border-radius: 4px 4px 2px 2px;
+    background: var(--ink);
+    box-shadow: inset 0 -5px 0 rgb(255 255 255 / 0.12);
+    z-index: 1;
+  }
+  figcaption {
+    position: absolute;
+    left: 0.8rem;
+    right: 0.8rem;
+    bottom: 0.4rem;
+    color: var(--ink);
+    font-size: 1.1rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

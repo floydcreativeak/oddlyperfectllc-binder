@@ -1,0 +1,65 @@
+---
+import Icon from './Icon.astro';
+import type { Site } from '~/lib/content';
+interface Props { site: Site }
+const { site } = Astro.props;
+---
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  aria-pressed="false"
+  data-label-light={site.microcopy.themeToLight}
+  data-label-dark={site.microcopy.themeToDark}
+>
+  <span class="visually-hidden">{site.microcopy.themeAria}</span>
+  <span class="theme-toggle__icons" aria-hidden="true">
+    <Icon name="sun" class="theme-toggle__sun" />
+    <Icon name="moon" class="theme-toggle__moon" />
+  </span>
+  <span class="theme-toggle__tip" aria-hidden="true" data-theme-tip></span>
+</button>
+
+<style>
+  .theme-toggle {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: var(--tap);
+    height: var(--tap);
+    border-radius: var(--radius-pill);
+    color: var(--ink);
+    transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-spring) var(--ease-spring);
+  }
+  .theme-toggle:hover { background: var(--surface-2); }
+  .theme-toggle:active { transform: scale(var(--squish)); }
+  .theme-toggle__icons { display: grid; }
+  .theme-toggle__icons > :global(*) {
+    grid-area: 1 / 1;
+    transition: transform var(--dur-spring) var(--ease-spring), opacity var(--dur-base) var(--ease-out);
+  }
+  .theme-toggle :global(.theme-toggle__moon) { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+  :global([data-theme='dark']) .theme-toggle :global(.theme-toggle__sun) { opacity: 0; transform: rotate(90deg) scale(0.4); }
+  :global([data-theme='dark']) .theme-toggle :global(.theme-toggle__moon) { opacity: 1; transform: none; }
+  .theme-toggle__tip {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 0;
+    padding: 0.25rem 0.6rem;
+    background: var(--note-butter);
+    color: var(--note-ink);
+    font-family: var(--font-hand);
+    font-size: 1.05rem;
+    white-space: nowrap;
+    border-radius: var(--radius-note);
+    box-shadow: var(--shadow-note);
+    opacity: 0;
+    transform: translateY(-4px) rotate(2deg);
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-spring);
+  }
+  @media (hover: hover) {
+    .theme-toggle:hover .theme-toggle__tip,
+    .theme-toggle:focus-visible .theme-toggle__tip { opacity: 1; transform: rotate(2deg); }
+  }
+</style>

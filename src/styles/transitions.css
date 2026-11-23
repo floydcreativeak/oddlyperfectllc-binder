@@ -1,0 +1,39 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE TRANSITIONS: a binder page peels up and away, the next one settles in.
+   The header and tab bar stay put (they have their own transition names).
+   Astro turns these off entirely under prefers-reduced-motion.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: page-peel var(--dur-slow) var(--ease-in-out) both;
+    transform-origin: 100% 0;
+  }
+  ::view-transition-new(root) {
+    animation: page-settle var(--dur-spring) var(--ease-settle) both;
+    transform-origin: 50% 0;
+  }
+  @keyframes page-peel {
+    to { transform: translate(6%, -4%) rotate(4deg); opacity: 0; }
+  }
+  @keyframes page-settle {
+    from { transform: translateY(2.5rem) rotate(-0.6deg); opacity: 0; }
+  }
+
+  /* Theme switch: "lights out", a circle wipe from the top-right corner. */
+  html[data-theme-switch]::view-transition-old(root),
+  html[data-theme-switch]::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  html[data-theme-switch]::view-transition-new(root) {
+    animation: lights var(--dur-slow) var(--ease-out) both;
+  }
+  @keyframes lights {
+    from { clip-path: circle(0% at 92% 2rem); }
+    to { clip-path: circle(150% at 92% 2rem); }
+  }
+}
+::view-transition-group(site-header),
+::view-transition-group(tabbar) {
+  animation: none;
+}

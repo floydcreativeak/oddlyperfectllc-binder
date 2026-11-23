@@ -1,0 +1,15 @@
+---
+import Icon from './Icon.astro';
+import { telHref, type Site } from '~/lib/content';
+interface Props { site: Site; class?: string; icon?: boolean; label?: string }
+const { site, class: cls, icon = true, label } = Astro.props;
+---
+<a
+  href={telHref(site)}
+  class:list={['phone-link', cls]}
+  aria-label={`${site.microcopy.phoneAria} ${site.phone.display}`}
+  data-placeholder={site.phone.placeholder ? 'phone' : undefined}
+>
+  {icon && <Icon name="phone" size="1.15em" />}
+  <span>{label ?? site.phone.display}</span>
+</a>

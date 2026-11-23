@@ -1,12 +1,10 @@
 ---
-import '~/styles/fonts.css';
-import '~/styles/tokens.css';
-import '~/styles/base.css';
-import { getSite, getPricing, formatPrice, fill } from '~/lib/content';
-const site = await getSite();
-const pricing = await getPricing();
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Hero from '~/components/home/Hero.astro';
+import { getSite, getHome } from '~/lib/content';
+
+const [site, home] = await Promise.all([getSite(), getHome()]);
 ---
-<html lang="en"><head><meta charset="utf-8" /><title>{site.name}</title></head>
-<body><main class="container"><h1>{site.name}</h1>
-<ul>{pricing.partnerships.map((p) => <li>{p.name}: {formatPrice(p.flexPrice)}</li>)}</ul>
-<p>{fill(pricing.notIncluded.rule, pricing, site)}</p></main></body></html>
+<BaseLayout title={home.seo.title} description={home.seo.description} bareTitle>
+  <Hero site={site} hero={home.hero} />
+</BaseLayout>

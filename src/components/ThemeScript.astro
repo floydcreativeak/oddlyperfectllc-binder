@@ -1,0 +1,30 @@
+---
+/**
+ * Runs before first paint so the page never flashes the wrong theme.
+ * Order: saved choice → system setting. Also stamps the incoming page during
+ * view-transition navigation (astro:before-swap) for the same reason.
+ */
+---
+<script is:inline>
+  (function () {
+    var KEY = 'op-theme';
+    function saved() {
+      try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    }
+    function pick() {
+      var s = saved();
+      if (s === 'light' || s === 'dark') return s;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.dataset.theme = pick();
+    if (!window.__opTheme) {
+      window.__opTheme = true;
+      document.addEventListener('astro:before-swap', function (e) {
+        e.newDocument.documentElement.dataset.theme = pick();
+      });
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+        if (!saved()) document.documentElement.dataset.theme = pick();
+      });
+    }
+  })();
+</script>

@@ -1,0 +1,76 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   OBJECTS: the physical things on the desk. Sticky notes, push pins, tape,
+   paper clips and stickers. Shared by every component.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Sticky note ─────────────────────────────────────────────────────────── */
+.note {
+  position: relative;
+  color: var(--note-ink);
+  border-radius: var(--radius-note);
+  box-shadow: var(--shadow-note);
+}
+.note--butter { background-color: var(--note-butter); }
+.note--rose { background-color: var(--note-rose); }
+.note--sage { background-color: var(--note-sage); }
+.note--sky { background-color: var(--note-sky); }
+
+/* Push pin (on by default for notes; add .note--unpinned to remove). */
+.note:not(.note--unpinned)::before,
+.pinned::before {
+  content: '';
+  position: absolute;
+  top: -0.45rem;
+  left: 50%;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-left: -0.475rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: inset -2px -2px 0 rgb(0 0 0 / 0.18), 0 3px 4px rgb(var(--shadow-color) / 0.35);
+  z-index: 1;
+}
+
+/* ── Tape strip (photos taped to the board) ─────────────────────────────── */
+.taped { position: relative; }
+.taped::after {
+  content: '';
+  position: absolute;
+  top: -0.8rem;
+  left: 50%;
+  width: 5.5rem;
+  height: 1.6rem;
+  margin-left: -2.75rem;
+  background: var(--note-butter);
+  opacity: 0.72;
+  transform: rotate(-4deg);
+  box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.15);
+  /* torn ends */
+  clip-path: polygon(3% 0, 97% 4%, 100% 30%, 96% 55%, 100% 80%, 97% 100%, 2% 96%, 0 70%, 4% 45%, 0 18%);
+}
+
+/* ── Round die-cut sticker ──────────────────────────────────────────────── */
+.sticker {
+  display: inline-grid;
+  place-items: center;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--accent-ink);
+  color: var(--on-accent);
+  font-family: var(--font-hand);
+  line-height: 1.05;
+  /* cream die-cut outline + soft shadow */
+  box-shadow: 0 0 0 4px var(--surface), 0 6px 14px rgb(var(--shadow-color) / 0.25);
+}
+
+/* ── Placeholder flag (development only) ────────────────────────────────── */
+/* In `npm run dev` anything still a placeholder gets a dashed outline so it
+   can't be missed. The production build refuses to publish them at all. */
+html[data-dev] [data-placeholder] {
+  outline: 2px dashed var(--accent-ink);
+  outline-offset: 2px;
+}
+
+/* Buttons sitting on a note are always ink, so they hold their edge on pastel. */
+.note .btn:not(.btn--ghost) { --btn-bg: var(--note-ink); --btn-fg: #faf3e3; }
+.note .btn--ghost { --btn-fg: var(--note-ink); }

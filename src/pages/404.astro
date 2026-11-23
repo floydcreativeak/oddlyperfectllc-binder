@@ -1,0 +1,40 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Icon from '~/components/Icon.astro';
+import { getSite, telHref } from '~/lib/content';
+
+const site = await getSite();
+const nf = site.notFound;
+---
+<BaseLayout title={nf.title} noindex>
+  <section class="lost container" aria-labelledby="lost-title">
+    <div class="lost__note note note--rose">
+      {nf.kicker && <p class="hand lost__kicker">{nf.kicker}</p>}
+      <h1 id="lost-title">{nf.title}</h1>
+      <p class="lost__body">{nf.body}</p>
+      <div class="lost__actions">
+        <a class="btn" href="/"><Icon name="home" />{nf.homeLabel}</a>
+      </div>
+      <p class="lost__call">
+        {nf.callPrompt}{' '}
+        <a href={telHref(site)} data-placeholder={site.phone.placeholder ? 'phone' : undefined}>{site.phone.display}</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost { padding-block: var(--space-2xl) var(--space-l); }
+  .lost__note {
+    max-width: 40rem;
+    margin-inline: auto;
+    padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+    transform: rotate(-1.5deg);
+  }
+  .lost__kicker { font-size: var(--step-1); }
+  .lost h1 { font-size: var(--step-4); margin-top: 0.3rem; }
+  .lost__body { margin-top: var(--space-s); font-size: var(--step-1); line-height: 1.45; }
+  .lost__actions { margin-top: var(--space-l); }
+  .lost__call { margin-top: var(--space-m); }
+  .lost__call a { color: var(--note-ink); font-weight: 700; text-decoration-thickness: 2px; }
+</style>

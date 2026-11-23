@@ -122,3 +122,27 @@ microcopy:
   socialsLabel: Find us online
   loading: Sharpening pencils...
   backToTop: Back to the top of the binder
+
+footer:
+  kicker: Closing time at the bulletin board
+  signoff: That's A Wrap. Your Move.
+  blurb: The office is closing. The phone isn't. Call us and we'll have a plan before your coffee goes cold.
+  hoursHeading: When We're In
+  areaHeading: Where We Pop Up
+  areaNote: In person with no travel fee. Remote for everywhere else.
+  funFacts:
+    - Prices on this site, all published. Every last one.
+    - Kickbacks taken, all time. Zero.
+    - Sticky notes used building this footer. Several.
+  easterEgg:
+    label: Open the paperclip drawer
+    text: You found the paperclip drawer. It's the only messy drawer in the office, and it's staying that way.
+  copyright: Oddly Perfect LLC. Organized on the Kenai Peninsula, Alaska.
+  topLabel: Back to the top
+
+notFound:
+  title: This Page Fell Behind The Filing Cabinet.
+  kicker: Error 404, misfiled
+  body: We checked every tab in the binder. Whatever you were after isn't here, but the good stuff is one click away.
+  homeLabel: Back to the front of the binder
+  callPrompt: Or skip the searching and just call.
