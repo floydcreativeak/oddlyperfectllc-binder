@@ -1,43 +1,36 @@
 items:
   - id: call-us
     text: Call Us!
-    emoji: 📞
     label: Call us
     decorative: true
     color: coral
   - id: fully-booked
-    text: Fully Booked? Never.
-    emoji: 📆
+    text: Fully Booked? Never. 📆
     label: Fully booked? Never.
     decorative: true
     color: butter
   - id: tailored
-    text: Tailored
-    emoji: 🪡
+    text: Tailored 🪡
     label: Tailored
     decorative: true
     color: sage
   - id: no-kickbacks
-    text: No Kickbacks
-    emoji: 💸
+    text: No Kickbacks 💸
     label: No kickbacks
     decorative: false
     color: coral
   - id: coffee
-    text: Fueled By Coffee
-    emoji: ☕
+    text: Fueled By Coffee ☕
     label: Fueled by coffee
     decorative: true
     color: butter
   - id: megaphone
-    text: Loud And Proud
-    emoji: 📣
+    text: Loud And Proud 📣
     label: Loud and proud
     decorative: true
     color: sky
   - id: heart
-    text: Blind Date
-    emoji: 👀
+    text: Blind Date 👀
     label: Heart doodle
     decorative: true
     color: rose
