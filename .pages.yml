@@ -1,0 +1,1152 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Pages CMS configuration (https://pagescms.org).
+# This turns the files in /content into friendly forms. Field names here must
+# match src/content.config.ts. If you add a field there, add it here too.
+# ─────────────────────────────────────────────────────────────────────────────
+
+media:
+  input: content/media
+  output: /content/media
+  categories:
+    - image
+content:
+  - name: site
+    label: Site settings
+    type: file
+    path: content/site.yml
+    fields:
+      - name: name
+        label: Business name
+        type: string
+        required: true
+      - name: shortName
+        label: Short name
+        type: string
+        required: true
+      - name: tagline
+        label: Tagline
+        type: string
+        required: true
+      - name: description
+        label: Google description (under 170 characters)
+        type: text
+        required: true
+      - name: locale
+        label: Language code
+        type: string
+        hidden: true
+      - name: region
+        label: Region
+        type: string
+        required: true
+      - name: phone
+        label: Phone
+        type: object
+        fields:
+          - name: display
+            label: Phone as shown
+            type: string
+            required: true
+            description: (907) 555-1234
+          - name: tel
+            label: Phone for tapping to call
+            type: string
+            required: true
+            description: "+1 then 10 digits, no spaces: +19075551234"
+          - name: placeholder
+            label: Still a placeholder
+            type: boolean
+      - name: email
+        label: Email
+        type: object
+        fields:
+          - name: address
+            label: Email address
+            type: string
+            required: true
+          - name: placeholder
+            label: Still a placeholder
+            type: boolean
+      - name: hours
+        label: Office hours
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: rows
+            label: Hours
+            type: object
+            list: true
+            fields:
+              - name: days
+                label: Days
+                type: string
+                required: true
+              - name: time
+                label: Time
+                type: string
+                required: true
+          - name: note
+            label: Note under the hours
+            type: string
+          - name: placeholder
+            label: Still a placeholder
+            type: boolean
+      - name: socials
+        label: Social links
+        type: object
+        list: true
+        fields:
+          - name: platform
+            label: Platform
+            type: select
+            options:
+              values:
+                - facebook
+                - instagram
+                - linkedin
+                - tiktok
+                - youtube
+                - x
+                - threads
+                - google
+                - yelp
+          - name: label
+            label: Label
+            type: string
+            required: true
+          - name: url
+            label: Full web address
+            type: string
+            required: true
+          - name: placeholder
+            label: Still a placeholder
+            type: boolean
+      - name: serviceArea
+        label: Service area (no travel fee)
+        type: string
+        list: true
+        description: One community per line. Shown on Pricing, FAQ, Contact and in Google data.
+      - name: blindDate
+        label: The Blind Date (free 30-minute fit call)
+        type: object
+        fields:
+          - name: title
+            label: Full title
+            type: string
+            required: true
+          - name: shortTitle
+            label: Short title
+            type: string
+            required: true
+          - name: duration
+            label: Length
+            type: string
+            required: true
+          - name: blurb
+            label: Blurb
+            type: text
+            required: true
+          - name: isNot
+            label: What it isn't
+            type: text
+            required: true
+          - name: cta
+            label: Button label
+            type: string
+            required: true
+      - name: announcement
+        label: Announcement bar
+        type: object
+        fields:
+          - name: enabled
+            label: Show the announcement bar
+            type: boolean
+          - name: text
+            label: Message
+            type: string
+          - name: linkLabel
+            label: Link label (optional)
+            type: string
+          - name: link
+            label: Link (optional)
+            type: string
+            description: A page like /pricing
+      - name: analytics
+        label: Google Analytics
+        type: object
+        fields:
+          - name: ga4Id
+            label: GA4 measurement ID
+            type: string
+            description: Looks like G-ABC123XYZ. Leave empty to turn analytics off.
+          - name: placeholder
+            label: Still a placeholder
+            type: boolean
+      - name: logo
+        label: Logo
+        type: object
+        fields:
+          - name: alt
+            label: Logo alt text
+            type: string
+            required: true
+          - name: placeholder
+            label: Still using the stand-in logo
+            type: boolean
+      - name: nav
+        label: Main menu (max 5)
+        type: object
+        list:
+          max: 5
+        fields:
+          - name: label
+            label: Label
+            type: string
+            required: true
+          - name: href
+            label: Page
+            type: string
+            required: true
+          - name: icon
+            label: Icon
+            type: select
+            options:
+              values:
+                - home
+                - services
+                - pricing
+                - reviews
+                - about
+      - name: legalNav
+        label: Legal links (footer)
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: Label
+            type: string
+            required: true
+          - name: href
+            label: Page
+            type: string
+            required: true
+      - name: microcopy
+        label: Little words (buttons, labels)
+        type: object
+        fields:
+          - name: skipLink
+            label: Skip link
+            type: string
+          - name: callLabel
+            label: Call button (short)
+            type: string
+          - name: callLong
+            label: Call button (long)
+            type: string
+          - name: emailLabel
+            label: Email button
+            type: string
+          - name: phoneAria
+            label: Screen-reader call label
+            type: string
+          - name: themeToLight
+            label: Theme toggle (to light)
+            type: string
+          - name: themeToDark
+            label: Theme toggle (to dark)
+            type: string
+          - name: themeAria
+            label: Theme toggle (screen reader)
+            type: string
+          - name: menuLabel
+            label: Menu name (screen reader)
+            type: string
+          - name: tabBarLabel
+            label: Bottom tabs name (screen reader)
+            type: string
+          - name: socialsLabel
+            label: Socials heading
+            type: string
+          - name: loading
+            label: Loading text
+            type: string
+          - name: backToTop
+            label: Back to top
+            type: string
+  - name: pricing
+    label: Pricing
+    type: file
+    path: content/pricing.yml
+    fields:
+      - name: currency
+        type: string
+        hidden: true
+      - name: partnershipsIntro
+        label: Monthly partnerships, intro
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: blurb
+            label: Blurb
+            type: text
+          - name: flexLabel
+            label: Flex toggle label
+            type: string
+            required: true
+          - name: monthlyLabel
+            label: Month-to-month toggle label
+            type: string
+            required: true
+          - name: perMonth
+            label: Per-month suffix
+            type: string
+            required: true
+          - name: highlightSticker
+            label: Sticker on the highlighted package
+            type: string
+            required: true
+      - name: partnerships
+        label: Monthly partnerships (exactly 3)
+        type: object
+        list:
+          min: 3
+          max: 3
+        fields:
+          - name: id
+            label: Short id (don't change)
+            type: string
+            required: true
+          - name: name
+            label: Package name
+            type: string
+            required: true
+          - name: flexPrice
+            label: 12-Month Flex price (per month)
+            type: object
+            fields:
+              - name: amount
+                label: Price (number only, no $ or commas)
+                type: number
+                required: true
+              - name: unit
+                label: Per
+                type: select
+                options:
+                  values:
+                    - value: hr
+                      label: per hour
+                    - value: mo
+                      label: per month
+              - name: display
+                label: Custom wording (optional, overrides the number)
+                type: string
+                description: 'Leave empty to show the number. Example: "$0"'
+          - name: monthlyPrice
+            label: Month-to-month price (per month)
+            type: object
+            fields:
+              - name: amount
+                label: Price (number only, no $ or commas)
+                type: number
+                required: true
+              - name: unit
+                label: Per
+                type: select
+                options:
+                  values:
+                    - value: hr
+                      label: per hour
+                    - value: mo
+                      label: per month
+              - name: display
+                label: Custom wording (optional, overrides the number)
+                type: string
+                description: 'Leave empty to show the number. Example: "$0"'
+          - name: fitLine
+            label: Plain-English fit
+            type: string
+            required: true
+          - name: bestFor
+            label: Best for
+            type: text
+            required: true
+          - name: highlight
+            label: Highlight this one (only one at a time)
+            type: boolean
+          - name: includes
+            label: What's included
+            type: string
+            list: true
+          - name: example
+            label: Example (optional)
+            type: text
+          - name: notes
+            label: Extra notes (optional)
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: Label
+                type: string
+                required: true
+              - name: text
+                label: Text
+                type: text
+                required: true
+          - name: boundary
+            label: Boundary (optional)
+            type: text
+      - name: flex
+        label: 12-Month Flex
+        type: object
+        fields:
+          - name: name
+            label: Name
+            type: string
+            required: true
+          - name: tagline
+            label: Tagline
+            type: string
+            required: true
+          - name: blurb
+            label: Blurb
+            type: text
+          - name: rules
+            label: Rules
+            type: string
+            list: true
+          - name: benefitsHeading
+            label: Perks heading
+            type: string
+            required: true
+          - name: benefits
+            label: Perks
+            type: string
+            list: true
+            description: Type {fee:onboarding} to show the onboarding fee.
+      - name: projectsIntro
+        label: One-time projects, intro
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: blurb
+            label: Blurb
+            type: text
+          - name: needLabel
+            label: '"When someone needs it" label'
+            type: string
+            required: true
+          - name: includesLabel
+            label: "\"What's included\" label"
+            type: string
+            required: true
+      - name: projects
+        label: One-time projects
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: Short id (lowercase-with-dashes)
+            type: string
+            required: true
+          - name: name
+            label: Name
+            type: string
+            required: true
+          - name: price
+            label: Price
+            type: object
+            fields:
+              - name: amount
+                label: Price (number only, no $ or commas)
+                type: number
+                required: true
+              - name: unit
+                label: Per
+                type: select
+                options:
+                  values:
+                    - value: hr
+                      label: per hour
+                    - value: mo
+                      label: per month
+              - name: display
+                label: Custom wording (optional, overrides the number)
+                type: string
+                description: 'Leave empty to show the number. Example: "$0"'
+          - name: need
+            label: When someone needs it
+            type: string
+            required: true
+          - name: includes
+            label: What's included
+            type: string
+            list: true
+      - name: revisionRule
+        label: The Revision Rule
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: points
+            label: Points
+            type: string
+            list: true
+      - name: eventsIntro
+        label: Event services, intro
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: blurb
+            label: Blurb
+            type: text
+          - name: positioning
+            label: Positioning line
+            type: text
+            required: true
+      - name: events
+        label: Event services
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: Short id (lowercase-with-dashes)
+            type: string
+            required: true
+          - name: name
+            label: Name
+            type: string
+            required: true
+          - name: price
+            label: Price
+            type: object
+            fields:
+              - name: amount
+                label: Price (number only, no $ or commas)
+                type: number
+                required: true
+              - name: unit
+                label: Per
+                type: select
+                options:
+                  values:
+                    - value: hr
+                      label: per hour
+                    - value: mo
+                      label: per month
+              - name: display
+                label: Custom wording (optional, overrides the number)
+                type: string
+                description: 'Leave empty to show the number. Example: "$0"'
+          - name: tagline
+            label: Tagline
+            type: string
+            required: true
+          - name: scope
+            label: Scope note (optional)
+            type: string
+          - name: includes
+            label: What's included
+            type: string
+            list: true
+      - name: eventBoundaries
+        label: Event boundaries
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: items
+            label: What we don't do
+            type: string
+            list: true
+          - name: responsibility
+            label: Client responsibility
+            type: text
+            required: true
+          - name: sponsorship
+            label: Sponsorship boundary
+            type: text
+            required: true
+      - name: fees
+        label: Published fees
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: Short id (used by {fee:id} shortcuts; don't rename)
+            type: string
+            required: true
+          - name: name
+            label: Name
+            type: string
+            required: true
+          - name: price
+            label: Price
+            type: object
+            fields:
+              - name: amount
+                label: Price (number only, no $ or commas)
+                type: number
+                required: true
+              - name: unit
+                label: Per
+                type: select
+                options:
+                  values:
+                    - value: hr
+                      label: per hour
+                    - value: mo
+                      label: per month
+              - name: display
+                label: Custom wording (optional, overrides the number)
+                type: string
+                description: 'Leave empty to show the number. Example: "$0"'
+          - name: note
+            label: Note
+            type: string
+            required: true
+      - name: feesFootnote
+        label: Fees footnote
+        type: text
+        required: true
+      - name: rush
+        label: Rush policy (marketing and projects)
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: rows
+            label: Rows
+            type: object
+            list: true
+            fields:
+              - name: when
+                label: When
+                type: string
+                required: true
+              - name: surcharge
+                label: Surcharge (%)
+                type: number
+                required: true
+              - name: note
+                label: Note (optional)
+                type: string
+          - name: minimum
+            label: Minimum rush fee
+            type: object
+            fields:
+              - name: amount
+                label: Price (number only, no $ or commas)
+                type: number
+                required: true
+              - name: unit
+                label: Per
+                type: select
+                options:
+                  values:
+                    - value: hr
+                      label: per hour
+                    - value: mo
+                      label: per month
+              - name: display
+                label: Custom wording (optional, overrides the number)
+                type: string
+                description: 'Leave empty to show the number. Example: "$0"'
+          - name: notes
+            label: Notes
+            type: string
+            list: true
+      - name: eventRush
+        label: Event rush policy
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: rows
+            label: Rows
+            type: object
+            list: true
+            fields:
+              - name: when
+                label: When
+                type: string
+                required: true
+              - name: surcharge
+                label: Surcharge (%)
+                type: number
+                required: true
+              - name: note
+                label: Note (optional)
+                type: string
+      - name: communityRate
+        label: Community Rate (nonprofits)
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: headline
+            label: Headline
+            type: string
+            required: true
+            description: "{pct:community} shows the percentage."
+          - name: percent
+            label: Discount (%)
+            type: number
+            required: true
+          - name: body
+            label: Body
+            type: text
+            required: true
+          - name: rules
+            label: Rules
+            type: string
+            list: true
+      - name: notIncluded
+        label: Not included in retainers
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: intro
+            label: Intro
+            type: text
+            required: true
+          - name: items
+            label: Items
+            type: string
+            list: true
+          - name: rule
+            label: The tell-you-first rule
+            type: text
+            required: true
+      - name: travel
+        label: Travel
+        type: object
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: localLine
+            label: Line before the local communities
+            type: string
+            required: true
+          - name: terms
+            label: Travel terms
+            type: string
+            list: true
+  - name: services
+    label: Services
+    type: collection
+    path: content/services
+    format: yaml-frontmatter
+    view:
+      fields:
+        - name
+        - kind
+        - order
+      primary: name
+      sort:
+        - order
+    fields:
+      - name: name
+        label: Name
+        type: string
+        required: true
+      - name: kind
+        label: Kind
+        type: select
+        required: true
+        options:
+          values:
+            - value: partnership
+              label: Monthly partnership
+            - value: project
+              label: One-time project
+            - value: event
+              label: Event service
+      - name: pricingId
+        label: Pricing id (matches an id on the Pricing page)
+        type: string
+        required: true
+      - name: order
+        label: Order
+        type: number
+      - name: fit
+        label: Plain-English fit
+        type: string
+        required: true
+      - name: pitch
+        label: Witty pitch
+        type: text
+        required: true
+      - name: includes
+        label: Extra included items (optional; Pricing list is used if empty)
+        type: string
+        list: true
+      - name: photo
+        label: Photo (optional)
+        type: object
+        fields:
+          - name: src
+            label: Photo
+            type: image
+            required: true
+          - name: alt
+            label: Alt text
+            type: string
+            required: true
+            description: "Describe the photo for people who can't see it. Example: \"Founder laughing at a whiteboard covered in sticky notes\""
+          - name: caption
+            label: Caption (optional)
+            type: string
+          - name: placeholder
+            label: This is a placeholder photo
+            type: boolean
+            default: false
+            description: Untick once the real photo is in. The live site won't publish while any are ticked.
+      - name: draft
+        label: Draft (hide from the site)
+        type: boolean
+      - name: body
+        label: Longer description
+        type: rich-text
+        options:
+          format: markdown
+  - name: router
+    label: Which One Are You?
+    type: file
+    path: content/router.yml
+    fields:
+      - name: heading
+        label: Heading
+        type: string
+        required: true
+      - name: kicker
+        label: Handwritten kicker
+        type: string
+      - name: instructions
+        label: Instructions
+        type: string
+        required: true
+      - name: resultPrefix
+        label: Result prefix
+        type: string
+        required: true
+      - name: resultCta
+        label: Result button
+        type: string
+        required: true
+      - name: notes
+        label: Sticky notes
+        type: object
+        list:
+          min: 2
+          max: 8
+        fields:
+          - name: says
+            label: What the customer says
+            type: text
+            required: true
+          - name: target
+            label: Points to (service file name, "events" or "blind-date")
+            type: string
+            required: true
+          - name: targetLabel
+            label: Custom target label (optional)
+            type: string
+          - name: color
+            label: Note color
+            type: select
+            options:
+              values:
+                - value: butter
+                  label: Butter yellow
+                - value: rose
+                  label: Rose
+                - value: sage
+                  label: Sage
+                - value: sky
+                  label: Sky blue
+  - name: values
+    label: House rules (promises)
+    type: file
+    path: content/values.yml
+    fields:
+      - name: heading
+        label: Heading
+        type: string
+        required: true
+      - name: kicker
+        label: Handwritten kicker
+        type: string
+      - name: promises
+        label: Promises
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: Short id
+            type: string
+            required: true
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: style
+            label: Looks like
+            type: select
+            options:
+              values:
+                - value: stamp
+                  label: Rubber stamp
+                - value: tag
+                  label: Tag on a ring
+                - value: note
+                  label: Sticky note
+          - name: body
+            label: Body
+            type: text
+            required: true
+          - name: closing
+            label: Closing line
+            type: string
+      - name: radio
+        label: Radio line
+        type: object
+        fields:
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: body
+            label: Body
+            type: text
+            required: true
+  - name: faq
+    label: FAQ
+    type: file
+    path: content/faq.yml
+    fields:
+      - name: heading
+        label: Heading
+        type: string
+        required: true
+      - name: kicker
+        label: Handwritten kicker
+        type: string
+      - name: items
+        label: Questions
+        type: object
+        list: true
+        fields:
+          - name: question
+            label: Question
+            type: string
+            required: true
+          - name: answer
+            label: Answer
+            type: text
+            required: true
+            description: "Shortcuts: {fee:onboarding}, {pct:community}, {areas}"
+          - name: draft
+            label: Draft (hide from the site)
+            type: boolean
+  - name: reviews
+    label: Reviews
+    type: collection
+    path: content/reviews
+    format: yaml
+    filename: "{year}-{month}-{day}-{primary}.yml"
+    view:
+      fields:
+        - author
+        - rating
+        - source
+        - draft
+      primary: author
+    fields:
+      - name: author
+        label: Reviewer name (exactly as they agreed to be named)
+        type: string
+        required: true
+      - name: context
+        label: Who they are (optional)
+        type: string
+        description: e.g. Small business owner, Soldotna. Only what they agreed to.
+      - name: source
+        label: Where the review came from
+        type: select
+        required: true
+        options:
+          values:
+            - value: email
+              label: Email
+            - value: message
+              label: Message
+            - value: yelp
+              label: Yelp
+            - value: facebook
+              label: Facebook
+            - value: google
+              label: Google
+      - name: rating
+        label: Stars (1 to 5)
+        type: number
+        required: true
+        options:
+          min: 1
+          max: 5
+      - name: text
+        label: Review
+        type: text
+        required: true
+      - name: date
+        label: Date
+        type: date
+      - name: link
+        label: Link to the original (optional)
+        type: string
+      - name: color
+        label: Sticky note color (optional)
+        type: select
+        options:
+          values:
+            - value: butter
+              label: Butter yellow
+            - value: rose
+              label: Rose
+            - value: sage
+              label: Sage
+            - value: sky
+              label: Sky blue
+      - name: permission
+        label: The reviewer said yes to publishing this
+        type: boolean
+        required: true
+      - name: placeholder
+        label: Sample only (never published)
+        type: boolean
+      - name: draft
+        label: Draft (hide from the site)
+        type: boolean
+  - name: team
+    label: Team
+    type: collection
+    path: content/team
+    format: yaml-frontmatter
+    view:
+      fields:
+        - name
+        - title
+        - order
+      primary: name
+      sort:
+        - order
+    fields:
+      - name: name
+        label: Name
+        type: string
+        required: true
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: funFact
+        label: Fun fact
+        type: string
+      - name: photo
+        label: Photo
+        type: object
+        fields:
+          - name: src
+            label: Photo
+            type: image
+            required: true
+          - name: alt
+            label: Alt text
+            type: string
+            required: true
+            description: "Describe the photo for people who can't see it. Example: \"Founder laughing at a whiteboard covered in sticky notes\""
+          - name: caption
+            label: Caption (optional)
+            type: string
+          - name: placeholder
+            label: This is a placeholder photo
+            type: boolean
+            default: false
+            description: Untick once the real photo is in. The live site won't publish while any are ticked.
+      - name: order
+        label: Order
+        type: number
+      - name: placeholder
+        label: Still a placeholder
+        type: boolean
+      - name: draft
+        label: Draft (hide from the site)
+        type: boolean
+      - name: body
+        label: Bio
+        type: rich-text
+        options:
+          format: markdown
+  - name: policies
+    label: Held-back policies (not on the site)
+    type: collection
+    path: content/policies
+    format: yaml-frontmatter
+    view:
+      fields:
+        - title
+        - draft
+      primary: title
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: heldBackReason
+        label: Why it's held back
+        type: string
+      - name: draft
+        label: Draft (keep off the site until approved)
+        type: boolean
+        default: true
+      - name: body
+        label: Policy text
+        type: rich-text
+        options:
+          format: markdown

@@ -1,0 +1,124 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SITE SETTINGS — contact details, hours, socials, navigation and the little
+# bits of microcopy used everywhere. Edit in Pages CMS ("Site settings").
+#
+# Anything with `placeholder: true` is a stand-in. When you put the real
+# details in, switch `placeholder` to false. The live site will refuse to
+# publish while any placeholder is still switched on.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: Oddly Perfect LLC
+shortName: Oddly Perfect
+tagline: PR and marketing, tailored until it fits oddly perfectly.
+description: >-
+  PR, marketing and social media management on Alaska's Kenai Peninsula. Witty,
+  organized, three steps ahead. Serving Soldotna, Kenai and beyond.
+locale: en-US
+region: Central Kenai Peninsula, Alaska
+
+phone:
+  display: (907) 555-0142
+  tel: "+19075550142"
+  placeholder: true
+
+email:
+  address: hello@oddlyperfectllc.com
+  placeholder: true
+
+hours:
+  placeholder: true
+  heading: Office Hours
+  rows:
+    - days: Monday to Thursday
+      time: 9 am to 5 pm
+    - days: Friday
+      time: 9 am to 3 pm
+    - days: Weekends
+      time: Closed (and recharging)
+  note: Alaska Time. Leave a voicemail after hours and we'll call you back the next business day.
+
+socials:
+  - platform: facebook
+    label: Facebook
+    url: https://www.facebook.com/
+    placeholder: true
+  - platform: instagram
+    label: Instagram
+    url: https://www.instagram.com/
+    placeholder: true
+  - platform: linkedin
+    label: LinkedIn
+    url: https://www.linkedin.com/
+    placeholder: true
+
+serviceArea:
+  - Soldotna
+  - Kenai
+  - Nikiski
+  - Sterling
+  - Kasilof
+
+blindDate:
+  title: Complimentary Blind Date With a Marketer
+  shortTitle: The Blind Date
+  duration: 30 minutes
+  blurb: >-
+    Thirty minutes, one phone call, zero obligation. We'll find out if we're
+    right for each other before anybody picks out curtains.
+  isNot: It's a fit consultation, not a free strategy session. We save the good stuff for the second date.
+  cta: Book the Blind Date
+
+announcement:
+  enabled: false
+  text: Now booking spring campaigns. The calendar fills faster than you'd think.
+  linkLabel: See pricing
+  link: /pricing
+
+analytics:
+  ga4Id: ""
+  placeholder: true
+
+logo:
+  # The logo is drawn as a stand-in wordmark until the real SVG arrives.
+  placeholder: true
+  alt: Oddly Perfect LLC home
+
+nav:
+  - label: Home
+    href: /
+    icon: home
+  - label: Services
+    href: /services
+    icon: services
+  - label: Pricing
+    href: /pricing
+    icon: pricing
+  - label: Reviews
+    href: /reviews
+    icon: reviews
+  - label: About
+    href: /about
+    icon: about
+
+legalNav:
+  - label: Privacy
+    href: /privacy
+  - label: Terms
+    href: /terms
+  - label: Accessibility
+    href: /accessibility
+
+microcopy:
+  skipLink: Skip to the good part
+  callLabel: Call
+  callLong: Call Us
+  emailLabel: Email Us
+  phoneAria: Call Oddly Perfect at
+  themeToLight: Lights on
+  themeToDark: After hours
+  themeAria: Switch color theme
+  menuLabel: Main
+  tabBarLabel: Quick tabs
+  socialsLabel: Find us online
+  loading: Sharpening pencils...
+  backToTop: Back to the top of the binder

@@ -1,0 +1,29 @@
+# "WHICH ONE ARE YOU?" — the plain-English router.
+# Each note is something a real person says. `target` points at a service:
+#   a service file name from Services (plan, done, plate, campaign-sprint ...)
+#   or `events` (the event services drawer) or `blind-date`.
+heading: Which One Are You?
+kicker: Find your note. We'll draw the arrow.
+instructions: Pick the sticky note that sounds most like you.
+resultPrefix: Sounds like
+resultCta: See what's inside
+notes:
+  - says: I can do the work. I just need someone to tell me what makes sense.
+    target: plan
+    color: butter
+  - says: I know we need marketing, but nobody has time to make it happen.
+    target: done
+    color: rose
+  - says: Marketing keeps landing back on my desk. I need someone to own it.
+    target: plate
+    color: sage
+  - says: We have one big thing we need people to know about.
+    target: campaign-sprint
+    color: sky
+  - says: We need help with an event, but not a full event-production company.
+    target: events
+    targetLabel: Choose from event services
+    color: butter
+  - says: I have no idea which one I need.
+    target: blind-date
+    color: rose

@@ -1,0 +1,428 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# PRICING — the single source of truth for every number on the site and the
+# Quick Pricing Sheet PDF. Edit in Pages CMS ("Pricing") or here.
+#
+# Prices: change `amount` only. The site formats it ($1,500) automatically.
+# Fill `display` ONLY if you want custom wording instead (e.g. "$0").
+#
+# Shortcuts you can type inside any sentence on this page:
+#   {fee:out-of-scope}  → "$225/hr"  (any fee id from the `fees` list below)
+#   {pct:community}     → "10%"
+# so a sentence never goes stale when a number changes.
+# ─────────────────────────────────────────────────────────────────────────────
+
+currency: USD
+
+# ── Monthly Marketing Partnerships ──────────────────────────────────────────
+partnershipsIntro:
+  heading: Monthly Marketing Partnerships
+  kicker: Pick a folder. Any folder.
+  blurb: >-
+    Three levels of help, priced in plain sight. Flex is the headline price;
+    month-to-month is the fine print on the back of the note.
+  flexLabel: 12-Month Flex
+  monthlyLabel: Month-to-Month
+  perMonth: /mo
+  highlightSticker: Crowd Favorite
+
+partnerships:
+  - id: plan
+    name: I Need a Plan
+    flexPrice: { amount: 1500 }
+    monthlyPrice: { amount: 1750 }
+    fitLine: You can do the work. You need experienced direction.
+    bestFor: >-
+      A business with someone who can handle the day-to-day work but needs
+      experienced help deciding what to do, what to say, where to spend money
+      and what should happen next.
+    highlight: false
+    includes:
+      - One main marketing goal at a time
+      - One 60-minute planning meeting each month
+      - Rolling 90-day marketing plan
+      - Marketing calendar
+      - Campaign ideas and direction
+      - Advertising and media guidance
+      - Messaging help
+      - Community partnership and visibility ideas
+      - Sponsorship strategy guidance
+      - Review and feedback on up to 4 client-created marketing items each month
+      - Help evaluating what is working and what is not
+      - Recommendations for outside specialists when needed
+    example: >-
+      You need to recruit seasonal employees. We define the audience, message,
+      advertising approach, timeline and what your staff should create. Your
+      team executes, and we make sure they are working from a good plan.
+    notes: []
+    boundary: ""
+
+  - id: done
+    name: Help Me Get It Done
+    flexPrice: { amount: 2750 }
+    monthlyPrice: { amount: 3150 }
+    fitLine: You need strategy plus someone helping make sure the work happens.
+    bestFor: >-
+      A business that doesn't just need ideas. It needs someone helping make
+      sure the marketing actually happens.
+    highlight: true
+    includes:
+      - Two main marketing goals at a time
+      - Two working/planning meetings each month
+      - Marketing plan and calendar management
+      - Campaign development
+      - Copywriting
+      - Social media content
+      - Email and newsletter content
+      - Radio, print and digital advertising copy
+      - Press releases when appropriate
+      - Simple graphics using the existing brand
+      - Basic website copy updates
+      - Advertising and media coordination
+      - Coordination with existing vendors and media representatives
+      - Community partnership ideas
+      - Sponsorship strategy
+      - Simple monthly reporting
+      - Up to 8 routine finished marketing items per month
+    example: ""
+    notes:
+      - label: Routine items include
+        text: >-
+          Social post with simple graphic, customer email, radio script,
+          print/digital ad, press release, basic flyer, simple branded graphic,
+          short website copy update or similar communication.
+      - label: Important
+        text: >-
+          We use the available production capacity where the business needs it.
+          We don't manufacture content just to fill a quota.
+    boundary: ""
+
+  - id: plate
+    name: Take Marketing Off My Plate
+    flexPrice: { amount: 4250 }
+    monthlyPrice: { amount: 4850 }
+    fitLine: You need someone to largely own and coordinate marketing.
+    bestFor: >-
+      A business with enough marketing happening that somebody needs to own
+      it, but that doesn't necessarily need to hire an in-house marketing
+      director and team.
+    highlight: false
+    includes:
+      - Three to four main marketing goals at a time
+      - More frequent strategy and working meetings
+      - Annual and quarterly planning
+      - Marketing budget guidance
+      - Coordination across advertising channels
+      - Vendor oversight
+      - Public relations and business communications
+      - Community partnership development
+      - Sponsorship strategy
+      - Campaign management
+      - Leadership-level marketing guidance
+      - Participation in appropriate leadership meetings
+      - More detailed reporting and recommendations
+      - Up to 12 routine finished marketing items per month
+      - Up to 2 larger communications pieces per month
+    example: ""
+    notes:
+      - label: Larger pieces include
+        text: >-
+          Substantial newsletter, media package, multi-version advertising
+          campaign, larger promotional piece or comparable assignment.
+    boundary: >-
+      Large events, complete rebrands, website development, major
+      publications, extensive professional photo/video and unusually large
+      standalone campaigns remain separate.
+
+# ── The 12-Month Flex Partnership ───────────────────────────────────────────
+flex:
+  name: The 12-Month Flex Partnership
+  tagline: Commit to us. Not to one package.
+  blurb: >-
+    Twelve months together, and you're free to change lanes. Busy season?
+    Move up. Quiet stretch? Move down. We'll be there either way.
+  rules:
+    - 12 consecutive months. Move between any of the three monthly service levels.
+    - Written request at least 5 calendar days before month-end. The new tier begins the first day of the following month.
+    - No mid-month changes, no prorating, maximum one tier change per month, unused monthly scope doesn't roll over.
+    - Tier pricing is locked for the contract year.
+    - Separately contracted projects, events, outside expenses and prior commitments are unaffected by tier changes.
+  benefitsHeading: Flex Partner Perks
+  benefits:
+    - Waived {fee:onboarding} onboarding fee
+    - Locked pricing for the contract year
+    - Priority scheduling for available projects and events
+    - 10% off separately contracted professional-service projects
+
+# ── One-Time Marketing Projects ─────────────────────────────────────────────
+projectsIntro:
+  heading: One-Time Marketing Projects
+  kicker: The Project Drawer
+  blurb: >-
+    Not ready for a monthly relationship? Totally fine. Pull out one folder,
+    get one very well-organized thing done.
+  needLabel: When someone needs it
+  includesLabel: What's included
+
+projects:
+  - id: checkup
+    name: Marketing Checkup + 90-Day Plan
+    price: { amount: 2500 }
+    need: Tell us what is working, what is not, and what to do next.
+    includes:
+      - Review of current marketing, messaging, advertising and communications
+      - A prioritized 90-day action plan
+  - id: annual-plan
+    name: Annual Marketing Plan
+    price: { amount: 3500 }
+    need: Build the priorities, calendar and major marketing roadmap for the year.
+    includes:
+      - Priorities and calendar
+      - Major campaigns and seasonal opportunities
+      - Advertising approach
+      - Communications roadmap
+  - id: messaging-reset
+    name: Messaging Reset
+    price: { amount: 3000 }
+    need: We know what we do; we just do not explain it very well.
+    includes:
+      - Key messages and audience
+      - Business description
+      - Talking points
+      - Core marketing language
+  - id: campaign-sprint
+    name: Campaign Sprint
+    price: { amount: 4500 }
+    need: One important thing needs focused promotion for roughly 4-6 weeks.
+    includes:
+      - One focused 4-6 week campaign
+      - Concept, audience and messaging
+      - Rollout plan and media recommendations
+      - Up to 8 campaign communications
+  - id: pr-announcement
+    name: PR Announcement
+    price: { amount: 1500 }
+    need: We have news and need help telling people.
+    includes:
+      - Messaging consultation
+      - One polished press release
+      - Media contact strategy and distribution guidance
+      - One follow-up cycle
+  - id: sponsorship-program
+    name: Sponsorship Program
+    price: { amount: 3500 }
+    need: Build a professional sponsorship structure and tools. No sponsor solicitation.
+    includes:
+      - Levels and pricing recommendations
+      - Benefits and packet copy
+      - Tracking and fulfillment
+      - Recognition and renewal tools
+
+revisionRule:
+  heading: The Revision Rule
+  points:
+    - Fixed-price projects include two reasonable revision rounds unless the scope says otherwise.
+    - A completely new direction after approval is new work.
+    - Additional revisions are {fee:out-of-scope} with advance approval.
+    - We never bill a client to correct our own mistake.
+
+# ── Event Services ──────────────────────────────────────────────────────────
+eventsIntro:
+  heading: Event Services
+  kicker: The Event Drawer
+  positioning: >-
+    We are a marketing and communications firm that knows how to run a very
+    good event. We are not a full-service event production company.
+
+events:
+  - id: plan-it
+    name: Help Us Plan It
+    price: { amount: 3000 }
+    tagline: You execute it; we build the roadmap.
+    includes:
+      - Kickoff
+      - Event goals/concept
+      - Preliminary budget framework
+      - Planning timeline
+      - Venue/space considerations
+      - Vendor-needs checklist
+      - Registration/ticketing recommendations
+      - Sponsorship-opportunity recommendations
+      - Staffing/volunteer planning
+      - Marketing roadmap
+      - Preliminary schedule
+      - Run-of-show framework
+      - Final planning meeting
+      - Two reasonable revision rounds
+  - id: promote-it
+    name: Help Us Promote It
+    price: { amount: 4500 }
+    tagline: You have the logistics; we help get people there.
+    includes:
+      - Event positioning and messaging
+      - Promotion timeline
+      - Advertising/media recommendations
+      - Social plan
+      - Email strategy
+      - PR approach when appropriate
+      - Sponsor-recognition plan
+      - Community-promotion opportunities
+      - Up to 8 finished event-marketing pieces
+  - id: run-event-day
+    name: Run Event Day
+    price: { amount: 2500 }
+    tagline: You planned it; we run the room.
+    includes:
+      - Advance handoff
+      - Review of existing plan
+      - Final timeline and run-of-show
+      - Vendor confirmations
+      - Event-day point person
+      - Vendor arrival coordination
+      - Program/timeline management
+      - Troubleshooting
+      - Up to 10 consecutive onsite hours
+  - id: coordinate
+    name: Coordinate the Event
+    price: { amount: 6500 }
+    tagline: You know what the event is; we make sure the moving pieces come together.
+    scope: For a defined one-day event with one primary location.
+    includes:
+      - Kickoff
+      - Detailed timeline
+      - Budget tracking
+      - Up to 6 planning meetings
+      - Coordination with up to 10 primary vendors
+      - Venue
+      - Registration/ticketing
+      - Sponsor logistics/fulfillment
+      - Signage/material coordination
+      - Staffing/volunteer planning
+      - Run-of-show
+      - Confirmations
+      - Event-day lead management
+      - Up to 10 onsite hours
+      - Post-event wrap-up
+
+eventBoundaries:
+  heading: Friendly Honesty About Events
+  items:
+    - No full-service event production
+    - No large multi-day production management
+    - No unlimited vendor management
+    - No sponsor solicitation
+    - No paid access to personal or professional relationships
+  responsibility: >-
+    You keep responsibility for vendor contracts and major decisions, and
+    outside vendors are paid directly by you whenever practical.
+  sponsorship: >-
+    We help build a sponsorship program worth saying yes to. We don't sell
+    access to contacts or make sponsor asks on a paying client's behalf. You
+    own the relationships; we build the structure and tools.
+
+# ── Published fees ──────────────────────────────────────────────────────────
+# `id` is what the {fee:id} shortcut uses. Don't rename an id unless you
+# also update every sentence that uses it (the build will tell you).
+fees:
+  - id: blind-date
+    name: Complimentary Blind Date With a Marketer
+    price: { amount: 0, display: "$0" }
+    note: 30-minute fit consultation. No obligation. Not a free strategy session.
+  - id: out-of-scope
+    name: Out-of-Scope Professional Services
+    price: { amount: 225, unit: hr }
+    note: 15-minute increments. Always disclosed and approved before work begins.
+  - id: after-hours
+    name: After-Hours / Weekend Work
+    price: { amount: 300, unit: hr }
+    note: One-hour minimum when unscheduled work is specifically requested and accepted.
+  - id: travel
+    name: Travel Time Outside Local Area
+    price: { amount: 125, unit: hr }
+    note: 30-minute increments, plus the current IRS business mileage rate.
+  - id: onboarding
+    name: Month-to-Month Onboarding
+    price: { amount: 750 }
+    note: Waived for 12-month Flex clients.
+
+feesFootnote: >-
+  No surprise hourly bills. Normal emails, regular calls, scheduled meetings
+  and ordinary communication required to deliver the package are not tracked
+  with a stopwatch.
+
+# ── Rush tables ("The Hurry-Up Fees") ───────────────────────────────────────
+rush:
+  heading: "Rush Policy: Marketing and Projects"
+  rows:
+    - when: Within 2 business days
+      surcharge: 25
+    - when: By the next business day
+      surcharge: 35
+    - when: Same business day
+      surcharge: 50
+  minimum: { amount: 225 }
+  notes:
+    - Subject to capacity, because paying a rush fee doesn't purchase impossible capacity.
+    - No rush fee when the compressed timeline is caused by our own mistake or delay.
+
+eventRush:
+  heading: Event Rush Policy
+  rows:
+    - when: Booked 30-44 days before the event
+      surcharge: 15
+    - when: Booked 14-29 days before
+      surcharge: 25
+    - when: Booked 7-13 days before
+      surcharge: 40
+    - when: Fewer than 7 days before
+      surcharge: 50
+      note: if accepted
+
+# ── Community Rate ──────────────────────────────────────────────────────────
+communityRate:
+  heading: Community Rate
+  headline: Nonprofits Save {pct:community}
+  percent: 10
+  body: >-
+    Qualified nonprofit organizations automatically receive {pct:community}
+    off professional service fees. No special ask, no private negotiation, no
+    different discount depending on the organization.
+  rules:
+    - Discounts don't stack.
+    - Third-party expenses are not discounted.
+
+# ── What's not hidden inside monthly retainers ──────────────────────────────
+notIncluded:
+  heading: Not Hiding In Your Retainer
+  intro: >-
+    Monthly packages cover our professional time. These outside costs are
+    always separate, and always out in the open:
+  items:
+    - Paid advertising spend
+    - Printing and postage
+    - Website development/programming
+    - New brand identity or complete rebrand
+    - Extensive custom graphic design
+    - Professional photography or video
+    - Audio production
+    - Major publications
+    - Specialty software purchased for the client
+    - Venue, catering, rentals and entertainment
+    - Extensive event planning
+    - Substantial travel
+    - Other outside vendors and specialty production
+  rule: >-
+    We tell you before work crosses from included monthly service into
+    {fee:out-of-scope} out-of-scope work or a separately priced project.
+    Every time. Before.
+
+# ── Travel and service area ─────────────────────────────────────────────────
+# The list of local communities lives in Site Settings → Service area, so it
+# only has to be typed once.
+travel:
+  heading: Travel and Service Area
+  localLine: No added travel fee within
+  terms:
+    - Outside those communities, remote meetings are the default.
+    - If in-person travel is requested and accepted, travel time is {fee:travel} in 30-minute increments plus the current IRS standard business mileage rate.
+    - Airfare, lodging, rental vehicle and necessary travel expenses are client-paid at actual cost with no markup.
+    - You may book and pay major travel expenses directly whenever practical.

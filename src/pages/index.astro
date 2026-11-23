@@ -1,0 +1,12 @@
+---
+import '~/styles/fonts.css';
+import '~/styles/tokens.css';
+import '~/styles/base.css';
+import { getSite, getPricing, formatPrice, fill } from '~/lib/content';
+const site = await getSite();
+const pricing = await getPricing();
+---
+<html lang="en"><head><meta charset="utf-8" /><title>{site.name}</title></head>
+<body><main class="container"><h1>{site.name}</h1>
+<ul>{pricing.partnerships.map((p) => <li>{p.name}: {formatPrice(p.flexPrice)}</li>)}</ul>
+<p>{fill(pricing.notIncluded.rule, pricing, site)}</p></main></body></html>

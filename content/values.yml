@@ -1,0 +1,29 @@
+# HOUSE RULES — the promises. Plain-spoken on purpose.
+heading: House Rules
+kicker: The fine print, but make it readable.
+promises:
+  - id: kickbacks
+    title: No Kickbacks. No Markups. No Funny Business.
+    style: stamp
+    body: >-
+      Need a photographer, videographer, radio or TV station, web developer,
+      printer, designer, event vendor or other specialist? We help you find
+      good options and take no cut. No referral commissions, media commissions,
+      vendor kickbacks, hidden markups or rebates tied to your spending. You
+      contract with and pay outside vendors directly whenever practical.
+    closing: We do not make more money when you spend more money. And we like it that way.
+  - id: relationships
+    title: Our Relationships Are Not for Sale.
+    style: tag
+    body: >-
+      We may point out the types of partners, organizations or opportunities
+      worth pursuing, and help you build a smart approach. We don't sell
+      contact lists, promise personal introductions, solicit sponsors, or use
+      private professional relationships simply because you've retained us.
+    closing: You own your relationships. We just make you very easy to say yes to.
+radio:
+  title: Yes, We Do Radio
+  body: >-
+    We write radio commercial copy, recommend radio when it makes sense, and
+    keep your campaign messaging consistent across every channel. We don't
+    sell airtime and we don't mark up media.

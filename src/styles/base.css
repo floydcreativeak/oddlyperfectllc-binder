@@ -1,0 +1,195 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE: reset, typography, focus, buttons and a few layout utilities.
+   Reads only from tokens.css.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + var(--space-s));
+  hanging-punctuation: first last;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+body {
+  min-height: 100dvh;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: var(--leading-body);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  /* Manila paper fibre: a tiny tiled SVG, not an image download. */
+  background-image: var(--paper-texture);
+  background-size: 180px 180px;
+}
+:root {
+  --paper-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .15 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme='dark'] {
+  --paper-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .94 0 0 0 0 .91 0 0 0 0 .85 0 0 0 .035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+img, picture, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: inherit; }
+p, li, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
+::selection { background: var(--selection); color: var(--note-ink); }
+
+/* ── Typography ─────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, .display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+h1, .h1 { font-size: var(--step-5); }
+h2, .h2 { font-size: var(--step-4); }
+h3, .h3 { font-size: var(--step-2); line-height: var(--leading-snug); }
+h4, .h4 { font-size: var(--step-1); line-height: var(--leading-snug); }
+p { text-wrap: pretty; max-width: var(--measure); }
+strong, b { font-weight: 700; }
+small { font-size: var(--step--1); }
+
+.hand {
+  font-family: var(--font-hand);
+  font-size: var(--hand-size);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+}
+.kicker {
+  font-family: var(--font-hand);
+  font-size: var(--step-1);
+  color: var(--accent-ink);
+  line-height: 1.2;
+}
+.lede { font-size: var(--step-1); line-height: 1.5; color: var(--ink-soft); }
+.muted { color: var(--ink-soft); }
+
+a:not([class]) {
+  color: var(--accent-ink);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  transition: text-decoration-color var(--dur-fast) var(--ease-out);
+}
+a:not([class]):hover { text-decoration-color: transparent; }
+
+/* ── Focus: always visible, ink ring + coral halo ───────────────────────── */
+:focus { outline: none; }
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--focus-halo) 45%, transparent);
+  border-radius: var(--radius-xs);
+}
+@supports not (color: color-mix(in srgb, red, blue)) {
+  :focus-visible { box-shadow: 0 0 0 7px var(--accent-wash); }
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────────── */
+.visually-hidden:not(:focus):not(:active) {
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+.container {
+  width: min(100% - 2 * var(--gutter), var(--content-max));
+  margin-inline: auto;
+}
+.prose { max-width: var(--prose-max); }
+.prose > * + * { margin-top: 1em; }
+.prose h2 { font-size: var(--step-3); margin-top: 1.6em; }
+.prose h3 { margin-top: 1.4em; }
+.prose ul, .prose ol { padding-left: 1.25em; }
+.prose li + li { margin-top: 0.35em; }
+.stack > * + * { margin-top: var(--stack, var(--space-s)); }
+.nowrap { white-space: nowrap; }
+
+/* ── Skip link ──────────────────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: var(--space-2xs);
+  left: var(--space-2xs);
+  z-index: calc(var(--z-intro) + 1);
+  padding: var(--space-xs) var(--space-s);
+  background: var(--note-butter);
+  color: var(--note-ink);
+  font-family: var(--font-hand);
+  font-size: var(--step-1);
+  border-radius: var(--radius-note);
+  box-shadow: var(--shadow-note);
+  transform: translateY(-200%) rotate(-2deg);
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+.skip-link:focus-visible { transform: translateY(0) rotate(-2deg); }
+
+/* ── Buttons: squish on press, spring back ──────────────────────────────── */
+.btn {
+  --btn-bg: var(--accent-ink);
+  --btn-fg: var(--on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  min-height: var(--tap);
+  padding: 0.7rem 1.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--step-0);
+  line-height: 1.1;
+  text-decoration: none;
+  box-shadow: var(--shadow-1);
+  transition:
+    transform var(--dur-spring) var(--ease-spring),
+    box-shadow var(--dur-base) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.btn:hover { transform: translateY(calc(-2px * var(--motion-distance))) rotate(calc(-1deg * var(--motion-distance))); box-shadow: var(--shadow-2); }
+.btn:active { transform: scale(var(--squish)); transition-duration: var(--dur-instant); }
+.btn svg { width: 1.2em; height: 1.2em; flex: none; }
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+.btn--ghost:hover { box-shadow: inset 0 0 0 2px currentColor, var(--shadow-1); }
+.btn--note {
+  --btn-bg: var(--note-butter);
+  --btn-fg: var(--note-ink);
+  border-radius: var(--radius-note);
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: var(--step-1);
+  box-shadow: var(--shadow-note);
+}
+
+/* ── Global reduced-motion safety net ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Opacity fades are still allowed where a component opts in. */
+  .allow-fade { transition: opacity 200ms ease-out !important; }
+}

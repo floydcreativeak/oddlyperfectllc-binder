@@ -1,0 +1,65 @@
+# FAQ — questions and answers for the accordion.
+# `draft: true` keeps an answer off the site until it's approved.
+heading: Questions We Get A Lot
+kicker: Asked and answered, briskly.
+items:
+  - question: What is a "Complimentary Blind Date With a Marketer"?
+    answer: >-
+      A 30-minute fit consultation to see if we're right for each other. It's
+      free and there's no obligation. It is not a free strategy session; we
+      save the good stuff for the second date.
+    draft: false
+  - question: Do I have to commit to a year?
+    answer: >-
+      Nope. Month-to-month is available at a higher monthly price plus a
+      {fee:onboarding} onboarding fee. The 12-Month Flex Partnership lets you
+      commit to us rather than to one package, and it waives that fee.
+    draft: false
+  - question: Do I have to commit to a year? (with minimum term)
+    answer: >-
+      Month-to-month is available (higher price, {fee:onboarding} onboarding,
+      3-month minimum), but 12-Month Flex lets you commit to us rather than to
+      one package.
+    draft: true
+  - question: Can I switch packages?
+    answer: >-
+      Flex clients can move up or down once a month. Send written notice at
+      least 5 calendar days before month-end and the new tier starts on the
+      first of the next month. Tidy, right?
+    draft: false
+  - question: Do you take commissions or markups?
+    answer: Never. Not from vendors, not from media, not from anybody. We don't earn more when you spend more.
+    draft: false
+  - question: Will you find sponsors for me or introduce me to people?
+    answer: >-
+      No. We build the sponsorship program and the tools that make it
+      irresistible. You own the relationships and make the asks.
+    draft: false
+  - question: Where do you work?
+    answer: >-
+      In person, with no travel fee, in {areas}. Remote everywhere else, and
+      travel is billed only if it's requested and accepted.
+    draft: false
+  - question: What if I need it fast?
+    answer: >-
+      We can hustle. Rush fees apply, subject to capacity, because a rush fee
+      buys priority, not a time machine. The full Hurry-Up Fees are on the
+      pricing page.
+    draft: false
+  - question: Do nonprofits get a discount?
+    answer: Yes. {pct:community} off professional service fees, automatically. No secret handshake required.
+    draft: false
+  - question: What's not included in a monthly package?
+    answer: >-
+      Outside costs like ad spend, printing and postage, website development,
+      rebrands, professional photo or video, audio production, major
+      publications, venues and catering, substantial travel and other outside
+      vendors. We'll always tell you before anything crosses from included
+      work into {fee:out-of-scope} or a separately priced project.
+    draft: false
+  - question: Do you run events?
+    answer: >-
+      We plan, promote, coordinate and run events, and we're very good at it.
+      We're not a full-service event production company, and we're upfront
+      about that.
+    draft: false

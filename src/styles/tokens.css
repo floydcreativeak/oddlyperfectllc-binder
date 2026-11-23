@@ -1,0 +1,241 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS: "The Binder"
+   The one place for colors, fonts, spacing, radii, shadows and motion.
+   Components only ever read these variables, never raw values.
+
+   Themes
+   - Light ("the clean office") is the default.
+   - Dark ("after hours office") applies when <html data-theme="dark">.
+     A tiny inline script in the <head> sets data-theme before first paint
+     (saved choice, else the system setting), so there's no flash.
+   - Without JavaScript, the system setting is used (media query below).
+     Keep the two dark blocks identical.
+
+   Contrast (checked with scripts/contrast.mjs; AA = 4.5:1 text, 3:1 UI/large)
+   - ink on paper 11.7, ink on every note color ≥ 7.9
+   - accent-ink on paper 4.65, on surface 5.08 (links, button fill)
+   - on-accent (cream) on accent-ink 5.08
+   - brand coral (--accent) on paper is 2.9: decoration or large display only,
+     never body text.
+   - dark: text on bg 13.0, accent on bg 6.4, accent on surface 5.6
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+
+  /* ── Color: surfaces ──────────────────────────────────────────────────── */
+  --paper: #f3e9d2;          /* manila page background                      */
+  --surface: #faf3e3;        /* cards, spec sheets, folders (never #fff)    */
+  --surface-2: #e8dcc0;      /* recessed: inputs, folder tabs at rest       */
+  --cork: #c9a27a;           /* the cork board                              */
+  --cork-dot: #b48b61;       /* cork speckle (decorative only)              */
+  --whiteboard: #f7efdd;     /* the hero whiteboard (warm, not white)       */
+  --whiteboard-rim: #d8ccb0; /* whiteboard frame                            */
+
+  /* ── Color: text ──────────────────────────────────────────────────────── */
+  --ink: #2b2a33;            /* body + headings (never #000)                */
+  --ink-soft: #5e5a66;       /* secondary text, 5.5:1 on paper              */
+  --note-ink: #2b2a33;       /* text on sticky notes: same in both themes   */
+
+  /* ── Color: accent ────────────────────────────────────────────────────── */
+  --accent: #d9654f;         /* brand coral: pins, tabs, doodles, stickers  */
+  --accent-ink: #b04530;     /* coral that's safe for text + button fills   */
+  --on-accent: #faf3e3;      /* text on --accent-ink                        */
+  --accent-wash: #f0c9b8;    /* soft coral wash behind highlights           */
+
+  /* ── Color: sticky notes (pastels; text is always --note-ink) ─────────── */
+  --note-butter: #f6de8d;
+  --note-rose: #ebb5b0;
+  --note-sage: #b9cdb0;
+  --note-sky: #afcbdd;
+
+  /* ── Color: divider sheets (section color-block shifts) ───────────────── */
+  --sheet-paper: var(--paper);
+  --sheet-sage: #dde5d3;
+  --sheet-sky: #d8e4ea;
+  --sheet-rose: #f1dcd4;
+  --sheet-butter: #f5e8bd;
+  --sheet-cork: var(--cork);
+
+  /* ── Color: UI ────────────────────────────────────────────────────────── */
+  --focus: #2b2a33;          /* focus ring: ink, plus a coral halo          */
+  --focus-halo: #d9654f;
+  --glass: rgb(250 243 227 / 0.72); /* nav glass tint                       */
+  --glass-border: rgb(43 42 51 / 0.08);
+  --line: rgb(43 42 51 / 0.12);     /* the rare hairline                    */
+  --shadow-color: 32 24 12;          /* r g b used by the shadows below      */
+  --star: #c98a12;           /* hand-drawn star stroke, 3:1+ on notes       */
+  --star-fill: #e2a72e;
+  --selection: #f6de8d;
+
+  /* ── Typography ───────────────────────────────────────────────────────── */
+  /* Zilla Slab Bold: chunky, friendly slab for huge Title Case headings.
+     Gochi Hand: marker handwriting for notes and margin scribbles.
+     Figtree: warm, clear sans for body copy. All OFL, self-hosted, subset. */
+  --font-display: 'Zilla Slab', 'Zilla Slab Fallback', Rockwell, 'Roboto Slab', Georgia, serif;
+  --font-hand: 'Gochi Hand', 'Gochi Hand Fallback', 'Comic Sans MS', 'Marker Felt', cursive;
+  --font-body: 'Figtree', 'Figtree Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Fluid type scale (min at 375px → max at 1440px) */
+  --step--1: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-1: clamp(1.1875rem, 1.12rem + 0.3vw, 1.375rem);
+  --step-2: clamp(1.4rem, 1.25rem + 0.65vw, 1.875rem);
+  --step-3: clamp(1.75rem, 1.45rem + 1.25vw, 2.625rem);
+  --step-4: clamp(2.25rem, 1.75rem + 2.2vw, 3.75rem);
+  --step-5: clamp(2.75rem, 1.9rem + 3.6vw, 5.5rem);
+  --step-6: clamp(3.25rem, 2rem + 5.4vw, 7.75rem);  /* hero + footer sign-off */
+  --hand-size: 1.18em;     /* Gochi Hand runs small; nudge it up             */
+  --leading-tight: 1.02;
+  --leading-snug: 1.2;
+  --leading-body: 1.6;
+  --tracking-display: -0.015em;
+  --measure: 62ch;         /* comfortable line length                        */
+
+  /* ── Spacing (4px base) ───────────────────────────────────────────────── */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 6.5rem;
+  --section-pad: clamp(3.5rem, 2.5rem + 5vw, 7.5rem); /* top/bottom of a divider */
+  --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);        /* page side padding      */
+
+  /* ── Layout ───────────────────────────────────────────────────────────── */
+  --content-max: 72rem;      /* medium content width                        */
+  --prose-max: 42rem;
+  --nav-h: 4.25rem;
+  --nav-h-mobile: 3.5rem;
+  --tabbar-h: 4.25rem;       /* plus env(safe-area-inset-bottom)            */
+  --tap: 2.75rem;            /* 44px minimum touch target                   */
+  --divider-tab-w: 2.5rem;   /* index tabs on the right edge (desktop)      */
+
+  /* ── Radii: very rounded, a few squared corners for the hand-made mix ── */
+  --radius-xs: 6px;
+  --radius-s: 12px;
+  --radius-m: 20px;
+  --radius-l: 28px;
+  --radius-xl: 40px;
+  --radius-pill: 999px;
+  --radius-note: 3px 3px 14px 3px; /* sticky notes: one curled corner      */
+
+  /* ── Shadows: soft, warm, layered ─────────────────────────────────────── */
+  --shadow-1: 0 1px 2px rgb(var(--shadow-color) / 0.1), 0 2px 6px rgb(var(--shadow-color) / 0.06);
+  --shadow-2: 0 2px 4px rgb(var(--shadow-color) / 0.08), 0 8px 20px rgb(var(--shadow-color) / 0.1);
+  --shadow-3: 0 4px 8px rgb(var(--shadow-color) / 0.08), 0 18px 40px rgb(var(--shadow-color) / 0.16);
+  --shadow-note: 0 1px 1px rgb(var(--shadow-color) / 0.12), 0 10px 18px -6px rgb(var(--shadow-color) / 0.28);
+  --shadow-lift: 0 6px 10px rgb(var(--shadow-color) / 0.08), 0 26px 48px -10px rgb(var(--shadow-color) / 0.3);
+
+  /* ── Motion ───────────────────────────────────────────────────────────── */
+  /* Spring curves via CSS linear(). --ease-spring overshoots (bouncy),
+     --ease-settle is a gentle overshoot for notes landing ("slap"). */
+  --ease-spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1);
+  --ease-settle: linear(0, 0.063, 0.25 6.6%, 0.795 15.9%, 0.971 21.7%, 1.032 26.5%, 1.044 30.5%, 1.024 39%, 0.997 51.4%, 1.002 66%, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-instant: 90ms;
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 520ms;
+  --dur-spring: 700ms;       /* springs need room to wobble                */
+  --dur-intro: 1300ms;       /* hard cap: intro is gone before 1.5s        */
+  --stagger: 45ms;           /* word-by-word reveal step                   */
+  --lift: -6px;              /* card hover lift                            */
+  --tilt-max: 6deg;          /* card tilt toward the pointer               */
+  --squish: 0.94;            /* button press                               */
+  --motion-distance: 1;      /* multiplier: 0 under reduced motion         */
+
+  /* ── Layers ───────────────────────────────────────────────────────────── */
+  --z-base: 1;
+  --z-sticky: 20;
+  --z-nav: 50;
+  --z-tabbar: 60;
+  --z-overlay: 80;
+  --z-cursor: 90;
+  --z-intro: 100;
+}
+
+/* ── Dark: "after hours office" ─────────────────────────────────────────── */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #23212e;          /* aubergine-ink                               */
+  --surface: #2e2b3b;
+  --surface-2: #3a3649;
+  --cork: #5a4a3e;           /* cork under a desk lamp                      */
+  --cork-dot: #4b3d33;
+  --whiteboard: #2e2b3b;
+  --whiteboard-rim: #45405a;
+  --ink: #f0e8d8;
+  --ink-soft: #c9bfd0;       /* 7.8:1 on surface                            */
+  --note-ink: #2b2a33;       /* notes stay pastel with dark ink: they glow  */
+  --accent: #ee8a72;
+  --accent-ink: #ee8a72;     /* 6.4:1 on bg, 5.6:1 on surface               */
+  --on-accent: #23212e;
+  --accent-wash: #4a3340;
+  --sheet-paper: var(--paper);
+  --sheet-sage: #262c2c;
+  --sheet-sky: #232838;
+  --sheet-rose: #2f2432;
+  --sheet-butter: #2c2a2a;
+  --sheet-cork: var(--cork);
+  --focus: #f6de8d;
+  --focus-halo: #ee8a72;
+  --glass: rgb(35 33 46 / 0.72);
+  --glass-border: rgb(240 232 216 / 0.08);
+  --line: rgb(240 232 216 / 0.14);
+  --shadow-color: 8 6 14;
+  --selection: #5a4a3e;
+}
+
+/* No-JS fallback: follow the system. Keep identical to the block above. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --paper: #23212e;
+    --surface: #2e2b3b;
+    --surface-2: #3a3649;
+    --cork: #5a4a3e;
+    --cork-dot: #4b3d33;
+    --whiteboard: #2e2b3b;
+    --whiteboard-rim: #45405a;
+    --ink: #f0e8d8;
+    --ink-soft: #c9bfd0;
+    --note-ink: #2b2a33;
+    --accent: #ee8a72;
+    --accent-ink: #ee8a72;
+    --on-accent: #23212e;
+    --accent-wash: #4a3340;
+    --sheet-paper: var(--paper);
+    --sheet-sage: #262c2c;
+    --sheet-sky: #232838;
+    --sheet-rose: #2f2432;
+    --sheet-butter: #2c2a2a;
+    --sheet-cork: var(--cork);
+    --focus: #f6de8d;
+    --focus-halo: #ee8a72;
+    --glass: rgb(35 33 46 / 0.72);
+    --glass-border: rgb(240 232 216 / 0.08);
+    --line: rgb(240 232 216 / 0.14);
+    --shadow-color: 8 6 14;
+    --selection: #5a4a3e;
+  }
+}
+
+/* ── Reduced motion: keep fades, drop movement ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ease-spring: ease-out;
+    --ease-settle: ease-out;
+    --dur-spring: 200ms;
+    --dur-slow: 200ms;
+    --stagger: 0ms;
+    --lift: 0px;
+    --tilt-max: 0deg;
+    --squish: 1;
+    --motion-distance: 0;
+  }
+}
