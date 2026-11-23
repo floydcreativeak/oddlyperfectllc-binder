@@ -19,3 +19,72 @@ hero:
     - src: /content/media/placeholders/desk-flatlay.jpg
       alt: Placeholder photo standing in for a desk flat-lay with a binder, sticky notes and coffee.
       placeholder: true
+
+# Each section is a "divider" in the binder. `tab` is the short label on the
+# index tab that sticks out of the right edge (desktop) or the tab strip (mobile).
+heroTab: Hello
+
+services:
+  tab: Services
+  kicker: What's in the binder
+  heading: Pick Your Level Of Help.
+  blurb: >-
+    Three monthly partnerships, six one-time projects and four ways to make an
+    event go smoothly. Not sure where you fit? The sticky notes below will
+    tell on you.
+  cta: Tour every service
+  ctaHref: /services
+
+pricing:
+  tab: Pricing
+  kicker: Prices, printed. Imagine that.
+  heading: No "Call For Pricing" Nonsense.
+  blurb: >-
+    Monthly partnerships, priced in plain sight. Flex is the commitment-friendly
+    price; month-to-month is on the back of the note.
+  cta: See the full price list
+  ctaHref: /pricing
+  downloadLabel: Grab the Quick Pricing Sheet
+
+blindDate:
+  kicker: For the undecided
+  heading: Not Sure Yet? Let's Get Coffee. Figuratively.
+  note: No pressure. No pitch deck. Just a phone call.
+
+contact:
+  tab: Contact
+  kicker: The Post-it station
+  heading: Three Ways To Reach Us. One Is Best.
+  blurb: Calling is fastest. We like email too, we just like you more on the phone.
+  callTitle: Call
+  callNote: The fastest way to a plan.
+  emailTitle: Email
+  emailNote: For the "quick question" that's never quick.
+  hoursTitle: Hours
+
+about:
+  tab: About
+  kicker: Who's running this binder
+  heading: Fun Professionalism, Firmly Organized.
+  body: >-
+    Oddly Perfect is a PR and marketing management firm on Alaska's Kenai
+    Peninsula. We tailor every client's experience until it fits oddly
+    perfectly: the right plan, the right calendar, and someone who actually
+    follows up. Organized, a little bossy, always three steps ahead.
+  points:
+    - Plans you can actually follow
+    - Prices you can actually see
+    - Promises we actually keep
+  cta: Meet the firm
+  ctaHref: /about
+
+reviews:
+  tab: Reviews
+  kicker: The cork board
+  heading: What People Pin About Us.
+  blurb: Real words from real clients, pinned with permission.
+  cta: Visit the cork board
+  ctaHref: /reviews
+
+faq:
+  tab: FAQ

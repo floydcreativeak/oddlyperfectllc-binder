@@ -148,3 +148,12 @@ notFound:
   body: We checked every tab in the binder. Whatever you were after isn't here, but the good stuff is one click away.
   homeLabel: Back to the front of the binder
   callPrompt: Or skip the searching and just call.
+
+# The analytics question. Only appears when a GA4 ID is set above.
+consent:
+  title: Mind If We Count Visits?
+  body: We'd like to use Google Analytics to see which pages are useful. No ads, no selling data. Your call.
+  accept: Yes, count me
+  decline: No thanks
+  settingsLabel: Analytics settings
+  privacyLabel: Read the privacy policy

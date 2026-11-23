@@ -14,8 +14,18 @@ check that fails on any `placeholder: true`).
 | 6 | **GA4 measurement ID** (G-XXXXXXX) | Site settings → Google Analytics | Analytics off |
 | 7 | **Real photos** (portrait, square, 4:3, wide; phone shots are fine) | Pages CMS → Media, then the photo fields | 6 labelled placeholder images |
 | 8 | **Real reviews**, with the source (email, message, Yelp, Facebook, Google) and the reviewer's OK to publish | Pages CMS → Reviews | None. The Reviews page shows the designed empty state, which is fine to launch with. |
-| 9 | **Team bio(s)**: name, title, fun fact, photo | Pages CMS → Team | Founder card held as a flagged placeholder |
+| 9 | **Founder card**: your name as you'd like it shown, title, one fun fact, a short bio, a portrait | Pages CMS → Team → Founder | Card reads "Founder" with a placeholder portrait (flagged) |
 | 10 | **Brochure / pricing sheet** | Generated automatically from Pricing (preferred) | Approval to use the generated one |
+
+## Please read and approve
+
+- **Privacy, Terms and Accessibility pages** (Pages CMS → Page: Privacy / Terms /
+  Accessibility). They're written from how the site actually works. Terms names Alaska
+  law as governing; confirm that with your attorney.
+- **About page story** ("Why Oddly Perfect?") is written from the brief, not from your
+  own words. Swap in your real story whenever you like.
+- **Stickers** ("Fully Booked? Never.", "Loud And Proud", "Fueled By Coffee"): fun, but
+  they speak for you. Delete any that don't sound like you.
 
 ## Decisions waiting on the owner
 

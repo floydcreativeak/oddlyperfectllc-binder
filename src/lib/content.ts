@@ -10,7 +10,7 @@ export type Site = CollectionEntry<'site'>['data'];
 export type Pricing = CollectionEntry<'pricing'>['data'];
 export type Price = Pricing['fees'][number]['price'];
 
-async function single<C extends 'site' | 'home' | 'pricing' | 'router' | 'values' | 'faq'>(c: C) {
+async function single<C extends 'site' | 'home' | 'pricing' | 'router' | 'values' | 'faq' | 'gallery' | 'stickers'>(c: C) {
   const entry = await getEntry(c, 'main');
   if (!entry) throw new Error(`content/${c}.yml is missing or empty.`);
   return entry.data as CollectionEntry<C>['data'];
@@ -19,6 +19,16 @@ async function single<C extends 'site' | 'home' | 'pricing' | 'router' | 'values
 export const getSite = () => single('site');
 export const getPricing = () => single('pricing');
 export const getHome = () => single('home');
+export const getGallery = () => single('gallery');
+export const getStickers = () => single('stickers');
+
+/** An inner page's content (content/pages/<name>.md), narrowed to its own fields. */
+export async function getPage<P extends CollectionEntry<'pages'>['data']['page']>(name: P) {
+  const entry = await getEntry('pages', name);
+  if (!entry) throw new Error(`content/pages/${name}.md is missing.`);
+  if (entry.data.page !== name) throw new Error(`content/pages/${name}.md says page: ${entry.data.page}.`);
+  return entry as CollectionEntry<'pages'> & { data: Extract<CollectionEntry<'pages'>['data'], { page: P }> };
+}
 export const getRouter = () => single('router');
 export const getValues = () => single('values');
 

@@ -333,6 +333,34 @@ content:
             label: Back to top label
             type: string
             required: true
+      - name: consent
+        label: Analytics question (consent note)
+        type: object
+        fields:
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: body
+            label: Text
+            type: text
+            required: true
+          - name: accept
+            label: Yes button
+            type: string
+            required: true
+          - name: decline
+            label: No button
+            type: string
+            required: true
+          - name: settingsLabel
+            label: Footer settings link
+            type: string
+            required: true
+          - name: privacyLabel
+            label: Privacy link
+            type: string
+            required: true
       - name: notFound
         label: Page not found (404)
         type: object
@@ -426,6 +454,615 @@ content:
                 label: This is a placeholder photo
                 type: boolean
                 description: Untick once the real photo is in.
+      - name: heroTab
+        label: Hero index tab label
+        type: string
+        required: true
+      - name: services
+        label: Services section
+        type: object
+        fields:
+          - name: tab
+            label: Index tab label
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: blurb
+            label: Blurb
+            type: text
+            required: true
+          - &a1
+            name: cta
+            label: Button label
+            type: string
+            required: true
+          - &a2
+            name: ctaHref
+            label: Button goes to (e.g. /pricing)
+            type: string
+            required: true
+      - name: pricing
+        label: Pricing section
+        type: object
+        fields:
+          - name: tab
+            label: Index tab label
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: blurb
+            label: Blurb
+            type: text
+            required: true
+          - *a1
+          - *a2
+          - name: downloadLabel
+            label: Pricing sheet link label
+            type: string
+            required: true
+      - name: blindDate
+        label: Blind Date card
+        type: object
+        fields:
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: note
+            label: Small note
+            type: string
+            required: true
+      - name: contact
+        label: Contact section (Post-it station)
+        type: object
+        fields:
+          - name: tab
+            label: Index tab label
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: blurb
+            label: Blurb
+            type: text
+            required: true
+          - name: callTitle
+            label: Call note title
+            type: string
+            required: true
+          - name: callNote
+            label: Call note text
+            type: string
+            required: true
+          - name: emailTitle
+            label: Email note title
+            type: string
+            required: true
+          - name: emailNote
+            label: Email note text
+            type: string
+            required: true
+          - name: hoursTitle
+            label: Hours note title
+            type: string
+            required: true
+      - name: about
+        label: About section
+        type: object
+        fields:
+          - name: tab
+            label: Index tab label
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: body
+            label: Body
+            type: text
+            required: true
+          - name: points
+            label: Checklist points (max 4)
+            type: string
+            list:
+              max: 4
+          - *a1
+          - *a2
+      - name: reviews
+        label: Reviews section
+        type: object
+        fields:
+          - name: tab
+            label: Index tab label
+            type: string
+            required: true
+          - name: kicker
+            label: Handwritten kicker
+            type: string
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: blurb
+            label: Blurb
+            type: text
+            required: true
+          - *a1
+          - *a2
+      - name: faq
+        label: FAQ section
+        type: object
+        fields:
+          - name: tab
+            label: Index tab label
+            type: string
+            required: true
+  - name: page-about
+    label: "Page: About"
+    type: file
+    path: content/pages/about.md
+    format: yaml-frontmatter
+    fields:
+      - &a3
+        name: page
+        label: Page type (do not change)
+        type: string
+        required: true
+      - &a4
+        name: title
+        label: Menu title
+        type: string
+        required: true
+      - &a5
+        name: seo
+        label: Google title and description
+        type: object
+        fields:
+          - name: title
+            label: Page title
+            type: string
+            required: true
+          - name: description
+            label: Description (under 170 characters)
+            type: text
+            required: true
+      - &a6
+        name: kicker
+        label: Handwritten kicker
+        type: string
+      - &a7
+        name: heading
+        label: Page heading
+        type: string
+        required: true
+      - &a8
+        name: intro
+        label: Intro
+        type: text
+        required: true
+      - name: storyHeading
+        label: Story heading
+        type: string
+        required: true
+      - name: body
+        label: Story (the "Why Oddly Perfect" text)
+        type: rich-text
+        options:
+          format: markdown
+      - name: howKicker
+        label: How-it-works kicker
+        type: string
+      - name: howHeading
+        label: How-it-works heading
+        type: string
+        required: true
+      - name: steps
+        label: How-it-works steps (written on the whiteboard)
+        type: object
+        list:
+          min: 2
+          max: 7
+        fields:
+          - name: title
+            label: Step title
+            type: string
+            required: true
+          - name: text
+            label: Step text
+            type: text
+            required: true
+      - name: teamHeading
+        label: Team heading
+        type: string
+        required: true
+      - name: teamIntro
+        label: Team intro
+        type: string
+      - name: galleryHeading
+        label: Gallery heading
+        type: string
+        required: true
+      - name: galleryIntro
+        label: Gallery intro
+        type: string
+      - name: areaHeading
+        label: Service area heading
+        type: string
+        required: true
+      - name: areaBody
+        label: Service area text
+        type: text
+        required: true
+      - &a9
+        name: ctaHeading
+        label: Closing call-to-action heading
+        type: string
+        required: true
+      - &a10
+        name: ctaBody
+        label: Closing call-to-action text
+        type: text
+        required: true
+  - name: page-services
+    label: "Page: Services"
+    type: file
+    path: content/pages/services.md
+    format: yaml-frontmatter
+    fields:
+      - *a3
+      - *a4
+      - *a5
+      - *a6
+      - *a7
+      - *a8
+      - name: partnershipsKicker
+        label: Partnerships kicker
+        type: string
+      - name: partnershipsHeading
+        label: Partnerships heading
+        type: string
+        required: true
+      - name: partnershipsBlurb
+        label: Partnerships blurb
+        type: text
+        required: true
+      - name: projectsKicker
+        label: Projects kicker
+        type: string
+      - name: projectsHeading
+        label: Projects heading
+        type: string
+        required: true
+      - name: projectsBlurb
+        label: Projects blurb
+        type: text
+        required: true
+      - name: eventsKicker
+        label: Events kicker
+        type: string
+      - name: eventsHeading
+        label: Events heading
+        type: string
+        required: true
+      - name: priceLabel
+        label: Price label
+        type: string
+        required: true
+      - name: flexPriceNote
+        label: Flex price note
+        type: string
+        required: true
+      - name: seeIncludedLabel
+        label: "\"What's inside\" label"
+        type: string
+        required: true
+      - name: seePricingLabel
+        label: Pricing link label
+        type: string
+        required: true
+      - *a9
+      - *a10
+  - name: page-reviews
+    label: "Page: Reviews"
+    type: file
+    path: content/pages/reviews.md
+    format: yaml-frontmatter
+    fields:
+      - *a3
+      - *a4
+      - *a5
+      - *a6
+      - *a7
+      - *a8
+      - name: emptyTitle
+        label: Empty board title
+        type: string
+        required: true
+      - name: emptyBody
+        label: Empty board text
+        type: text
+        required: true
+      - name: emptyNote
+        label: Empty board note
+        type: string
+        required: true
+      - name: emptyCta
+        label: Empty board button
+        type: string
+        required: true
+      - name: sourceLabels
+        label: Review source labels
+        type: object
+        fields:
+          - name: email
+            label: Email
+            type: string
+            required: true
+          - name: message
+            label: Message
+            type: string
+            required: true
+          - name: yelp
+            label: Yelp
+            type: string
+            required: true
+          - name: facebook
+            label: Facebook
+            type: string
+            required: true
+          - name: google
+            label: Google
+            type: string
+            required: true
+      - name: starsLabel
+        label: Stars label (keep {n})
+        type: string
+        required: true
+      - name: dragHint
+        label: Drag hint
+        type: string
+        required: true
+      - name: keyboardHint
+        label: Keyboard hint
+        type: string
+        required: true
+      - name: listLabel
+        label: List label
+        type: string
+        required: true
+      - name: resetLabel
+        label: Reset button
+        type: string
+        required: true
+      - *a9
+      - *a10
+  - name: page-pricing
+    label: "Page: Pricing (words only; prices live in Pricing)"
+    type: file
+    path: content/pages/pricing.md
+    format: yaml-frontmatter
+    fields:
+      - *a3
+      - *a4
+      - *a5
+      - *a6
+      - *a7
+      - *a8
+      - name: flexToggleLabel
+        label: Flex toggle label
+        type: string
+        required: true
+      - name: compareHint
+        label: Compare hint
+        type: string
+        required: true
+      - name: includesLabel
+        label: Includes label
+        type: string
+        required: true
+      - name: exampleLabel
+        label: Example label
+        type: string
+        required: true
+      - name: boundaryLabel
+        label: Boundary label
+        type: string
+        required: true
+      - name: feesHeading
+        label: Fees heading
+        type: string
+        required: true
+      - name: feesKicker
+        label: Fees kicker
+        type: string
+      - name: rushHeading
+        label: Rush heading
+        type: string
+        required: true
+      - name: rushKicker
+        label: Rush kicker
+        type: string
+      - name: rushMinimumLabel
+        label: Rush minimum label
+        type: string
+        required: true
+      - name: surchargeLabel
+        label: Surcharge label
+        type: string
+        required: true
+      - name: houseRulesKicker
+        label: House rules kicker
+        type: string
+      - name: downloadHeading
+        label: Download heading
+        type: string
+        required: true
+      - name: downloadBody
+        label: Download text
+        type: text
+        required: true
+      - name: downloadLabel
+        label: Download button
+        type: string
+        required: true
+      - name: policiesNote
+        label: Policies note
+        type: text
+        required: true
+      - *a9
+      - *a10
+  - name: page-privacy
+    label: "Page: Privacy"
+    type: file
+    path: content/pages/privacy.md
+    format: yaml-frontmatter
+    fields:
+      - *a3
+      - *a4
+      - *a5
+      - *a6
+      - *a7
+      - *a8
+      - name: updated
+        label: Last updated
+        type: date
+        required: true
+      - name: body
+        label: Page text
+        type: rich-text
+        options:
+          format: markdown
+  - name: page-terms
+    label: "Page: Terms"
+    type: file
+    path: content/pages/terms.md
+    format: yaml-frontmatter
+    fields:
+      - *a3
+      - *a4
+      - *a5
+      - *a6
+      - *a7
+      - *a8
+      - name: updated
+        label: Last updated
+        type: date
+        required: true
+      - name: body
+        label: Page text
+        type: rich-text
+        options:
+          format: markdown
+  - name: page-accessibility
+    label: "Page: Accessibility"
+    type: file
+    path: content/pages/accessibility.md
+    format: yaml-frontmatter
+    fields:
+      - *a3
+      - *a4
+      - *a5
+      - *a6
+      - *a7
+      - *a8
+      - name: updated
+        label: Last updated
+        type: date
+        required: true
+      - name: body
+        label: Page text
+        type: rich-text
+        options:
+          format: markdown
+  - name: gallery
+    label: Gallery (About page photos)
+    type: file
+    path: content/gallery.yml
+    fields:
+      - name: items
+        label: Photos
+        type: object
+        list: true
+        fields:
+          - name: src
+            label: Photo
+            type: image
+            required: true
+          - name: alt
+            label: Alt text
+            type: string
+            required: true
+            description: Describe the photo for people who can't see it.
+          - name: caption
+            label: Caption (optional)
+            type: string
+          - name: placeholder
+            label: This is a placeholder photo
+            type: boolean
+            description: Untick once the real photo is in.
+  - name: stickers
+    label: Stickers
+    type: file
+    path: content/stickers.yml
+    fields:
+      - name: items
+        label: Stickers
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: Short id
+            type: string
+            required: true
+          - name: text
+            label: Sticker text
+            type: string
+            required: true
+          - name: emoji
+            label: Emoji artwork (optional, stickers only)
+            type: string
+            description: Paste one emoji. Shown as a bundled image on the sticker, never in text.
+          - name: label
+            label: What a screen reader hears
+            type: string
+            required: true
+          - name: decorative
+            label: Decorative (screen readers skip it)
+            type: boolean
+          - name: color
+            label: Color
+            type: select
+            options:
+              values:
+                - coral
+                - butter
+                - rose
+                - sage
+                - sky
   - name: pricing
     label: Pricing
     type: file

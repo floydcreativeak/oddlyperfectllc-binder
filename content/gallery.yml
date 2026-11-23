@@ -1,0 +1,23 @@
+# GALLERY — photos for the About page masonry wall. Any mix of shapes works.
+# Every photo needs alt text. Untick `placeholder` once it's a real photo.
+items:
+  - src: /content/media/placeholders/whiteboard-session.jpg
+    alt: Placeholder photo standing in for a planning session at the whiteboard.
+    caption: Planning day
+    placeholder: true
+  - src: /content/media/placeholders/hands-notes.jpg
+    alt: Placeholder photo standing in for a close-up of hands sorting sticky notes.
+    caption: Sorting the notes
+    placeholder: true
+  - src: /content/media/placeholders/event-room.jpg
+    alt: Placeholder photo standing in for an event room in the middle of an event.
+    caption: Event day
+    placeholder: true
+  - src: /content/media/placeholders/office-wide.jpg
+    alt: Placeholder photo standing in for a wide shot of the office.
+    caption: The office
+    placeholder: true
+  - src: /content/media/placeholders/desk-flatlay.jpg
+    alt: Placeholder photo standing in for a desk flat-lay with a binder, notes and coffee.
+    caption: The desk, mid-plan
+    placeholder: true

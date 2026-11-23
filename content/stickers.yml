@@ -1,0 +1,45 @@
+# STICKERS — round die-cut badges stuck to the binder.
+# Most are hand-lettered text. Emoji are allowed ONLY here, as sticker artwork
+# (the `emoji` field), and the site draws them from bundled image files, never
+# from your phone's emoji font. Keep it to one or two emoji stickers per screen.
+#   label:      what a screen reader hears (required)
+#   decorative: true = screen readers skip it (only if it adds no information)
+items:
+  - id: call-us
+    text: Call Us!
+    label: Call us
+    decorative: true
+    color: coral
+  - id: fully-booked
+    text: Fully Booked? Never.
+    label: Fully booked? Never.
+    decorative: true
+    color: butter
+  - id: tailored
+    text: Tailored
+    label: Tailored
+    decorative: true
+    color: sage
+  - id: no-kickbacks
+    text: No Kickbacks
+    label: No kickbacks
+    decorative: false
+    color: coral
+  - id: coffee
+    text: Fueled By Coffee
+    emoji: "☕"
+    label: Fueled by coffee
+    decorative: true
+    color: butter
+  - id: megaphone
+    text: Loud And Proud
+    emoji: "📣"
+    label: Loud and proud
+    decorative: true
+    color: sky
+  - id: heart
+    text: Blind Date
+    emoji: "💛"
+    label: Heart doodle
+    decorative: true
+    color: rose

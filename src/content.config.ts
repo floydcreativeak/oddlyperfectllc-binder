@@ -105,6 +105,14 @@ const site = defineCollection({
       copyright: text('Copyright line'),
       topLabel: text('Back to top label'),
     }),
+    consent: z.object({
+      title: text('Consent title'),
+      body: text('Consent text'),
+      accept: text('Accept button'),
+      decline: text('Decline button'),
+      settingsLabel: text('Analytics settings link'),
+      privacyLabel: text('Privacy link'),
+    }),
     notFound: z.object({
       title: text('404 title'),
       kicker: z.string().optional(),
@@ -114,6 +122,8 @@ const site = defineCollection({
     }),
   }),
 });
+
+const section = z.object({ tab: text('Tab label'), kicker: z.string().optional(), heading: text('Heading'), blurb: text('Blurb') });
 
 /* ── home.yml ───────────────────────────────────────────────────────────── */
 const home = defineCollection({
@@ -130,6 +140,131 @@ const home = defineCollection({
       secondaryHref: z.string().startsWith('/'),
       photos: z.array(photo).max(3),
     }),
+    heroTab: text('Hero tab label'),
+    services: section.extend({ cta: text('Button'), ctaHref: z.string().startsWith('/') }),
+    pricing: section.extend({ cta: text('Button'), ctaHref: z.string().startsWith('/'), downloadLabel: text('Download label') }),
+    blindDate: z.object({ kicker: z.string().optional(), heading: text('Heading'), note: text('Note') }),
+    contact: section.extend({
+      callTitle: text('Call title'),
+      callNote: text('Call note'),
+      emailTitle: text('Email title'),
+      emailNote: text('Email note'),
+      hoursTitle: text('Hours title'),
+    }),
+    about: z.object({
+      tab: text('Tab label'),
+      kicker: z.string().optional(),
+      heading: text('Heading'),
+      body: text('Body'),
+      points: z.array(text('Point')).max(4),
+      cta: text('Button'),
+      ctaHref: z.string().startsWith('/'),
+    }),
+    reviews: section.extend({ cta: text('Button'), ctaHref: z.string().startsWith('/') }),
+    faq: z.object({ tab: text('Tab label') }),
+  }),
+});
+
+/* ── pages/*.md: one file per inner page, each with its own fields ──────── */
+const pageBase = z.object({
+  title: text('Menu title'),
+  seo: z.object({ title: text('Google title'), description: text('Google description').max(170, 'Keep the Google description under 170 characters.') }),
+  kicker: z.string().optional(),
+  heading: text('Page heading'),
+  intro: text('Intro'),
+});
+const cta = { ctaHeading: text('Call-to-action heading'), ctaBody: text('Call-to-action text') };
+const pages = defineCollection({
+  loader: glob({ pattern: '*.md', base: './content/pages' }),
+  schema: z.discriminatedUnion('page', [
+    pageBase.extend({
+      page: z.literal('about'),
+      storyHeading: text('Story heading'),
+      howKicker: z.string().optional(),
+      howHeading: text('How-it-works heading'),
+      steps: z.array(z.object({ title: text('Step title'), text: text('Step text') })).min(2).max(7),
+      teamHeading: text('Team heading'),
+      teamIntro: z.string().optional(),
+      galleryHeading: text('Gallery heading'),
+      galleryIntro: z.string().optional(),
+      areaHeading: text('Service area heading'),
+      areaBody: text('Service area text'),
+      ...cta,
+    }),
+    pageBase.extend({
+      page: z.literal('services'),
+      partnershipsKicker: z.string().optional(),
+      partnershipsHeading: text('Partnerships heading'),
+      partnershipsBlurb: text('Partnerships blurb'),
+      projectsKicker: z.string().optional(),
+      projectsHeading: text('Projects heading'),
+      projectsBlurb: text('Projects blurb'),
+      eventsKicker: z.string().optional(),
+      eventsHeading: text('Events heading'),
+      priceLabel: text('Price label'),
+      flexPriceNote: text('Flex price note'),
+      seeIncludedLabel: text('"What\'s inside" label'),
+      seePricingLabel: text('Pricing link label'),
+      ...cta,
+    }),
+    pageBase.extend({
+      page: z.literal('reviews'),
+      emptyTitle: text('Empty board title'),
+      emptyBody: text('Empty board text'),
+      emptyNote: text('Empty board note'),
+      emptyCta: text('Empty board button'),
+      sourceLabels: z.object({ email: text('Email'), message: text('Message'), yelp: text('Yelp'), facebook: text('Facebook'), google: text('Google') }),
+      starsLabel: text('Stars label').refine((v) => v.includes('{n}'), 'The stars label needs {n} where the number goes.'),
+      dragHint: text('Drag hint'),
+      keyboardHint: text('Keyboard hint'),
+      listLabel: text('List label'),
+      resetLabel: text('Reset label'),
+      ...cta,
+    }),
+    pageBase.extend({
+      page: z.literal('pricing'),
+      flexToggleLabel: text('Toggle label'),
+      compareHint: text('Compare hint'),
+      includesLabel: text('Includes label'),
+      exampleLabel: text('Example label'),
+      boundaryLabel: text('Boundary label'),
+      feesHeading: text('Fees heading'),
+      feesKicker: z.string().optional(),
+      rushHeading: text('Rush heading'),
+      rushKicker: z.string().optional(),
+      rushMinimumLabel: text('Rush minimum label'),
+      surchargeLabel: text('Surcharge label'),
+      houseRulesKicker: z.string().optional(),
+      downloadHeading: text('Download heading'),
+      downloadBody: text('Download text'),
+      downloadLabel: text('Download button'),
+      policiesNote: text('Policies note'),
+      ...cta,
+    }),
+    pageBase.extend({ page: z.enum(['privacy', 'terms', 'accessibility']), updated: z.coerce.date() }),
+  ]),
+});
+
+/* ── gallery.yml ────────────────────────────────────────────────────────── */
+const gallery = defineCollection({
+  loader: singleton('content/gallery.yml'),
+  schema: z.object({ items: z.array(photo) }),
+});
+
+/* ── stickers.yml (the only place emoji may appear) ─────────────────────── */
+const stickers = defineCollection({
+  loader: singleton('content/stickers.yml'),
+  schema: z.object({
+    items: z.array(
+      z.object({
+        id: z.string().regex(/^[a-z0-9-]+$/),
+        text: text('Sticker text'),
+        emoji: z.string().max(8).optional(),
+        label: text('Sticker label (what a screen reader hears)'),
+        decorative: z.boolean().default(true),
+        color: z.enum(['coral', 'butter', 'rose', 'sage', 'sky']).default('coral'),
+      }),
+    ),
   }),
 });
 
@@ -352,4 +487,4 @@ const policies = defineCollection({
   }),
 });
 
-export const collections = { site, home, pricing, services, router, values, faq, reviews, team, policies };
+export const collections = { site, home, pages, gallery, stickers, pricing, services, router, values, faq, reviews, team, policies };
