@@ -1,4 +1,5 @@
 ---
+import { link } from '~/lib/nav';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Icon from '~/components/Icon.astro';
 import { getSite, telHref } from '~/lib/content';
@@ -13,7 +14,7 @@ const nf = site.notFound;
       <h1 id="lost-title">{nf.title}</h1>
       <p class="lost__body">{nf.body}</p>
       <div class="lost__actions">
-        <a class="btn" href="/"><Icon name="home" />{nf.homeLabel}</a>
+        <a class="btn" href={link('/')}><Icon name="home" />{nf.homeLabel}</a>
       </div>
       <p class="lost__call">
         {nf.callPrompt}{' '}

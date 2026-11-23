@@ -276,6 +276,12 @@ content:
           - name: backToTop
             label: Back to top
             type: string
+          - name: previewBadge
+            label: Preview sticker (preview deploys only)
+            type: string
+          - name: previewNote
+            label: Preview sticker small print
+            type: string
       - name: footer
         label: Footer
         type: object

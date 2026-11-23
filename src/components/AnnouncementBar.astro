@@ -1,4 +1,5 @@
 ---
+import { link } from '~/lib/nav';
 import type { Site } from '~/lib/content';
 interface Props { site: Site }
 const { site } = Astro.props;
@@ -8,7 +9,7 @@ const a = site.announcement;
   <aside class="announce" aria-label="Announcement">
     <p>
       <span>{a.text}</span>
-      {a.link && a.linkLabel && <a href={a.link}>{a.linkLabel}</a>}
+      {a.link && a.linkLabel && <a href={link(a.link)}>{a.linkLabel}</a>}
     </p>
   </aside>
 )}

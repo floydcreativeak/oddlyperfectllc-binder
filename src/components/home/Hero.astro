@@ -1,4 +1,5 @@
 ---
+import { link } from '~/lib/nav';
 /**
  * Hero: a whiteboard panel with the huge headline, a one-line subhead and the
  * phone number as an oversized sticky note (the main call button). Studio
@@ -42,7 +43,7 @@ const tilts = [3.5, -4];
               {hero.callScribble}
             </p>
           )}
-          <a class="btn btn--ghost" href={hero.secondaryHref}>
+          <a class="btn btn--ghost" href={link(hero.secondaryHref)}>
             {hero.secondaryLabel}
             <Icon name="arrow" />
           </a>

@@ -9,7 +9,7 @@ import PhoneLink from './PhoneLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import Icon from './Icon.astro';
 import type { Site } from '~/lib/content';
-import { isActive } from '~/lib/nav';
+import { isActive, link } from '~/lib/nav';
 
 interface Props { site: Site }
 const { site } = Astro.props;
@@ -26,7 +26,7 @@ const socialIcon = (p: string) => (['facebook', 'instagram', 'linkedin'].include
           const active = isActive(item.href, path);
           return (
             <li>
-              <a href={item.href} aria-current={active ? 'page' : undefined} class="site-nav__link">
+              <a href={link(item.href)} aria-current={active ? 'page' : undefined} class="site-nav__link">
                 {item.label}
               </a>
             </li>

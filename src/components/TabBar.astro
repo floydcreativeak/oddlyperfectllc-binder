@@ -5,7 +5,7 @@
  */
 import Icon from './Icon.astro';
 import { telHref, type Site } from '~/lib/content';
-import { isActive } from '~/lib/nav';
+import { isActive, link } from '~/lib/nav';
 
 interface Props { site: Site }
 const { site } = Astro.props;
@@ -27,7 +27,7 @@ const path = Astro.url.pathname;
         const active = isActive(item.href, path);
         return (
           <li>
-            <a href={item.href} class="tabbar__link" aria-current={active ? 'page' : undefined}>
+            <a href={link(item.href)} class="tabbar__link" aria-current={active ? 'page' : undefined}>
               <Icon name={item.icon} />
               <span>{item.label}</span>
             </a>

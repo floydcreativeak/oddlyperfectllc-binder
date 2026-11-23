@@ -1,4 +1,5 @@
 ---
+import { link } from '~/lib/nav';
 /**
  * Stand-in wordmark until the client's logo SVG arrives (see NEEDS_FROM_CLIENT.md).
  * Swap the inner markup for the real inline SVG and set logo.placeholder: false.
@@ -8,7 +9,7 @@ interface Props { site: Site; compact?: boolean }
 const { site, compact = false } = Astro.props;
 ---
 <a
-  href="/"
+  href={link('/')}
   class:list={['logo', { 'logo--compact': compact }]}
   aria-label={site.logo.alt}
   data-placeholder={site.logo.placeholder ? 'logo' : undefined}
